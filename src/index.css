@@ -1,31 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Rajdhani:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Rajdhani:wght@600;700;800&display=swap');
 
 :root {
-  /* Carbon Material Palette - Conforming to DESIGN_RULEBOOK.md */
-  --bg-void: #070B08;
-  --bg-primary: #0A0F0C;
-  --bg-surface: #0F1511;
-  --bg-surface-elevated: #161F19;
-  --bg-card: #0E1410;
-  --bg-card-hover: #131A14;
+  /* Commercial AgTech Palette: Clean, Daylight, Grower-First */
+  --bg-page: #F8FAF7;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #F1F5F0;
+  --bg-surface-elevated: #E8EFE7;
   
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.14);
-  --border-chamfer: rgba(255, 255, 255, 0.18);
+  --border-subtle: #E2E8E1;
+  --border-medium: #D1DCD0;
+  --border-focus: #16A34A;
   
-  /* Strictly Functional Signal Accents (10% rule, NEVER decorative blur) */
-  --color-green: #00E575;
-  --color-cyan: #00C8FF;
-  --color-amber: #FFB703;
-  --color-red: #FF3B30;
+  /* Natural Plant & Commercial Agriculture Accents */
+  --color-green: #16A34A;
+  --color-green-dark: #15803D;
+  --color-green-light: #DCFCE7;
+  --color-green-text: #14532D;
   
-  --text-primary: #FFFFFF;
-  --text-secondary: #A3B3A7;
-  --text-muted: #627267;
+  --color-blue: #0284C7;
+  --color-blue-light: #E0F2FE;
+  
+  --color-amber: #D97706;
+  --color-amber-light: #FEF3C7;
+  
+  /* Ink & Typography Colors */
+  --text-primary: #111913;
+  --text-secondary: #4A5E4E;
+  --text-muted: #718776;
   
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
   --font-display: 'Rajdhani', sans-serif;
+
+  /* Natural Clean Shadows */
+  --shadow-sm: 0 1px 2px rgba(17, 25, 19, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(17, 25, 19, 0.06), 0 2px 4px -2px rgba(17, 25, 19, 0.04);
+  --shadow-lg: 0 12px 24px -4px rgba(17, 25, 19, 0.08), 0 4px 6px -2px rgba(17, 25, 19, 0.03);
 }
 
 *, *::before, *::after {
@@ -36,17 +46,11 @@
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background-color: var(--bg-void);
-  /* Precision 48px Mechanical Hairline Grid - Zero Blurry Neon Orbs */
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 48px 48px, 48px 48px;
-  background-attachment: fixed;
+  background-color: var(--bg-page);
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 15px;
@@ -63,25 +67,8 @@ body {
 
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-}
-
-/* Custom Tactical Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-void);
-}
-::-webkit-scrollbar-thumb {
-  background: #1c2720;
-  border-radius: 2px;
-  border: 1px solid var(--border-subtle);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-green);
 }
 
 /* Container */
@@ -92,28 +79,29 @@ body {
   padding: 0 24px;
 }
 
-/* Tactical Machine Button Styles */
+/* Commercial Farm Equipment Button Styles */
 .btn-machine-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 12px 26px;
-  border-radius: 3px;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 4px;
   background: var(--color-green);
-  color: #070B08;
-  font-family: var(--font-mono);
+  color: #FFFFFF;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 13px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   border: 1px solid var(--color-green);
   cursor: pointer;
-  transition: all 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.25);
+  transition: all 0.15s ease;
 }
 .btn-machine-primary:hover {
-  background: #00FF88;
-  border-color: #00FF88;
+  background: var(--color-green-dark);
+  border-color: var(--color-green-dark);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
 }
 .btn-machine-primary:active {
   transform: translateY(1px);
@@ -123,69 +111,66 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 12px 24px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.03);
-  color: #FFFFFF;
-  font-family: var(--font-mono);
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 4px;
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   border: 1px solid var(--border-medium);
-  border-top-color: var(--border-chamfer);
   cursor: pointer;
-  transition: all 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
 }
 .btn-machine-secondary:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.28);
+  background: var(--bg-surface-subtle);
+  border-color: #B5C4B3;
+  color: var(--color-green-dark);
 }
 .btn-machine-secondary:active {
   transform: translateY(1px);
 }
 
-/* Machine Chassis Panel */
+/* Commercial AgTech Panel Chassis */
 .panel-chassis {
-  background: var(--bg-card);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-top: 1px solid var(--border-chamfer);
-  border-radius: 4px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.panel-chassis:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-md);
 }
 
-/* Machine Silkscreen Decal Badge */
+/* Agricultural Certified Decal Badge */
 .decal-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 3px 8px;
-  border-radius: 2px;
+  border-radius: 3px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-surface-subtle);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
 }
 
-/* Live Operational Beacon Indicator */
+/* Farm Operational Status Indicator */
 .beacon-pulse {
   display: inline-block;
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: var(--color-green);
-  box-shadow: 0 0 6px rgba(0, 229, 117, 0.6);
-  animation: beaconPulse 2.4s infinite ease-in-out;
-}
-@keyframes beaconPulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1.15); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.7; }
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
 }
 
 /* Responsive Hide Rules */

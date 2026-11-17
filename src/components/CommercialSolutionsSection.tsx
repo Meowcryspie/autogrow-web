@@ -12,7 +12,7 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
       id="solutions" 
       style={{
         padding: '96px 0',
-        background: 'var(--bg-void)',
+        background: 'var(--bg-page)',
         position: 'relative',
         borderBottom: '1px solid var(--border-subtle)',
       }}
@@ -28,10 +28,11 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
               gap: '8px',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
-              color: 'var(--color-green)',
+              color: 'var(--color-green-dark)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               marginBottom: '10px',
+              fontWeight: 700,
             }}
           >
             <Building2 size={14} />
@@ -43,7 +44,7 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
               lineHeight: 1.05,
-              color: '#FFFFFF',
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}
           >
@@ -68,6 +69,7 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                   display: 'grid',
                   gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
                   alignItems: 'center',
+                  background: '#FFFFFF',
                 }}
               >
                 {/* Solution Image Column */}
@@ -87,14 +89,13 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      filter: 'brightness(0.75) contrast(1.15)',
                     }}
                   />
                   <div 
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(180deg, rgba(7, 11, 8, 0.1) 0%, rgba(7, 11, 8, 0.8) 100%)',
+                      background: 'linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(17,25,19,0.2) 100%)',
                     }}
                   />
                 </div>
@@ -112,11 +113,12 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                   <div 
                     style={{
                       fontSize: '11px',
-                      color: 'var(--color-green)',
+                      color: 'var(--color-green-dark)',
                       fontFamily: 'var(--font-mono)',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
                       marginBottom: '6px',
+                      fontWeight: 700,
                     }}
                   >
                     {solution.subtitle}
@@ -127,7 +129,7 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                     style={{
                       fontSize: '26px',
                       fontWeight: 800,
-                      color: '#FFFFFF',
+                      color: 'var(--text-primary)',
                       marginBottom: '12px',
                     }}
                   >
@@ -152,18 +154,18 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                       gridTemplateColumns: 'repeat(3, 1fr)',
                       gap: '10px',
                       padding: '14px',
-                      background: 'var(--bg-void)',
-                      borderRadius: '3px',
+                      background: 'var(--bg-surface-subtle)',
+                      borderRadius: '4px',
                       border: '1px solid var(--border-subtle)',
                       marginBottom: '20px',
                     }}
                   >
                     {solution.metrics.map((metric, mIdx) => (
                       <div key={mIdx}>
-                        <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
+                        <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-green-dark)', fontFamily: 'var(--font-mono)' }}>
                           {metric.value}
                         </div>
-                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                           {metric.label}
                         </div>
                       </div>
@@ -174,7 +176,7 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '6px', marginBottom: '24px' }}>
                     {solution.features.map((feat, fIdx) => (
                       <div key={fIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: 'var(--text-secondary)' }}>
-                        <CheckCircle2 size={14} style={{ color: 'var(--color-cyan)', flexShrink: 0 }} />
+                        <CheckCircle2 size={14} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
                         <span>{feat}</span>
                       </div>
                     ))}

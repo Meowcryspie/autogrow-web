@@ -25,11 +25,11 @@ export const EcosystemSection: React.FC = () => {
       case 'brain':
         return { label: 'CENTRAL CONTROLLER', color: 'var(--color-green)' };
       case 'sensor':
-        return { label: 'PRECISION SENSORY BUS', color: 'var(--color-cyan)' };
+        return { label: 'PRECISION SENSORY BUS', color: 'var(--color-blue)' };
       case 'actuator':
         return { label: 'DOSING SKID & VALVES', color: 'var(--color-amber)' };
       case 'cloud':
-        return { label: 'AGRONOMY AI & CLOUD', color: '#c084fc' };
+        return { label: 'AGRONOMY AI & CLOUD', color: '#7C3AED' };
       default:
         return { label: 'ECOSYSTEM NODE', color: 'var(--color-green)' };
     }
@@ -40,7 +40,7 @@ export const EcosystemSection: React.FC = () => {
       id="ecosystem" 
       style={{
         padding: '96px 0',
-        background: 'var(--bg-primary)',
+        background: 'var(--bg-page)',
         borderBottom: '1px solid var(--border-subtle)',
         position: 'relative',
       }}
@@ -56,10 +56,11 @@ export const EcosystemSection: React.FC = () => {
               gap: '8px',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
-              color: 'var(--color-green)',
+              color: 'var(--color-green-dark)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               marginBottom: '10px',
+              fontWeight: 700,
             }}
           >
             <Network size={14} />
@@ -71,7 +72,7 @@ export const EcosystemSection: React.FC = () => {
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
               lineHeight: 1.05,
-              color: '#FFFFFF',
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}
           >
@@ -103,7 +104,7 @@ export const EcosystemSection: React.FC = () => {
                 onClick={() => setSelectedRole(tab.id as any)}
                 style={{
                   padding: '8px 16px',
-                  borderRadius: '3px',
+                  borderRadius: '4px',
                   fontSize: '12px',
                   fontFamily: 'var(--font-mono)',
                   textTransform: 'uppercase',
@@ -113,11 +114,12 @@ export const EcosystemSection: React.FC = () => {
                     ? '1px solid var(--color-green)' 
                     : '1px solid var(--border-subtle)',
                   background: selectedRole === tab.id 
-                    ? 'rgba(0, 229, 117, 0.12)' 
-                    : 'var(--bg-surface)',
-                  color: selectedRole === tab.id ? 'var(--color-green)' : 'var(--text-secondary)',
+                    ? 'var(--color-green-light)' 
+                    : '#FFFFFF',
+                  color: selectedRole === tab.id ? 'var(--color-green-dark)' : 'var(--text-secondary)',
                   cursor: 'pointer',
                   transition: 'all 0.14s ease',
+                  boxShadow: 'var(--shadow-sm)',
                 }}
               >
                 {tab.label}
@@ -149,7 +151,7 @@ export const EcosystemSection: React.FC = () => {
                   style={{
                     padding: '16px 20px',
                     cursor: 'pointer',
-                    background: isSelected ? 'var(--bg-surface-elevated)' : 'var(--bg-card)',
+                    background: isSelected ? 'var(--bg-surface-elevated)' : '#FFFFFF',
                     borderColor: isSelected ? 'var(--color-green)' : 'var(--border-subtle)',
                     transition: 'all 0.14s ease',
                     display: 'flex',
@@ -162,8 +164,8 @@ export const EcosystemSection: React.FC = () => {
                       style={{
                         width: '38px',
                         height: '38px',
-                        borderRadius: '3px',
-                        background: 'var(--bg-void)',
+                        borderRadius: '4px',
+                        background: 'var(--bg-surface-subtle)',
                         border: '1px solid var(--border-subtle)',
                         display: 'flex',
                         alignItems: 'center',
@@ -182,11 +184,11 @@ export const EcosystemSection: React.FC = () => {
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: roleInfo.color, fontWeight: 700 }}>
                           [{node.code}]
                         </span>
-                        <span style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                        <span style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                           {node.categoryTitle}
                         </span>
                       </div>
-                      <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#FFFFFF', margin: 0 }}>
+                      <h4 style={{ fontSize: '14.5px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                         {node.name}
                       </h4>
                     </div>
@@ -205,13 +207,13 @@ export const EcosystemSection: React.FC = () => {
             })}
           </div>
 
-          {/* Active Node Detail Stage (TrolMaster Engineering Canvas) */}
+          {/* Active Node Detail Stage */}
           <div 
             className="panel-chassis"
             style={{
               padding: '32px',
               position: 'relative',
-              background: 'var(--bg-surface)',
+              background: '#FFFFFF',
             }}
           >
             {/* Header info */}
@@ -220,7 +222,7 @@ export const EcosystemSection: React.FC = () => {
                 <span className="decal-badge" style={{ color: getRoleBadge(activeNode.role).color, marginBottom: '8px' }}>
                   {getRoleBadge(activeNode.role).label} · [{activeNode.code}]
                 </span>
-                <h3 className="font-display" style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
+                <h3 className="font-display" style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
                   {activeNode.name}
                 </h3>
               </div>
@@ -229,8 +231,8 @@ export const EcosystemSection: React.FC = () => {
                 style={{
                   width: '46px',
                   height: '46px',
-                  borderRadius: '3px',
-                  background: 'var(--bg-void)',
+                  borderRadius: '4px',
+                  background: 'var(--bg-surface-subtle)',
                   border: '1px solid var(--border-subtle)',
                   display: 'flex',
                   alignItems: 'center',
@@ -252,17 +254,17 @@ export const EcosystemSection: React.FC = () => {
             {/* Tactical Protocol Specs */}
             <div 
               style={{
-                background: 'var(--bg-void)',
-                borderRadius: '3px',
+                background: 'var(--bg-surface-subtle)',
+                borderRadius: '4px',
                 border: '1px solid var(--border-subtle)',
                 padding: '16px',
                 marginBottom: '24px',
               }}
             >
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px' }}>
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 700 }}>
                 Hardware Bus Signaling & Physical Topology
               </div>
-              <div style={{ fontSize: '13px', color: '#FFFFFF', fontFamily: 'var(--font-mono)', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', lineHeight: 1.5, fontWeight: 600 }}>
                 {activeNode.specs}
               </div>
             </div>
@@ -295,9 +297,9 @@ export const EcosystemSection: React.FC = () => {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <ShieldCheck size={15} style={{ color: 'var(--color-green)' }} />
-                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Industrial IP66 / NEMA 4X Rated</span>
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 600 }}>Industrial IP66 / NEMA 4X Rated</span>
               </div>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-cyan)' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-green-dark)', fontWeight: 700 }}>
                 NEW ZEALAND ENGINEERED
               </span>
             </div>

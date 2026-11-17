@@ -46,7 +46,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
       id="support" 
       style={{
         padding: '96px 0',
-        background: 'var(--bg-primary)',
+        background: 'var(--bg-page)',
         position: 'relative',
         borderBottom: '1px solid var(--border-subtle)',
       }}
@@ -62,10 +62,11 @@ export const TechnicalDownloadsSection: React.FC = () => {
               gap: '8px',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
-              color: 'var(--color-green)',
+              color: 'var(--color-green-dark)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               marginBottom: '10px',
+              fontWeight: 700,
             }}
           >
             <HardDriveDownload size={14} />
@@ -77,7 +78,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
               lineHeight: 1.05,
-              color: '#FFFFFF',
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}
           >
@@ -100,6 +101,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
             justifyContent: 'space-between',
             gap: '14px',
             marginBottom: '24px',
+            background: '#FFFFFF',
           }}
         >
           {/* Category Tabs */}
@@ -110,8 +112,8 @@ export const TechnicalDownloadsSection: React.FC = () => {
                 onClick={() => setSelectedCat(cat)}
                 style={{
                   padding: '6px 14px',
-                  borderRadius: '2px',
-                  fontSize: '11px',
+                  borderRadius: '4px',
+                  fontSize: '11.5px',
                   fontFamily: 'var(--font-mono)',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -119,9 +121,9 @@ export const TechnicalDownloadsSection: React.FC = () => {
                     ? '1px solid var(--color-green)' 
                     : '1px solid var(--border-subtle)',
                   background: selectedCat === cat 
-                    ? 'rgba(0, 229, 117, 0.12)' 
-                    : 'var(--bg-void)',
-                  color: selectedCat === cat ? 'var(--color-green)' : 'var(--text-secondary)',
+                    ? 'var(--color-green-light)' 
+                    : 'var(--bg-surface-subtle)',
+                  color: selectedCat === cat ? 'var(--color-green-dark)' : 'var(--text-secondary)',
                   transition: 'all 0.14s ease',
                   textTransform: 'uppercase',
                 }}
@@ -137,13 +139,13 @@ export const TechnicalDownloadsSection: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              background: 'var(--bg-void)',
+              background: 'var(--bg-surface-subtle)',
               border: '1px solid var(--border-subtle)',
-              borderRadius: '2px',
+              borderRadius: '4px',
               padding: '6px 12px',
             }}
           >
-            <Search size={13} style={{ color: 'var(--text-muted)' }} />
+            <Search size={14} style={{ color: 'var(--text-muted)' }} />
             <input 
               type="text"
               placeholder="Search guides, firmware, CAD..."
@@ -152,7 +154,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#FFFFFF',
+                color: 'var(--text-primary)',
                 fontSize: '12px',
                 fontFamily: 'var(--font-mono)',
                 outline: 'none',
@@ -169,18 +171,19 @@ export const TechnicalDownloadsSection: React.FC = () => {
               maxWidth: '960px',
               marginBottom: '16px',
               padding: '12px 18px',
-              borderRadius: '3px',
-              background: 'rgba(0, 229, 117, 0.12)',
-              border: '1px solid var(--color-green)',
-              color: 'var(--color-green)',
+              borderRadius: '4px',
+              background: 'var(--color-green-light)',
+              border: '1px solid #86EFAC',
+              color: 'var(--color-green-text)',
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
               fontSize: '12px',
               fontFamily: 'var(--font-mono)',
+              fontWeight: 600,
             }}
           >
-            <CheckCircle2 size={15} />
+            <CheckCircle2 size={16} />
             <span>{downloadSuccessToast}</span>
           </div>
         )}
@@ -191,6 +194,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
           style={{
             maxWidth: '960px',
             overflow: 'hidden',
+            background: '#FFFFFF',
           }}
         >
           {filteredItems.map((item: DownloadItem, idx: number) => (
@@ -205,7 +209,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
                 gap: '16px',
                 transition: 'background 0.14s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -213,13 +217,13 @@ export const TechnicalDownloadsSection: React.FC = () => {
                   style={{
                     width: '36px',
                     height: '36px',
-                    borderRadius: '2px',
-                    background: 'var(--bg-void)',
+                    borderRadius: '4px',
+                    background: 'var(--bg-surface-subtle)',
                     border: '1px solid var(--border-subtle)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: item.category === 'Firmware' ? 'var(--color-cyan)' : 'var(--color-green)',
+                    color: item.category === 'Firmware' ? 'var(--color-blue)' : 'var(--color-green)',
                     flexShrink: 0,
                   }}
                 >
@@ -238,7 +242,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
                       {item.product} · {item.version}
                     </span>
                   </div>
-                  <h4 style={{ fontSize: '13.5px', fontWeight: 600, color: '#FFFFFF', margin: 0 }}>
+                  <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                     {item.title}
                   </h4>
                 </div>
@@ -246,10 +250,10 @@ export const TechnicalDownloadsSection: React.FC = () => {
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
                 <div className="hide-mobile" style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '11px', color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ fontSize: '11.5px', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                     {item.fileSize}
                   </div>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
+                  <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>
                     {item.date}
                   </div>
                 </div>
@@ -258,8 +262,8 @@ export const TechnicalDownloadsSection: React.FC = () => {
                   onClick={() => handleSimulateDownload(item)}
                   className="btn-machine-primary"
                   style={{
-                    padding: '6px 14px',
-                    fontSize: '11px',
+                    padding: '7px 15px',
+                    fontSize: '11.5px',
                     whiteSpace: 'nowrap',
                   }}
                 >

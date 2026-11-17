@@ -17,7 +17,7 @@ export const DistributorNetworkSection: React.FC = () => {
       id="distributors"
       style={{
         padding: '96px 0',
-        background: 'var(--bg-void)',
+        background: 'var(--bg-page)',
         borderBottom: '1px solid var(--border-subtle)',
         position: 'relative',
       }}
@@ -33,10 +33,11 @@ export const DistributorNetworkSection: React.FC = () => {
               gap: '8px',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
-              color: 'var(--color-green)',
+              color: 'var(--color-green-dark)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               marginBottom: '10px',
+              fontWeight: 700,
             }}
           >
             <Globe size={14} />
@@ -48,7 +49,7 @@ export const DistributorNetworkSection: React.FC = () => {
               fontSize: 'clamp(2rem, 3.8vw, 3.2rem)',
               fontWeight: 800,
               lineHeight: 1.08,
-              color: '#FFFFFF',
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}
           >
@@ -74,17 +75,18 @@ export const DistributorNetworkSection: React.FC = () => {
               onClick={() => setSelectedRegion(region)}
               style={{
                 padding: '8px 16px',
-                borderRadius: '3px',
+                borderRadius: '4px',
                 fontFamily: 'var(--font-mono)',
                 fontSize: '12px',
                 fontWeight: 600,
                 letterSpacing: '0.04em',
                 textTransform: 'uppercase',
                 border: selectedRegion === region ? '1px solid var(--color-green)' : '1px solid var(--border-subtle)',
-                background: selectedRegion === region ? 'rgba(0, 229, 117, 0.12)' : 'var(--bg-surface)',
-                color: selectedRegion === region ? 'var(--color-green)' : 'var(--text-secondary)',
+                background: selectedRegion === region ? 'var(--color-green-light)' : '#FFFFFF',
+                color: selectedRegion === region ? 'var(--color-green-dark)' : 'var(--text-secondary)',
                 cursor: 'pointer',
                 transition: 'all 0.14s ease',
+                boxShadow: 'var(--shadow-sm)',
               }}
             >
               {region}
@@ -109,23 +111,24 @@ export const DistributorNetworkSection: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                background: '#FFFFFF',
               }}
             >
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <span className="decal-badge" style={{ color: 'var(--color-green)', borderColor: 'rgba(0, 229, 117, 0.3)' }}>
+                  <span className="decal-badge" style={{ color: 'var(--color-green-dark)', borderColor: '#86EFAC', background: 'var(--color-green-light)' }}>
                     {dist.region}
                   </span>
-                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                     {dist.country}
                   </span>
                 </div>
 
-                <h4 style={{ fontSize: '17px', fontWeight: 700, color: '#FFFFFF', marginBottom: '6px' }}>
+                <h4 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
                   {dist.partnerName}
                 </h4>
 
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '18px' }}>
+                <div style={{ fontSize: '12.5px', color: 'var(--text-secondary)', marginBottom: '18px' }}>
                   <strong>Territory:</strong> {dist.territory}
                 </div>
               </div>
@@ -146,7 +149,7 @@ export const DistributorNetworkSection: React.FC = () => {
                   <span>{dist.supportPhone}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)' }}>
-                  <Mail size={13} style={{ color: 'var(--color-cyan)' }} />
+                  <Mail size={13} style={{ color: 'var(--color-blue)' }} />
                   <a href={`mailto:${dist.email}`} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>
                     {dist.email}
                   </a>

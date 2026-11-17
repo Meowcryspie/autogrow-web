@@ -36,12 +36,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
 
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
-      {/* Top Utility Announcement Bar (TrolMaster Industrial Style) */}
+      {/* Top Agricultural Hotline Bar */}
       <div
         style={{
-          background: '#040705',
+          background: 'var(--bg-surface-subtle)',
           borderBottom: '1px solid var(--border-subtle)',
-          fontSize: '11px',
+          fontSize: '11.5px',
           fontFamily: 'var(--font-mono)',
           color: 'var(--text-secondary)',
           padding: '6px 0',
@@ -51,11 +51,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span className="beacon-pulse" />
-              <strong style={{ color: 'var(--color-green)' }}>Global Hotline:</strong> +1 (800) 852-3088 · Auckland Global HQ +64 (9) 415-2380
+              <strong style={{ color: 'var(--color-green-dark)' }}>Commercial Grower Hotline:</strong> +1 (800) 852-3088 · Global HQ Auckland +64 (9) 415-2380
             </span>
             <span style={{ color: 'var(--border-subtle)' }} className="hide-mobile">|</span>
             <span style={{ color: 'var(--text-muted)' }} className="hide-mobile">
-              New Zealand Engineering · Deployed Across 45+ Countries
+              New Zealand Agricultural Engineering · 45+ Countries
             </span>
           </div>
 
@@ -64,15 +64,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
               onClick={() => handleNavClick('distributors')}
               style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer', color: 'var(--text-secondary)' }}
             >
-              <MapPin size={12} color="var(--color-green)" />
-              <span style={{ color: '#FFFFFF', fontWeight: 600 }}>Where to Buy</span>
+              <MapPin size={12} color="var(--color-green-dark)" />
+              <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Find a Dealer</span>
             </div>
             <a
               href="https://meowcryspie.github.io/farmgrow/"
               target="_blank"
               rel="noreferrer"
               style={{
-                color: 'var(--color-green)',
+                color: 'var(--color-green-dark)',
                 fontWeight: 600,
                 textDecoration: 'none',
                 display: 'flex',
@@ -80,21 +80,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 gap: '4px',
               }}
             >
-              <span>IntelliGrow™ Cloud</span>
+              <span>IntelliGrow™ Cloud Portal</span>
               <ArrowUpRight size={12} />
             </a>
           </div>
         </div>
       </div>
 
-      {/* Main Tactical Navbar */}
+      {/* Main Daylight Navbar */}
       <div
         style={{
-          background: isScrolled ? 'rgba(7, 11, 8, 0.94)' : 'rgba(7, 11, 8, 0.82)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          background: isScrolled ? 'rgba(255, 255, 255, 0.96)' : '#FFFFFF',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
           borderBottom: '1px solid var(--border-subtle)',
-          transition: 'all 0.14s cubic-bezier(0.16, 1, 0.3, 1)',
+          boxShadow: isScrolled ? '0 2px 10px rgba(17, 25, 19, 0.05)' : 'none',
+          transition: 'all 0.15s ease',
         }}
       >
         <div
@@ -106,28 +107,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
             height: '70px',
           }}
         >
-          {/* Brand Logo (TrolMaster Industrial Monogram) */}
+          {/* Brand Logo (Crisp Emerald & Forest Green) */}
           <div
             onClick={() => handleNavClick('hero')}
             style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
           >
             <div
               style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '3px',
-                background: 'var(--bg-surface-elevated)',
-                border: '1px solid var(--border-medium)',
-                borderTop: '1px solid var(--border-chamfer)',
+                width: '38px',
+                height: '38px',
+                borderRadius: '6px',
+                background: 'var(--color-green-light)',
+                border: '1px solid #B7E4C7',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
-                <path d="M16 3 L27 9 L27 23 L16 29 L5 23 L5 9 Z" stroke="#00E575" strokeWidth="2.2" strokeLinejoin="round" />
-                <path d="M16 8 C16 8 22 13 22 18 C22 21.5 19.3 24 16 24 C12.7 24 10 21.5 10 18 C10 13 16 8 16 8 Z" fill="#00E575" />
-                <line x1="16" y1="13" x2="16" y2="24" stroke="#070B09" strokeWidth="2" strokeLinecap="round" />
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+                <path d="M16 3 L27 9 L27 23 L16 29 L5 23 L5 9 Z" stroke="#15803D" strokeWidth="2.4" strokeLinejoin="round" />
+                <path d="M16 8 C16 8 22 13 22 18 C22 21.5 19.3 24 16 24 C12.7 24 10 21.5 10 18 C10 13 16 8 16 8 Z" fill="#16A34A" />
+                <line x1="16" y1="13" x2="16" y2="24" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -136,29 +136,41 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 <span
                   className="font-display"
                   style={{
-                    fontSize: '22px',
+                    fontSize: '23px',
                     fontWeight: 800,
-                    letterSpacing: '0.04em',
-                    color: '#FFFFFF',
+                    letterSpacing: '0.02em',
+                    color: 'var(--text-primary)',
                     lineHeight: 1,
                   }}
                 >
                   AUTOGROW<span style={{ color: 'var(--color-green)' }}>.</span>
                 </span>
-                <span className="decal-badge" style={{ fontSize: '9px', padding: '1px 5px' }}>CEA-PRO</span>
+                <span 
+                  style={{ 
+                    fontSize: '9.5px', 
+                    padding: '2px 6px',
+                    background: 'var(--color-green-light)',
+                    color: 'var(--color-green-text)',
+                    borderRadius: '3px',
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 700,
+                  }}
+                >
+                  CEA-PRO
+                </span>
               </div>
               <span
                 style={{
-                  fontSize: '9px',
+                  fontSize: '10px',
                   fontFamily: 'var(--font-mono)',
-                  letterSpacing: '0.12em',
+                  letterSpacing: '0.08em',
                   color: 'var(--text-muted)',
                   textTransform: 'uppercase',
                   display: 'block',
                   marginTop: '1px',
                 }}
               >
-                NZ Industrial Controllers
+                Commercial CEA Automation
               </span>
             </div>
           </div>
@@ -168,7 +180,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '24px',
+              gap: '26px',
             }}
             className="hide-mobile"
           >
@@ -187,17 +199,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                   background: 'none',
                   border: 'none',
                   color: activeDropdown === 'controllers' ? 'var(--color-green)' : 'var(--text-primary)',
-                  fontSize: '13.5px',
-                  fontFamily: 'var(--font-mono)',
+                  fontSize: '14px',
                   fontWeight: 600,
                   cursor: 'pointer',
                   padding: '8px 0',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
                 }}
               >
-                <span>Controllers</span>
-                <ChevronDown size={13} />
+                <span>Controllers & Skids</span>
+                <ChevronDown size={14} />
               </button>
 
               {activeDropdown === 'controllers' && (
@@ -207,76 +216,78 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                     position: 'absolute',
                     top: '100%',
                     left: '-20px',
-                    width: '340px',
+                    width: '360px',
                     padding: '12px',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
+                    background: '#FFFFFF',
+                    boxShadow: 'var(--shadow-lg)',
                   }}
                 >
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
+                    style={{ padding: '8px 10px', borderRadius: '4px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>MultiGrow Master [MGC-Pro]</strong>
-                      <span className="decal-badge" style={{ color: 'var(--color-green)' }}>32 ZONES</span>
+                      <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>MultiGrow Master [MGC-Pro]</strong>
+                      <span className="decal-badge" style={{ color: 'var(--color-green-dark)' }}>32 ZONES</span>
                     </div>
-                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Multi-area commercial greenhouse & boiler brain</span>
+                    <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>Multi-area commercial greenhouse & boiler controller</span>
                   </div>
 
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
+                    style={{ padding: '8px 10px', borderRadius: '4px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>SatuGrow FertiX Skid [SGF-100]</strong>
-                      <span className="decal-badge" style={{ color: 'var(--color-cyan)' }}>100m³/hr</span>
+                      <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>SatuGrow FertiX Skid [SGF-100]</strong>
+                      <span className="decal-badge" style={{ color: 'var(--color-blue)' }}>100 m³/hr</span>
                     </div>
-                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Multi-zone inline precision fertigation on skid</span>
+                    <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>Multi-zone inline precision fertigation on skid</span>
                   </div>
 
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
+                    style={{ padding: '8px 10px', borderRadius: '4px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>SatuGrow Pro [SGP-1]</strong>
+                      <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>SatuGrow Pro [SGP-1]</strong>
                       <span className="decal-badge">ALL-IN-ONE</span>
                     </div>
-                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Climate + batch tank fertigation for single bay</span>
+                    <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>Climate + batch tank fertigation for single bay</span>
                   </div>
 
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
+                    style={{ padding: '8px 10px', borderRadius: '4px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>IntelliDose Pro [IDC-4]</strong>
+                      <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>IntelliDose Pro [IDC-4]</strong>
                       <span className="decal-badge">8-CHANNEL</span>
                     </div>
-                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>8-part automated nutrient & pH precision doser</span>
+                    <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>8-part automated nutrient & pH precision doser</span>
                   </div>
 
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
+                    style={{ padding: '8px 10px', borderRadius: '4px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>IntelliClimate [ICC-2]</strong>
-                      <span className="decal-badge">VPD CEA</span>
+                      <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>IntelliClimate [ICC-2]</strong>
+                      <span className="decal-badge">VPD SPECIALIST</span>
                     </div>
-                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Dynamic canopy VPD, HVAC & CO2 controller</span>
+                    <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>Canopy VPD, multi-stage HVAC & CO2 steering</span>
                   </div>
                 </div>
               )}
@@ -289,16 +300,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '13.5px',
-                fontFamily: 'var(--font-mono)',
+                fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 padding: '8px 0',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
               }}
             >
-              Crops
+              Crops & Recipes
             </button>
 
             {/* 3. Architecture Ecosystem */}
@@ -308,55 +316,46 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '13.5px',
-                fontFamily: 'var(--font-mono)',
+                fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 padding: '8px 0',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
               }}
             >
               Ecosystem
             </button>
 
-            {/* 4. Phone Scaling Studio */}
+            {/* 4. Mobile Studio */}
             <button
               onClick={() => handleNavClick('phone-scaling')}
               style={{
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '13.5px',
-                fontFamily: 'var(--font-mono)',
+                fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 padding: '8px 0',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
               }}
             >
-              <Smartphone size={14} style={{ color: 'var(--color-cyan)' }} />
-              <span>Mobile Studio</span>
+              <Smartphone size={14} color="var(--color-green-dark)" />
+              <span>Mobile App</span>
             </button>
 
-            {/* 5. ROI Calculator */}
+            {/* 5. Economic Calculator */}
             <button
               onClick={() => handleNavClick('roi-calculator')}
               style={{
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '13.5px',
-                fontFamily: 'var(--font-mono)',
+                fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 padding: '8px 0',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
               }}
             >
               ROI Calculator
@@ -369,13 +368,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '13.5px',
-                fontFamily: 'var(--font-mono)',
+                fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 padding: '8px 0',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
               }}
             >
               Support & CAD
@@ -384,15 +380,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
 
           {/* Right Action Group */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {/* Quick Search Button */}
+            {/* Search Button */}
             <button
               onClick={onSearchClick}
-              title="Search hardware & specs"
+              title="Search products and manuals"
               style={{
                 width: '36px',
                 height: '36px',
-                borderRadius: '3px',
-                background: 'rgba(255, 255, 255, 0.04)',
+                borderRadius: '4px',
+                background: 'var(--bg-surface-subtle)',
                 border: '1px solid var(--border-subtle)',
                 color: 'var(--text-secondary)',
                 cursor: 'pointer',
@@ -401,19 +397,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 justifyContent: 'center',
                 transition: 'all 0.14s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
               onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
             >
               <Search size={16} />
             </button>
 
-            {/* Get Engineering Spec CTA */}
+            {/* Primary Action Button */}
             <button
               onClick={() => handleNavClick('products')}
               className="btn-machine-primary hide-mobile"
-              style={{ padding: '8px 18px', fontSize: '11px' }}
+              style={{ padding: '9px 18px', fontSize: '13px' }}
             >
-              <Cpu size={14} />
+              <Cpu size={15} />
               Commercial Systems
             </button>
 
@@ -423,10 +419,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
               style={{
                 width: '36px',
                 height: '36px',
-                borderRadius: '3px',
-                background: 'rgba(255, 255, 255, 0.04)',
+                borderRadius: '4px',
+                background: 'var(--bg-surface-subtle)',
                 border: '1px solid var(--border-subtle)',
-                color: '#FFFFFF',
+                color: 'var(--text-primary)',
                 cursor: 'pointer',
                 display: 'none',
                 alignItems: 'center',
@@ -444,55 +440,56 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
       {mobileMenuOpen && (
         <div
           style={{
-            background: 'var(--bg-void)',
+            background: '#FFFFFF',
             borderBottom: '1px solid var(--border-subtle)',
             padding: '20px 24px',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
+            boxShadow: 'var(--shadow-md)',
           }}
         >
           <button
             onClick={() => handleNavClick('products')}
-            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '15px', fontWeight: 600 }}
           >
-            01 // CONTROLLERS & SKIDS
+            Controllers & Fertigation Skids
           </button>
           <button
             onClick={() => handleNavClick('crops')}
-            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '15px', fontWeight: 600 }}
           >
-            02 // CROPS & AGRONOMY
+            Crops & Steering Profiles
           </button>
           <button
             onClick={() => handleNavClick('ecosystem')}
-            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '15px', fontWeight: 600 }}
           >
-            03 // ARCHITECTURE ECOSYSTEM
+            System Architecture
           </button>
           <button
             onClick={() => handleNavClick('phone-scaling')}
-            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '15px', fontWeight: 600 }}
           >
-            04 // INTELLIGROW™ MOBILE STUDIO
+            IntelliGrow™ Mobile App
           </button>
           <button
             onClick={() => handleNavClick('roi-calculator')}
-            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '15px', fontWeight: 600 }}
           >
-            05 // ROI CALCULATOR
+            Fertilizer ROI Calculator
           </button>
           <button
             onClick={() => handleNavClick('distributors')}
-            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '15px', fontWeight: 600 }}
           >
-            06 // WHERE TO BUY (DISTRIBUTORS)
+            Find a Certified Dealer
           </button>
           <button
             onClick={() => handleNavClick('support')}
-            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: 'var(--text-primary)', fontSize: '15px', fontWeight: 600 }}
           >
-            07 // TECHNICAL DOWNLOADS & CAD
+            Technical Manuals & CAD
           </button>
         </div>
       )}

@@ -64,13 +64,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
       id="hero"
       style={{
         position: 'relative',
-        minHeight: '88vh',
+        minHeight: '85vh',
         display: 'flex',
         alignItems: 'center',
         borderBottom: '1px solid var(--border-subtle)',
         paddingTop: '64px',
         paddingBottom: '72px',
-        background: 'var(--bg-void)',
+        background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F9F4 100%)',
       }}
     >
       <div className="container" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
@@ -84,13 +84,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
             alignItems: 'center',
           }}
         >
-          {/* Left Column: Command Typography & Engineering Authority */}
+          {/* Left Column: Commercial Grower Narrative & Engineering Pedigree */}
           <div>
             {/* Decal Badge */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
               <span className="beacon-pulse" />
-              <span className="decal-badge" style={{ color: 'var(--color-green)', borderColor: 'rgba(0, 229, 117, 0.4)' }}>
-                NZ CEA HERITAGE · 30+ YEARS · 45+ COUNTRIES
+              <span 
+                className="decal-badge" 
+                style={{ 
+                  background: 'var(--color-green-light)', 
+                  color: 'var(--color-green-text)', 
+                  border: '1px solid #B7E4C7' 
+                }}
+              >
+                PROVEN NEW ZEALAND ENGINEERING · 30+ YEARS · 45+ COUNTRIES
               </span>
             </div>
 
@@ -98,31 +105,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
             <h1 
               className="font-display"
               style={{
-                fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
-                lineHeight: 1.02,
+                fontSize: 'clamp(2.5rem, 4.8vw, 4.2rem)',
+                lineHeight: 1.04,
                 fontWeight: 800,
-                color: '#FFFFFF',
-                letterSpacing: '0.02em',
+                color: 'var(--text-primary)',
+                letterSpacing: '0.01em',
                 margin: '0 0 20px 0',
               }}
             >
               COMMERCIAL GREENHOUSE <br />
               <span style={{ color: 'var(--color-green)' }}>CLIMATE & FERTIGATION</span> <br />
-              AUTOMATION
+              CONTROLLERS
             </h1>
 
             {/* Factual Subhead */}
             <p 
               style={{
-                fontSize: 'clamp(1rem, 1.2vw, 1.12rem)',
+                fontSize: 'clamp(1rem, 1.2vw, 1.15rem)',
                 color: 'var(--text-secondary)',
                 lineHeight: 1.65,
                 maxWidth: '620px',
                 marginBottom: '32px',
               }}
             >
-              TrolMaster-grade tactical reliability powered by Autogrow’s 30+ years of New Zealand agricultural engineering. 
-              Autonomous multi-bay climate coordination, high-volume inline fertigation (up to 100 m³/hr), and sub-500ms cloud crop steering.
+              Built for commercial growers who demand reliability, yield consistency, and resource efficiency. 
+              Autogrow automates multi-compartment climate, boiler heating, and precision inline nutrient injection (up to 100 m³/hr) across glasshouses and vertical farms worldwide.
             </p>
 
             {/* CTAs */}
@@ -140,8 +147,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                 onClick={() => onNavigateToSection('phone-scaling')}
                 className="btn-machine-secondary"
               >
-                <Radio size={16} style={{ color: 'var(--color-cyan)' }} />
-                IntelliGrow™ Mobile Studio
+                <Radio size={16} color="var(--color-blue)" />
+                IntelliGrow™ Mobile App
               </button>
 
               <button
@@ -149,20 +156,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'var(--text-secondary)',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
-                  fontWeight: 600,
+                  color: 'var(--color-green-dark)',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '13px',
+                  fontWeight: 700,
                   cursor: 'pointer',
                   padding: '10px 14px',
-                  textTransform: 'uppercase',
                 }}
               >
-                Economic Model
+                Calculate Fertilizer Savings →
               </button>
             </div>
 
-            {/* Technical Ticker Strip (Hairline Data Grid) */}
+            {/* Technical Ticker Strip (Clean Commercial Stats) */}
             <div 
               style={{
                 display: 'grid',
@@ -173,56 +179,58 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
               }}
             >
               <div>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
-                  32<span style={{ color: 'var(--color-green)' }}>Z</span>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+                  32<span style={{ color: 'var(--color-green)', fontSize: '16px' }}>Z</span>
                 </div>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                   Zones / Master
                 </div>
               </div>
 
               <div>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
-                  100<span style={{ color: 'var(--color-cyan)' }}>m³/h</span>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+                  100<span style={{ color: 'var(--color-blue)', fontSize: '14px' }}>m³/h</span>
                 </div>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                   FertiX Flow Rate
                 </div>
               </div>
 
               <div>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                   ±0.03
                 </div>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                   EC Precision
                 </div>
               </div>
 
               <div>
-                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                   IP66
                 </div>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  NEMA 4X Die-Cast
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                  NEMA 4X Enclosure
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: MultiGrow Virtual Machine Diagnostic Console */}
+          {/* Right Column: MultiGrow Virtual Machine Console (Crisp Clean Daylight View) */}
           <div 
             className="panel-chassis"
             style={{
-              padding: '24px',
-              background: 'var(--bg-surface)',
+              padding: '26px',
+              background: '#FFFFFF',
+              boxShadow: 'var(--shadow-lg)',
+              border: '1px solid var(--border-medium)',
             }}
           >
             {/* Top Console Bar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Terminal size={14} style={{ color: 'var(--color-green)' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#FFFFFF', fontWeight: 700 }}>
+                <Terminal size={15} color="var(--color-green)" />
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-primary)', fontWeight: 700 }}>
                   MULTIGROW PRO // CONSOLE v1.4.2
                 </span>
               </div>
@@ -232,34 +240,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                 <button
                   onClick={() => setConsoleMode('telemetry')}
                   style={{
-                    padding: '3px 8px',
-                    borderRadius: '2px',
+                    padding: '4px 10px',
+                    borderRadius: '3px',
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '10px',
-                    border: 'none',
+                    fontSize: '10.5px',
+                    border: '1px solid',
+                    borderColor: consoleMode === 'telemetry' ? 'var(--color-green)' : 'var(--border-subtle)',
                     cursor: 'pointer',
-                    background: consoleMode === 'telemetry' ? 'var(--color-green)' : 'rgba(255,255,255,0.05)',
-                    color: consoleMode === 'telemetry' ? '#070B08' : 'var(--text-muted)',
+                    background: consoleMode === 'telemetry' ? 'var(--color-green-light)' : 'transparent',
+                    color: consoleMode === 'telemetry' ? 'var(--color-green-text)' : 'var(--text-muted)',
                     fontWeight: 700,
                   }}
                 >
-                  TELEMETRY
+                  LIVE DATA
                 </button>
                 <button
                   onClick={() => setConsoleMode('wiring')}
                   style={{
-                    padding: '3px 8px',
-                    borderRadius: '2px',
+                    padding: '4px 10px',
+                    borderRadius: '3px',
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '10px',
-                    border: 'none',
+                    fontSize: '10.5px',
+                    border: '1px solid',
+                    borderColor: consoleMode === 'wiring' ? 'var(--color-green)' : 'var(--border-subtle)',
                     cursor: 'pointer',
-                    background: consoleMode === 'wiring' ? 'var(--color-green)' : 'rgba(255,255,255,0.05)',
-                    color: consoleMode === 'wiring' ? '#070B08' : 'var(--text-muted)',
+                    background: consoleMode === 'wiring' ? 'var(--color-green-light)' : 'transparent',
+                    color: consoleMode === 'wiring' ? 'var(--color-green-text)' : 'var(--text-muted)',
                     fontWeight: 700,
                   }}
                 >
-                  CAD PINOUT
+                  WIRING PINOUT
                 </button>
               </div>
             </div>
@@ -276,16 +286,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                   onClick={() => setActiveZone(tab.id as any)}
                   style={{
                     flex: 1,
-                    padding: '6px 8px',
-                    borderRadius: '2px',
+                    padding: '7px 8px',
+                    borderRadius: '4px',
                     fontFamily: 'var(--font-mono)',
                     fontSize: '11px',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     textTransform: 'uppercase',
                     cursor: 'pointer',
                     border: activeZone === tab.id ? '1px solid var(--color-green)' : '1px solid var(--border-subtle)',
-                    background: activeZone === tab.id ? 'rgba(0, 229, 117, 0.12)' : 'var(--bg-void)',
-                    color: activeZone === tab.id ? 'var(--color-green)' : 'var(--text-muted)',
+                    background: activeZone === tab.id ? 'var(--color-green-light)' : 'var(--bg-surface-subtle)',
+                    color: activeZone === tab.id ? 'var(--color-green-text)' : 'var(--text-secondary)',
                     transition: 'all 0.14s ease',
                   }}
                 >
@@ -299,72 +309,72 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                 {/* Active Zone Header */}
                 <div style={{ marginBottom: '14px' }}>
                   <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                    Active Compartment
+                    Connected Commercial Zone
                   </div>
-                  <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>
-                    {current.name} · <span style={{ color: 'var(--color-cyan)', fontSize: '12px' }}>{current.crop}</span>
+                  <div style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
+                    {current.name} · <span style={{ color: 'var(--color-blue)', fontSize: '13px' }}>{current.crop}</span>
                   </div>
                 </div>
 
-                {/* 4-Quadrant High-Density Telemetry Readouts */}
+                {/* 4-Quadrant Clean Telemetry Readouts */}
                 <div 
                   style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(2, 1fr)',
-                    gap: '8px',
+                    gap: '10px',
                     marginBottom: '16px',
                   }}
                 >
-                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                      Solution EC
+                  <div style={{ background: 'var(--bg-surface-subtle)', padding: '12px', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+                      Fertigation EC
                     </div>
-                    <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--color-green-dark)', fontFamily: 'var(--font-mono)' }}>
                       {current.ec}
                     </div>
                   </div>
 
-                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  <div style={{ background: 'var(--bg-surface-subtle)', padding: '12px', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                       Solution pH
                     </div>
-                    <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--color-blue)', fontFamily: 'var(--font-mono)' }}>
                       {current.ph}
                     </div>
                   </div>
 
-                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  <div style={{ background: 'var(--bg-surface-subtle)', padding: '12px', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                       Canopy VPD
                     </div>
-                    <div style={{ fontSize: '20px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                       {current.vpd}
                     </div>
                   </div>
 
-                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                      Canopy Temp / CO2
+                  <div style={{ background: 'var(--bg-surface-subtle)', padding: '12px', borderRadius: '4px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+                      Temp / CO2
                     </div>
-                    <div style={{ fontSize: '15px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                       {current.temp} · {current.co2}
                     </div>
                   </div>
                 </div>
 
                 {/* Relay Channels State */}
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '8px' }}>
-                  Solid-State Output Relays
+                <div style={{ fontSize: '10.5px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: '8px' }}>
+                  Zone Actuator & Relay Outputs
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '16px' }}>
                   {current.relays.map((r, i) => (
                     <div 
                       key={i}
                       style={{
-                        background: 'var(--bg-void)',
+                        background: 'var(--bg-surface-subtle)',
                         border: '1px solid var(--border-subtle)',
                         padding: '8px 10px',
-                        borderRadius: '2px',
+                        borderRadius: '3px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -373,7 +383,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                       }}
                     >
                       <span style={{ color: 'var(--text-secondary)' }}>{r.name}</span>
-                      <span style={{ color: r.active ? 'var(--color-green)' : 'var(--text-muted)', fontWeight: 700 }}>
+                      <span style={{ color: r.active ? 'var(--color-green-dark)' : 'var(--text-muted)', fontWeight: 700 }}>
                         {r.state}
                       </span>
                     </div>
@@ -383,29 +393,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
             ) : (
               /* CAD Pinout Schematic View */
               <div style={{ padding: '4px 0 16px' }}>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '10px' }}>
+                <div style={{ fontSize: '10.5px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, marginBottom: '10px' }}>
                   MultiGrow Pro Hardware Terminal Strip (DIN-Rail Enclosure)
                 </div>
 
-                <div style={{ background: 'var(--bg-void)', border: '1px solid var(--border-subtle)', borderRadius: '3px', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '6px' }}>
-                    <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>TB1 (1-4)</span>
-                    <span style={{ color: '#FFFFFF' }}>RS-485 Modbus RTU</span>
-                    <span style={{ color: 'var(--text-muted)' }}>115.2 kbps Dual Channel</span>
+                <div style={{ background: 'var(--bg-surface-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '4px', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '85px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
+                    <span style={{ color: 'var(--color-green-dark)', fontWeight: 700 }}>TB1 (1-4)</span>
+                    <span style={{ color: 'var(--text-primary)' }}>RS-485 Modbus RTU</span>
+                    <span style={{ color: 'var(--text-muted)' }}>115.2 kbps Dual Bus</span>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '6px' }}>
-                    <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>TB2 (1-8)</span>
-                    <span style={{ color: '#FFFFFF' }}>16-Bit Analog Inputs</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: '85px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
+                    <span style={{ color: 'var(--color-green-dark)', fontWeight: 700 }}>TB2 (1-8)</span>
+                    <span style={{ color: 'var(--text-primary)' }}>16-Bit Analog Inputs</span>
                     <span style={{ color: 'var(--text-muted)' }}>0-10V / 4-20mA Clamped</span>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '6px' }}>
-                    <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>TB3 (1-16)</span>
-                    <span style={{ color: '#FFFFFF' }}>24VAC Solid State Bank</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: '85px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
+                    <span style={{ color: 'var(--color-green-dark)', fontWeight: 700 }}>TB3 (1-16)</span>
+                    <span style={{ color: 'var(--text-primary)' }}>24VAC Solid State Bank</span>
                     <span style={{ color: 'var(--text-muted)' }}>2.0A continuous snubber</span>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
-                    <span style={{ color: 'var(--color-cyan)', fontWeight: 700 }}>CAN-BUS</span>
-                    <span style={{ color: '#FFFFFF' }}>EnviroSensor RJ12 Bus</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: '85px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ color: 'var(--color-blue)', fontWeight: 700 }}>CAN-BUS</span>
+                    <span style={{ color: 'var(--text-primary)' }}>EnviroSensor RJ12</span>
                     <span style={{ color: 'var(--text-muted)' }}>150m Daisy-chain reach</span>
                   </div>
                 </div>
@@ -415,7 +425,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
             {/* Console Footer */}
             <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
               <span>WATCHDOG: HW TIMER OK</span>
-              <span style={{ color: 'var(--color-green)' }}>GALVANIC ISOLATION: 2.5kV</span>
+              <span style={{ color: 'var(--color-green-dark)', fontWeight: 600 }}>GALVANIC ISOLATION: 2.5kV</span>
             </div>
           </div>
         </div>

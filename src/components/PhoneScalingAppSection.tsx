@@ -29,9 +29,9 @@ interface ViewportPreset {
 
 export const PhoneScalingAppSection: React.FC = () => {
   const presets: ViewportPreset[] = [
-    { id: 'compact', name: 'Compact', width: 340, height: 690, deviceLabel: '340 × 690 · SE / Pocket' },
-    { id: 'standard', name: 'Standard', width: 380, height: 780, deviceLabel: '380 × 780 · iPhone / Pixel' },
-    { id: 'promax', name: 'Pro Max', width: 420, height: 840, deviceLabel: '420 × 840 · Pro Max / Ultra' },
+    { id: 'compact', name: 'Compact', width: 340, height: 690, deviceLabel: '340 × 690 · Pocket Display' },
+    { id: 'standard', name: 'Standard', width: 380, height: 780, deviceLabel: '380 × 780 · Grower Phone' },
+    { id: 'promax', name: 'Pro Max', width: 420, height: 840, deviceLabel: '420 × 840 · Field Tablet' },
   ];
 
   const [activePreset, setActivePreset] = useState<ViewportPreset>(presets[1]);
@@ -59,7 +59,7 @@ export const PhoneScalingAppSection: React.FC = () => {
       id="phone-scaling" 
       style={{
         padding: '96px 0',
-        background: 'var(--bg-void)',
+        background: 'var(--bg-page)',
         position: 'relative',
         borderBottom: '1px solid var(--border-subtle)',
         overflow: 'hidden',
@@ -76,10 +76,11 @@ export const PhoneScalingAppSection: React.FC = () => {
               gap: '8px',
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
-              color: 'var(--color-green)',
+              color: 'var(--color-green-dark)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               marginBottom: '10px',
+              fontWeight: 700,
             }}
           >
             <Smartphone size={14} />
@@ -91,7 +92,7 @@ export const PhoneScalingAppSection: React.FC = () => {
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
               lineHeight: 1.05,
-              color: '#FFFFFF',
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}
           >
@@ -115,6 +116,7 @@ export const PhoneScalingAppSection: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '16px',
+            background: 'var(--bg-surface)',
           }}
         >
           {/* Preset Buttons */}
@@ -128,19 +130,19 @@ export const PhoneScalingAppSection: React.FC = () => {
                 onClick={() => setActivePreset(p)}
                 style={{
                   padding: '6px 14px',
-                  borderRadius: '6px',
+                  borderRadius: '4px',
                   fontSize: '12px',
                   fontFamily: 'var(--font-mono)',
                   fontWeight: 600,
                   cursor: 'pointer',
                   border: activePreset.id === p.id 
                     ? '1px solid var(--color-green)' 
-                    : '1px solid rgba(255, 255, 255, 0.1)',
+                    : '1px solid var(--border-subtle)',
                   background: activePreset.id === p.id 
-                    ? 'rgba(0, 255, 136, 0.15)' 
-                    : 'rgba(255, 255, 255, 0.03)',
-                  color: activePreset.id === p.id ? 'var(--color-green)' : 'var(--text-secondary)',
-                  transition: 'all 0.2s ease',
+                    ? 'var(--color-green-light)' 
+                    : 'var(--bg-surface-subtle)',
+                  color: activePreset.id === p.id ? 'var(--color-green-dark)' : 'var(--text-secondary)',
+                  transition: 'all 0.15s ease',
                 }}
               >
                 {p.name}
@@ -165,7 +167,7 @@ export const PhoneScalingAppSection: React.FC = () => {
                 cursor: 'pointer',
               }}
             />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#fff', width: '42px' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-primary)', width: '42px', fontWeight: 600 }}>
               {zoomScale}%
             </span>
             <button
@@ -186,7 +188,7 @@ export const PhoneScalingAppSection: React.FC = () => {
           </div>
 
           {/* Active Resolution Readout */}
-          <div style={{ fontSize: '11px', color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>
+          <div style={{ fontSize: '11.5px', color: 'var(--color-green-dark)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
             {activePreset.deviceLabel}
           </div>
         </div>
@@ -204,39 +206,37 @@ export const PhoneScalingAppSection: React.FC = () => {
           {/* Left Feature Column */}
           <div className="hide-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div 
+              className="panel-chassis"
               style={{
-                background: 'rgba(11, 18, 14, 0.7)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '8px',
-                padding: '20px',
+                background: '#FFFFFF',
+                padding: '22px',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', color: 'var(--color-green)' }}>
                 <Activity size={18} />
-                <h4 style={{ margin: 0, fontSize: '14px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <h4 style={{ margin: 0, fontSize: '13px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 700 }}>
                   Sub-500ms MQTT Telemetry
                 </h4>
               </div>
-              <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                 Real-time bi-directional sync directly to MultiGrow Pro controllers with full TLS 1.3 socket encryption.
               </p>
             </div>
 
             <div 
+              className="panel-chassis"
               style={{
-                background: 'rgba(11, 18, 14, 0.7)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '8px',
-                padding: '20px',
+                background: '#FFFFFF',
+                padding: '22px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', color: 'var(--color-cyan)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', color: 'var(--color-blue)' }}>
                 <Droplet size={18} />
-                <h4 style={{ margin: 0, fontSize: '14px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <h4 style={{ margin: 0, fontSize: '13px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 700 }}>
                   Remote Dosing Override
                 </h4>
               </div>
-              <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                 Push manual or scheduled nutrient micro-doses to up to 8 peristaltic channels anywhere in the world.
               </p>
             </div>
@@ -256,10 +256,10 @@ export const PhoneScalingAppSection: React.FC = () => {
               style={{
                 width: `${activePreset.width}px`,
                 height: `${activePreset.height}px`,
-                background: '#040705',
+                background: '#FFFFFF',
                 borderRadius: '46px',
-                border: '9px solid #1a221d',
-                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+                border: '10px solid #1E2922',
+                boxShadow: '0 20px 45px -10px rgba(17, 25, 19, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08)',
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
@@ -276,7 +276,7 @@ export const PhoneScalingAppSection: React.FC = () => {
                   transform: 'translateX(-50%)',
                   width: '110px',
                   height: '24px',
-                  background: '#000000',
+                  background: '#1E2922',
                   borderRadius: '16px',
                   zIndex: 50,
                   display: 'flex',
@@ -285,7 +285,7 @@ export const PhoneScalingAppSection: React.FC = () => {
                   gap: '6px',
                 }}
               >
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#0a100d' }} />
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#111913' }} />
                 <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--color-green)' }} />
               </div>
 
@@ -299,7 +299,9 @@ export const PhoneScalingAppSection: React.FC = () => {
                   justifyContent: 'space-between',
                   fontSize: '11px',
                   fontFamily: 'var(--font-mono)',
-                  color: 'var(--text-secondary)',
+                  color: 'var(--text-primary)',
+                  fontWeight: 600,
+                  background: '#FFFFFF',
                   zIndex: 40,
                 }}
               >
@@ -317,7 +319,7 @@ export const PhoneScalingAppSection: React.FC = () => {
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                  background: '#070b09',
+                  background: 'var(--bg-page)',
                   overflowY: 'auto',
                 }}
               >
@@ -325,27 +327,27 @@ export const PhoneScalingAppSection: React.FC = () => {
                 <div 
                   style={{
                     padding: '12px 18px',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-                    background: 'rgba(11, 18, 14, 0.95)',
+                    borderBottom: '1px solid var(--border-subtle)',
+                    background: '#FFFFFF',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                      <div style={{ fontSize: '9px', color: 'var(--color-green)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                      <div style={{ fontSize: '9px', color: 'var(--color-green-dark)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
                         FACILITY #04 · NORTH CANTERBURY
                       </div>
-                      <div style={{ fontSize: '15px', fontWeight: 800, color: '#fff', fontFamily: 'var(--font-display)' }}>
+                      <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
                         ZONE A: VINE TOMATOES
                       </div>
                     </div>
                     <span 
                       style={{
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                        background: 'rgba(0, 255, 136, 0.15)',
-                        border: '1px solid rgba(0, 255, 136, 0.4)',
+                        padding: '2px 7px',
+                        borderRadius: '3px',
+                        background: 'var(--color-green-light)',
+                        border: '1px solid #86EFAC',
                         fontSize: '9px',
-                        color: 'var(--color-green)',
+                        color: 'var(--color-green-text)',
                         fontFamily: 'var(--font-mono)',
                         fontWeight: 700,
                       }}
@@ -359,8 +361,8 @@ export const PhoneScalingAppSection: React.FC = () => {
                 <div 
                   style={{
                     display: 'flex',
-                    background: 'rgba(0, 0, 0, 0.4)',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                    background: '#FFFFFF',
+                    borderBottom: '1px solid var(--border-subtle)',
                   }}
                 >
                   {[
@@ -378,9 +380,9 @@ export const PhoneScalingAppSection: React.FC = () => {
                         fontSize: '11px',
                         fontFamily: 'var(--font-mono)',
                         border: 'none',
-                        background: activeAppTab === tab.id ? 'rgba(0, 255, 136, 0.12)' : 'transparent',
+                        background: activeAppTab === tab.id ? 'var(--bg-surface-subtle)' : 'transparent',
                         borderBottom: activeAppTab === tab.id ? '2px solid var(--color-green)' : 'none',
-                        color: activeAppTab === tab.id ? 'var(--color-green)' : 'var(--text-muted)',
+                        color: activeAppTab === tab.id ? 'var(--color-green-dark)' : 'var(--text-muted)',
                         cursor: 'pointer',
                         fontWeight: activeAppTab === tab.id ? 700 : 500,
                         transition: 'all 0.15s ease',
@@ -392,7 +394,7 @@ export const PhoneScalingAppSection: React.FC = () => {
                 </div>
 
                 {/* App Content Body */}
-                <div style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ flex: 1, padding: '14px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   
                   {activeAppTab === 'telemetry' && (
                     <>
@@ -402,20 +404,21 @@ export const PhoneScalingAppSection: React.FC = () => {
                         {/* EC Card */}
                         <div 
                           style={{
-                            background: 'rgba(16, 25, 20, 0.7)',
-                            border: '1px solid rgba(0, 255, 136, 0.3)',
-                            borderRadius: '8px',
+                            background: '#FFFFFF',
+                            border: '1px solid var(--border-subtle)',
+                            borderRadius: '6px',
                             padding: '12px',
                             position: 'relative',
+                            boxShadow: 'var(--shadow-sm)',
                           }}
                         >
-                          <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                             CONDUCTIVITY
                           </div>
-                          <div style={{ fontSize: '24px', fontWeight: 800, color: '#fff', fontFamily: 'var(--font-mono)', margin: '4px 0' }}>
+                          <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', margin: '4px 0' }}>
                             {liveEC}
                           </div>
-                          <div style={{ fontSize: '9px', color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '9px', color: 'var(--color-green-dark)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                             Target: 2.20 mS/cm
                           </div>
                         </div>
@@ -423,19 +426,20 @@ export const PhoneScalingAppSection: React.FC = () => {
                         {/* pH Card */}
                         <div 
                           style={{
-                            background: 'rgba(16, 25, 20, 0.7)',
-                            border: '1px solid rgba(0, 229, 255, 0.3)',
-                            borderRadius: '8px',
+                            background: '#FFFFFF',
+                            border: '1px solid var(--border-subtle)',
+                            borderRadius: '6px',
                             padding: '12px',
+                            boxShadow: 'var(--shadow-sm)',
                           }}
                         >
-                          <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                             SOLUTION pH
                           </div>
-                          <div style={{ fontSize: '24px', fontWeight: 800, color: '#fff', fontFamily: 'var(--font-mono)', margin: '4px 0' }}>
+                          <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', margin: '4px 0' }}>
                             {livePH}
                           </div>
-                          <div style={{ fontSize: '9px', color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '9px', color: 'var(--color-blue)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                             Target: 5.80 pH
                           </div>
                         </div>
@@ -443,42 +447,42 @@ export const PhoneScalingAppSection: React.FC = () => {
 
                       {/* Climate Quad Grid */}
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)' }}>
-                            <Thermometer size={12} style={{ color: '#ff7b00' }} />
+                        <div style={{ background: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-sm)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                            <Thermometer size={12} style={{ color: '#D97706' }} />
                             TEMP
                           </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                             24.5°C
                           </div>
                         </div>
 
-                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)' }}>
-                            <Droplet size={12} style={{ color: '#00b4d8' }} />
+                        <div style={{ background: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-sm)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                            <Droplet size={12} style={{ color: '#0284C7' }} />
                             RH
                           </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                             68.2%
                           </div>
                         </div>
 
-                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)' }}>
+                        <div style={{ background: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-sm)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>
                             <Wind size={12} style={{ color: 'var(--color-green)' }} />
                             VPD
                           </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-green-dark)', fontFamily: 'var(--font-mono)' }}>
                             1.15 kPa
                           </div>
                         </div>
 
-                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)' }}>
-                            <Sun size={12} style={{ color: '#ffd166' }} />
+                        <div style={{ background: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-sm)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                            <Sun size={12} style={{ color: '#D97706' }} />
                             CO2
                           </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-mono)' }}>
+                          <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
                             1,120 ppm
                           </div>
                         </div>
@@ -487,24 +491,25 @@ export const PhoneScalingAppSection: React.FC = () => {
                       {/* Mini Live Chart Bar */}
                       <div 
                         style={{
-                          background: 'rgba(0, 0, 0, 0.4)',
-                          borderRadius: '8px',
+                          background: '#FFFFFF',
+                          borderRadius: '6px',
                           padding: '12px',
-                          border: '1px solid rgba(255, 255, 255, 0.06)',
+                          border: '1px solid var(--border-subtle)',
+                          boxShadow: 'var(--shadow-sm)',
                         }}
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', color: 'var(--text-muted)', marginBottom: '8px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: 600 }}>
                           <span>24-HR VPD TREND</span>
-                          <span style={{ color: 'var(--color-green)' }}>OPTIMAL BAND</span>
+                          <span style={{ color: 'var(--color-green-dark)' }}>OPTIMAL BAND</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '40px' }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '36px' }}>
                           {[30, 45, 60, 70, 75, 80, 78, 85, 90, 85, 75, 70, 65, 60, 55, 50, 48, 52].map((val, idx) => (
                             <div 
                               key={idx}
                               style={{
                                 flex: 1,
                                 height: `${val}%`,
-                                background: val > 80 ? 'var(--color-green)' : 'rgba(0, 255, 136, 0.35)',
+                                background: val > 80 ? 'var(--color-green)' : '#BBF7D0',
                                 borderRadius: '2px',
                               }}
                             />
@@ -519,17 +524,18 @@ export const PhoneScalingAppSection: React.FC = () => {
                       {/* Dosing Controller Status */}
                       <div 
                         style={{
-                          background: 'rgba(16, 25, 20, 0.8)',
-                          border: '1px solid var(--border-color)',
-                          borderRadius: '8px',
+                          background: '#FFFFFF',
+                          border: '1px solid var(--border-subtle)',
+                          borderRadius: '6px',
                           padding: '12px',
+                          boxShadow: 'var(--shadow-sm)',
                         }}
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>ACTIVE RECIPE</span>
-                          <span style={{ fontSize: '10px', color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>RECIPE #03: BLOOM DENSE</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <span style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>ACTIVE RECIPE</span>
+                          <span style={{ fontSize: '9.5px', color: 'var(--color-green-dark)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>RECIPE #03: BLOOM DENSE</span>
                         </div>
-                        <div style={{ fontSize: '12px', color: '#fff', lineHeight: 1.4 }}>
+                        <div style={{ fontSize: '11.5px', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
                           Multi-channel peristaltic dosing calibrated for rockwool slab crop steering.
                         </div>
                       </div>
@@ -541,15 +547,16 @@ export const PhoneScalingAppSection: React.FC = () => {
                             key={idx}
                             style={{
                               padding: '8px 4px',
-                              borderRadius: '6px',
-                              background: isDosingPulsing ? 'rgba(0, 255, 136, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                              border: isDosingPulsing ? '1px solid var(--color-green)' : '1px solid rgba(255,255,255,0.06)',
+                              borderRadius: '4px',
+                              background: isDosingPulsing ? 'var(--color-green-light)' : '#FFFFFF',
+                              border: isDosingPulsing ? '1px solid var(--color-green)' : '1px solid var(--border-subtle)',
                               textAlign: 'center',
                               transition: 'all 0.2s ease',
+                              boxShadow: 'var(--shadow-sm)',
                             }}
                           >
-                            <div style={{ fontSize: '8px', color: 'var(--text-muted)' }}>{p}</div>
-                            <div style={{ fontSize: '11px', fontWeight: 700, color: isDosingPulsing ? 'var(--color-green)' : '#fff' }}>
+                            <div style={{ fontSize: '8px', color: 'var(--text-muted)', fontWeight: 600 }}>{p}</div>
+                            <div style={{ fontSize: '11px', fontWeight: 700, color: isDosingPulsing ? 'var(--color-green-dark)' : 'var(--text-primary)' }}>
                               {isDosingPulsing ? 'RUN' : 'RDY'}
                             </div>
                           </div>
@@ -564,21 +571,21 @@ export const PhoneScalingAppSection: React.FC = () => {
                           style={{
                             width: '100%',
                             padding: '12px',
-                            borderRadius: '6px',
-                            background: isDosingPulsing ? 'rgba(0, 255, 136, 0.2)' : 'var(--color-green)',
-                            color: isDosingPulsing ? 'var(--color-green)' : '#060a08',
-                            border: 'none',
+                            borderRadius: '4px',
+                            background: isDosingPulsing ? 'var(--color-green-light)' : 'var(--color-green)',
+                            color: isDosingPulsing ? 'var(--color-green-dark)' : '#FFFFFF',
+                            border: '1px solid var(--color-green)',
                             fontWeight: 700,
                             fontFamily: 'var(--font-mono)',
-                            fontSize: '12px',
+                            fontSize: '11.5px',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
+                            letterSpacing: '0.04em',
                             cursor: isDosingPulsing ? 'wait' : 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             gap: '8px',
-                            boxShadow: isDosingPulsing ? 'none' : '0 0 15px rgba(0, 255, 136, 0.3)',
+                            boxShadow: 'var(--shadow-sm)',
                           }}
                         >
                           <Play size={14} />
@@ -595,16 +602,17 @@ export const PhoneScalingAppSection: React.FC = () => {
                     <>
                       <div 
                         style={{
-                          background: 'rgba(16, 25, 20, 0.8)',
-                          border: '1px solid var(--border-color)',
-                          borderRadius: '8px',
+                          background: '#FFFFFF',
+                          border: '1px solid var(--border-subtle)',
+                          borderRadius: '6px',
                           padding: '14px',
+                          boxShadow: 'var(--shadow-sm)',
                         }}
                       >
-                        <div style={{ fontSize: '10px', color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)', marginBottom: '4px' }}>
+                        <div style={{ fontSize: '10px', color: 'var(--color-blue)', fontFamily: 'var(--font-mono)', marginBottom: '4px', fontWeight: 700 }}>
                           SUBSTRATE SENSOR · WCS-PRO
                         </div>
-                        <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>
+                        <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>
                           Volumetric Water: 62.4%
                         </div>
                         <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
@@ -614,17 +622,18 @@ export const PhoneScalingAppSection: React.FC = () => {
 
                       <div 
                         style={{
-                          background: 'rgba(255, 255, 255, 0.03)',
-                          borderRadius: '8px',
+                          background: '#FFFFFF',
+                          borderRadius: '6px',
                           padding: '12px',
-                          border: '1px solid rgba(255, 255, 255, 0.06)',
+                          border: '1px solid var(--border-subtle)',
+                          boxShadow: 'var(--shadow-sm)',
                         }}
                       >
-                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '6px' }}>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>
                           DAILY DRYBACK STRATEGY
                         </div>
-                        <div style={{ fontSize: '12px', color: '#fff' }}>
-                          Target dryback before sunrise: <strong style={{ color: 'var(--color-green)' }}>12.0%</strong>
+                        <div style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
+                          Target dryback before sunrise: <strong style={{ color: 'var(--color-green-dark)' }}>12.0%</strong>
                         </div>
                         <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                           Current dryback: 8.5% (On track for generative steering)
@@ -637,8 +646,8 @@ export const PhoneScalingAppSection: React.FC = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <div 
                         style={{
-                          background: 'rgba(255, 183, 3, 0.08)',
-                          border: '1px solid rgba(255, 183, 3, 0.3)',
+                          background: '#FEF3C7',
+                          border: '1px solid #FCD34D',
                           borderRadius: '6px',
                           padding: '10px',
                           display: 'flex',
@@ -646,16 +655,16 @@ export const PhoneScalingAppSection: React.FC = () => {
                           gap: '10px',
                         }}
                       >
-                        <AlertTriangle size={16} style={{ color: '#ffb703', flexShrink: 0 }} />
-                        <div style={{ fontSize: '11px', color: '#fff' }}>
+                        <AlertTriangle size={16} style={{ color: '#D97706', flexShrink: 0 }} />
+                        <div style={{ fontSize: '11px', color: '#78350F' }}>
                           <strong>CO2 Tank Pressure:</strong> Low pressure alert (18.2 bar). Replacement scheduled.
                         </div>
                       </div>
 
                       <div 
                         style={{
-                          background: 'rgba(0, 255, 136, 0.08)',
-                          border: '1px solid rgba(0, 255, 136, 0.2)',
+                          background: '#DCFCE7',
+                          border: '1px solid #86EFAC',
                           borderRadius: '6px',
                           padding: '10px',
                           display: 'flex',
@@ -663,8 +672,8 @@ export const PhoneScalingAppSection: React.FC = () => {
                           gap: '10px',
                         }}
                       >
-                        <CheckCircle size={16} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
-                        <div style={{ fontSize: '11px', color: '#fff' }}>
+                        <CheckCircle size={16} style={{ color: '#16A34A', flexShrink: 0 }} />
+                        <div style={{ fontSize: '11px', color: '#14532D' }}>
                           <strong>Watchdog OK:</strong> All 12 RS485 sensory nodes responding within 22ms.
                         </div>
                       </div>
@@ -677,8 +686,8 @@ export const PhoneScalingAppSection: React.FC = () => {
                 <div 
                   style={{
                     height: '46px',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                    background: '#040705',
+                    borderTop: '1px solid var(--border-subtle)',
+                    background: '#FFFFFF',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-around',
@@ -698,9 +707,10 @@ export const PhoneScalingAppSection: React.FC = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    background: '#FFFFFF',
                   }}
                 >
-                  <div style={{ width: '90px', height: '3px', background: 'rgba(255, 255, 255, 0.3)', borderRadius: '999px' }} />
+                  <div style={{ width: '90px', height: '3px', background: '#D1D5DB', borderRadius: '999px' }} />
                 </div>
               </div>
             </div>
@@ -709,39 +719,37 @@ export const PhoneScalingAppSection: React.FC = () => {
           {/* Right Feature Column */}
           <div className="hide-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div 
+              className="panel-chassis"
               style={{
-                background: 'rgba(11, 18, 14, 0.7)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '8px',
-                padding: '20px',
+                background: '#FFFFFF',
+                padding: '22px',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', color: 'var(--color-green)' }}>
                 <ShieldAlert size={18} />
-                <h4 style={{ margin: 0, fontSize: '14px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <h4 style={{ margin: 0, fontSize: '13px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 700 }}>
                   Autonomous Local Logic
                 </h4>
               </div>
-              <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                 Even if internet cuts out, Autogrow controllers continue executing irrigation and climate formulas locally without failure.
               </p>
             </div>
 
             <div 
+              className="panel-chassis"
               style={{
-                background: 'rgba(11, 18, 14, 0.7)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '8px',
-                padding: '20px',
+                background: '#FFFFFF',
+                padding: '22px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', color: 'var(--color-cyan)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', color: 'var(--color-blue)' }}>
                 <Layers size={18} />
-                <h4 style={{ margin: 0, fontSize: '14px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                <h4 style={{ margin: 0, fontSize: '13px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontWeight: 700 }}>
                   Multi-Site Farm Overview
                 </h4>
               </div>
-              <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: '12.5px', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                 Switch effortlessly between multiple commercial zones, sister facilities, and research chambers from a single account.
               </p>
             </div>

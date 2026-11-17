@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { products, DOWNLOADS_DATA, CROP_SOLUTIONS_DATA, DISTRIBUTORS_DATA } from '../data/mockProducts';
 import type { ProductItem, CropSolution, DownloadItem, DistributorLocation } from '../types';
-import { Search, X, Cpu, FileText, ArrowRight, Sprout, MapPin } from 'lucide-react';
+import { Search, X, Cpu, ArrowRight, Sprout, MapPin, FileText } from 'lucide-react';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -48,7 +48,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         position: 'fixed',
         inset: 0,
         zIndex: 3000,
-        background: 'rgba(4, 7, 5, 0.88)',
+        background: 'rgba(17, 25, 19, 0.65)',
         backdropFilter: 'blur(10px)',
         display: 'flex',
         alignItems: 'flex-start',
@@ -65,7 +65,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           width: '100%',
           maxWidth: '720px',
           overflow: 'hidden',
-          borderRadius: '4px',
+          borderRadius: '6px',
+          background: '#FFFFFF',
+          boxShadow: 'var(--shadow-lg)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -77,6 +79,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
+            background: '#FFFFFF',
           }}
         >
           <Search size={18} style={{ color: 'var(--color-green)' }} />
@@ -90,7 +93,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               flex: 1,
               background: 'transparent',
               border: 'none',
-              color: '#FFFFFF',
+              color: 'var(--text-primary)',
               fontSize: '15px',
               fontFamily: 'var(--font-mono)',
               outline: 'none',
@@ -105,14 +108,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
+              padding: '4px',
             }}
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
 
         {/* Results Body */}
-        <div style={{ maxHeight: '60vh', overflowY: 'auto', padding: '16px 20px' }}>
+        <div style={{ maxHeight: '60vh', overflowY: 'auto', padding: '16px 20px', background: 'var(--bg-page)' }}>
           {searchTerm.trim() === '' ? (
             <div style={{ padding: '24px 0', textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px' }}>
               <div style={{ marginBottom: '8px' }}>Type to search Autogrow hardware, crops, distributors, or CAD schematics...</div>
@@ -122,7 +126,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     key={tag}
                     onClick={() => setSearchTerm(tag)}
                     className="decal-badge"
-                    style={{ cursor: 'pointer', color: 'var(--color-green)' }}
+                    style={{ cursor: 'pointer', color: 'var(--color-green-dark)', background: '#FFFFFF', borderColor: 'var(--border-subtle)' }}
                   >
                     {tag}
                   </span>
@@ -135,7 +139,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               {/* Product Matches */}
               {filteredProducts.length > 0 && (
                 <div>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 700 }}>
                     Hardware Systems & Skids ({filteredProducts.length})
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -145,24 +149,25 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                         onClick={() => { onSelectProduct(p); onClose(); }}
                         style={{
                           padding: '10px 14px',
-                          borderRadius: '2px',
-                          background: 'var(--bg-void)',
+                          borderRadius: '4px',
+                          background: '#FFFFFF',
                           border: '1px solid var(--border-subtle)',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           transition: 'all 0.14s ease',
+                          boxShadow: 'var(--shadow-sm)',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-void)')}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = '#FFFFFF')}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <Cpu size={14} style={{ color: 'var(--color-green)' }} />
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-green)', fontWeight: 700 }}>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-green-dark)', fontWeight: 700 }}>
                             [{p.modelCode}]
                           </span>
-                          <span style={{ fontSize: '13px', color: '#FFFFFF', fontWeight: 600 }}>{p.name}</span>
+                          <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 600 }}>{p.name}</span>
                         </div>
                         <ArrowRight size={13} style={{ color: 'var(--text-muted)' }} />
                       </div>
@@ -174,7 +179,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               {/* Crop Matches */}
               {filteredCrops.length > 0 && (
                 <div>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 700 }}>
                     Crop Profiles & Steering ({filteredCrops.length})
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -184,23 +189,61 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                         onClick={() => { onNavigateToSection('crops'); onClose(); }}
                         style={{
                           padding: '10px 14px',
-                          borderRadius: '2px',
-                          background: 'var(--bg-void)',
+                          borderRadius: '4px',
+                          background: '#FFFFFF',
                           border: '1px solid var(--border-subtle)',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
+                          boxShadow: 'var(--shadow-sm)',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-void)')}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = '#FFFFFF')}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <Sprout size={14} style={{ color: 'var(--color-green)' }} />
-                          <span style={{ fontSize: '13px', color: '#FFFFFF', fontWeight: 600 }}>{c.name}</span>
-                          <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>({c.scientificGroup})</span>
+                          <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 600 }}>{c.name}</span>
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>({c.scientificGroup})</span>
                         </div>
-                        <span style={{ fontSize: '11px', color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>{c.targetVPD}</span>
+                        <ArrowRight size={13} style={{ color: 'var(--text-muted)' }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Downloads Matches */}
+              {filteredDownloads.length > 0 && (
+                <div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 700 }}>
+                    Technical Manuals & CAD ({filteredDownloads.length})
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {filteredDownloads.map((d: DownloadItem) => (
+                      <div 
+                        key={d.id}
+                        onClick={() => { onNavigateToSection('support'); onClose(); }}
+                        style={{
+                          padding: '10px 14px',
+                          borderRadius: '4px',
+                          background: '#FFFFFF',
+                          border: '1px solid var(--border-subtle)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          boxShadow: 'var(--shadow-sm)',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = '#FFFFFF')}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <FileText size={14} style={{ color: 'var(--color-blue)' }} />
+                          <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 600 }}>{d.title}</span>
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>({d.fileSize})</span>
+                        </div>
+                        <ArrowRight size={13} style={{ color: 'var(--text-muted)' }} />
                       </div>
                     ))}
                   </div>
@@ -210,79 +253,40 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               {/* Distributor Matches */}
               {filteredDistributors.length > 0 && (
                 <div>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px' }}>
-                    Where to Buy (Distributors) ({filteredDistributors.length})
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px', fontWeight: 700 }}>
+                    Distributors & Support ({filteredDistributors.length})
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {filteredDistributors.map((d: DistributorLocation) => (
+                    {filteredDistributors.map((dist: DistributorLocation) => (
                       <div 
-                        key={d.id}
+                        key={dist.id}
                         onClick={() => { onNavigateToSection('distributors'); onClose(); }}
                         style={{
                           padding: '10px 14px',
-                          borderRadius: '2px',
-                          background: 'var(--bg-void)',
+                          borderRadius: '4px',
+                          background: '#FFFFFF',
                           border: '1px solid var(--border-subtle)',
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
+                          boxShadow: 'var(--shadow-sm)',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-void)')}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-subtle)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = '#FFFFFF')}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <MapPin size={14} style={{ color: 'var(--color-green)' }} />
-                          <span style={{ fontSize: '13px', color: '#FFFFFF', fontWeight: 600 }}>{d.partnerName}</span>
-                          <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>({d.country})</span>
+                          <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 600 }}>{dist.partnerName}</span>
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>({dist.country})</span>
                         </div>
-                        <span style={{ fontSize: '11px', color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>{d.supportPhone}</span>
+                        <ArrowRight size={13} style={{ color: 'var(--text-muted)' }} />
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Documentation Matches */}
-              {filteredDownloads.length > 0 && (
-                <div>
-                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px' }}>
-                    Technical Documentation & CAD ({filteredDownloads.length})
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {filteredDownloads.map((d: DownloadItem) => (
-                      <div 
-                        key={d.id}
-                        onClick={() => { onNavigateToSection('support'); onClose(); }}
-                        style={{
-                          padding: '10px 14px',
-                          borderRadius: '2px',
-                          background: 'var(--bg-void)',
-                          border: '1px solid var(--border-subtle)',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--bg-void)')}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <FileText size={14} style={{ color: 'var(--color-cyan)' }} />
-                          <span style={{ fontSize: '13px', color: '#FFFFFF' }}>{d.title}</span>
-                        </div>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{d.fileSize}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {filteredProducts.length === 0 && filteredCrops.length === 0 && filteredDistributors.length === 0 && filteredDownloads.length === 0 && (
-                <div style={{ padding: '30px 0', textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px', fontFamily: 'var(--font-mono)' }}>
-                  No matches found for "{searchTerm}".
-                </div>
-              )}
             </div>
           )}
         </div>
