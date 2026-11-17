@@ -81,4 +81,31 @@ export interface DistributorLocation {
   territory: string;
   supportPhone: string;
   email: string;
+  website?: string;
+  address?: string;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  readTime: string;
+  category: string;
+  excerpt: string;
+  content: string[];
+  author: string;
+  image: string;
+}
+
+export interface StoreProduct {
+  id: string;
+  modelCode: string;
+  name: string;
+  category: 'probes' | 'parts' | 'sensors' | 'calibration';
+  price: number;
+  inStock: boolean;
+  image: string;
+  description: string;
+  specs: string;
 }

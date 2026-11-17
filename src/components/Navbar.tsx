@@ -8,15 +8,28 @@ import {
   Cpu,
   Droplet,
   Sun,
-  Layers
+  Layers,
+  ShoppingBag,
+  MessageSquare,
+  BookOpen,
+  Info
 } from 'lucide-react';
 
 interface NavbarProps {
   onSearchClick: () => void;
   onNavigateToSection: (sectionId: string) => void;
+  currentPage: 'home' | 'about' | 'blog' | 'store';
+  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store') => void;
+  onOpenSupportChat: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSection }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  onSearchClick, 
+  onNavigateToSection,
+  currentPage,
+  onNavigateToPage,
+  onOpenSupportChat
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
@@ -54,7 +67,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Brand Ecosystem Switcher */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <span style={{ fontWeight: 700, color: '#76b82a', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <span 
+              onClick={() => onNavigateToPage('home')}
+              style={{ fontWeight: 700, color: '#76b82a', display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}
+            >
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#76b82a' }} />
               Autogrow
             </span>
@@ -77,23 +93,51 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
           </div>
 
           {/* Right Utility Menu */}
-          <div className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <div className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <span 
-              onClick={() => onNavigateToSection('stories')}
-              style={{ cursor: 'pointer', color: '#D1D5DB', transition: 'color 0.15s' }}
+              onClick={() => onNavigateToPage('about')}
+              style={{ 
+                cursor: 'pointer', 
+                color: currentPage === 'about' ? '#76b82a' : '#D1D5DB', 
+                fontWeight: currentPage === 'about' ? 700 : 500,
+                transition: 'color 0.15s' 
+              }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#D1D5DB')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'about' ? '#76b82a' : '#D1D5DB')}
             >
-              About Us
+              About Us (1994)
             </span>
             <span 
-              onClick={() => onNavigateToSection('where-to-buy')}
-              style={{ cursor: 'pointer', color: '#D1D5DB', transition: 'color 0.15s' }}
+              onClick={() => onNavigateToPage('blog')}
+              style={{ 
+                cursor: 'pointer', 
+                color: currentPage === 'blog' ? '#76b82a' : '#D1D5DB', 
+                fontWeight: currentPage === 'blog' ? 700 : 500,
+                transition: 'color 0.15s' 
+              }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#D1D5DB')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'blog' ? '#76b82a' : '#D1D5DB')}
             >
-              Dealer Portal
+              Grower Blog
             </span>
+            <span 
+              onClick={onOpenSupportChat}
+              style={{ 
+                cursor: 'pointer', 
+                color: '#86EFAC', 
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                fontWeight: 600,
+                transition: 'color 0.15s' 
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#86EFAC')}
+            >
+              <MessageSquare size={13} />
+              Technical Support Desk
+            </span>
+            <span style={{ color: '#9CA3AF', fontSize: '11px' }}>|</span>
             <span style={{ color: '#76b82a', fontWeight: 600 }}>
               Global Support: +1 (800) 852-3088
             </span>
@@ -102,12 +146,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
       </div>
 
       {/* Primary Header Middle */}
-      <div style={{ padding: '14px 0' }}>
+      <div style={{ padding: '12px 0' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
           
           {/* TrolMaster-Style Brand Logo */}
           <div 
-            onClick={() => onNavigateToSection('hero')}
+            onClick={() => onNavigateToPage('home')}
             style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
           >
             <div 
@@ -138,7 +182,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
           </div>
 
           {/* Desktop Navigation Links & Mega Menus */}
-          <nav className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '26px' }}>
+          <nav className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
             
             {/* Nav Item: Controller Systems */}
             <div 
@@ -153,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                   border: 'none',
                   color: activeMegaMenu === 'controllers' ? '#76b82a' : '#1F2937',
                   fontWeight: 600,
-                  fontSize: '14.5px',
+                  fontSize: '14px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
@@ -266,7 +310,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 border: 'none',
                 color: '#1F2937',
                 fontWeight: 600,
-                fontSize: '14.5px',
+                fontSize: '14px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -277,7 +321,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
               Solutions
             </button>
 
-            {/* Nav Item: Specialized Suite */}
+            {/* Nav Item: Hardware Lineup */}
             <button 
               onClick={() => onNavigateToSection('suite')}
               style={{
@@ -285,7 +329,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 border: 'none',
                 color: '#1F2937',
                 fontWeight: 600,
-                fontSize: '14.5px',
+                fontSize: '14px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -304,7 +348,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 border: 'none',
                 color: '#1F2937',
                 fontWeight: 600,
-                fontSize: '14.5px',
+                fontSize: '14px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -315,23 +359,68 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
               IntelliGrow™ App
             </button>
 
-            {/* Nav Item: Support & Downloads */}
+            {/* Nav Item: Online Store (Direct Autogrow Commercial Spares) */}
             <button 
-              onClick={() => onNavigateToSection('where-to-buy')}
+              onClick={() => onNavigateToPage('store')}
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#1F2937',
-                fontWeight: 600,
-                fontSize: '14.5px',
+                color: currentPage === 'store' ? '#15803D' : '#1F2937',
+                fontWeight: currentPage === 'store' ? 700 : 600,
+                fontSize: '14px',
+                cursor: 'pointer',
+                padding: '8px 0',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                transition: 'color 0.15s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'store' ? '#15803D' : '#1F2937')}
+            >
+              <ShoppingBag size={15} style={{ color: '#76b82a' }} />
+              Online Store
+              <span style={{ backgroundColor: '#DCFCE7', color: '#15803D', fontSize: '10px', fontWeight: 700, padding: '1px 6px', borderRadius: '4px' }}>
+                DIRECT
+              </span>
+            </button>
+
+            {/* Nav Item: Grower Blog */}
+            <button 
+              onClick={() => onNavigateToPage('blog')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: currentPage === 'blog' ? '#76b82a' : '#1F2937',
+                fontWeight: currentPage === 'blog' ? 700 : 600,
+                fontSize: '14px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#1F2937')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'blog' ? '#76b82a' : '#1F2937')}
             >
-              Support & CAD
+              Grower Blog
+            </button>
+
+            {/* Nav Item: About Us */}
+            <button 
+              onClick={() => onNavigateToPage('about')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: currentPage === 'about' ? '#76b82a' : '#1F2937',
+                fontWeight: currentPage === 'about' ? 700 : 600,
+                fontSize: '14px',
+                cursor: 'pointer',
+                padding: '8px 0',
+                transition: 'color 0.15s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'about' ? '#76b82a' : '#1F2937')}
+            >
+              About Us
             </button>
 
             {/* Nav Item: Where to Buy */}
@@ -342,7 +431,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 border: 'none',
                 color: '#1F2937',
                 fontWeight: 600,
-                fontSize: '14.5px',
+                fontSize: '14px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -354,8 +443,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
             </button>
           </nav>
 
-          {/* Right Header Controls */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Right Header Controls: Search + DUAL ACTION BUTTONS (Store + Where to Buy) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             {/* Search Button */}
             <button
               onClick={onSearchClick}
@@ -376,14 +465,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#E5E7EB')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F3F4F6')}
             >
-              <Search size={18} />
+              <Search size={17} />
             </button>
 
-            {/* Primary Action Button (TrolMaster Style Pill) */}
+            {/* DUAL BUTTON 1: Shop Online Store (Requested by user) */}
+            <button
+              onClick={() => onNavigateToPage('store')}
+              className="btn btn-secondary d-none-mobile"
+              style={{ padding: '9px 18px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <ShoppingBag size={14} style={{ color: '#76b82a' }} />
+              Parts Store
+            </button>
+
+            {/* DUAL BUTTON 2: Where to Buy (Dealers & Commercial Integration) */}
             <button
               onClick={() => onNavigateToSection('where-to-buy')}
               className="btn btn-primary d-none-mobile"
-              style={{ padding: '10px 22px', fontSize: '13.5px' }}
+              style={{ padding: '9px 20px', fontSize: '13px' }}
             >
               Where to Buy
               <ArrowRight size={14} />
@@ -424,6 +523,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
           }}
         >
           <div 
+            onClick={() => { onNavigateToPage('home'); setMobileMenuOpen(false); }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
+          >
+            Home Overview
+          </div>
+          <div 
             onClick={() => { onNavigateToSection('suite'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
@@ -436,28 +541,38 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
             Protected Cropping Solutions
           </div>
           <div 
-            onClick={() => { onNavigateToSection('suite'); setMobileMenuOpen(false); }}
-            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
-          >
-            Hardware & Dosing Skids
-          </div>
-          <div 
             onClick={() => { onNavigateToSection('app'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
             IntelliGrow™ Mobile App
           </div>
           <div 
-            onClick={() => { onNavigateToSection('stories'); setMobileMenuOpen(false); }}
-            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
+            onClick={() => { onNavigateToPage('store'); setMobileMenuOpen(false); }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#15803D', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
           >
-            Commercial Grower Stories
+            <ShoppingBag size={16} />
+            Direct Online Store (Probes & Spares)
           </div>
           <div 
-            onClick={() => { onNavigateToSection('where-to-buy'); setMobileMenuOpen(false); }}
-            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
+            onClick={() => { onNavigateToPage('blog'); setMobileMenuOpen(false); }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
           >
-            Technical Downloads & CAD
+            <BookOpen size={16} />
+            Grower Blog & Technical Guides
+          </div>
+          <div 
+            onClick={() => { onNavigateToPage('about'); setMobileMenuOpen(false); }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <Info size={16} />
+            About Us (1994 Heritage)
+          </div>
+          <div 
+            onClick={() => { onOpenSupportChat(); setMobileMenuOpen(false); }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#0284C7', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <MessageSquare size={16} />
+            Technical Support Desk (Live Chat)
           </div>
           <div 
             onClick={() => { onNavigateToSection('where-to-buy'); setMobileMenuOpen(false); }}

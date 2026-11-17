@@ -8,13 +8,24 @@ import {
   Cpu, 
   Wrench, 
   Box,
-  ArrowRight
+  ArrowRight,
+  ShoppingBag,
+  MapPin,
+  MessageSquare
 } from 'lucide-react';
 import { DOWNLOADS_DATA, DISTRIBUTORS_DATA } from '../data/mockProducts';
 import type { DownloadItem, DistributorLocation } from '../types';
 
-export const WhereToBuySupport: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'distributors' | 'downloads' | 'roi'>('distributors');
+interface WhereToBuySupportProps {
+  onNavigateToStore?: () => void;
+  onOpenSupportChat?: () => void;
+}
+
+export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({ 
+  onNavigateToStore, 
+  onOpenSupportChat 
+}) => {
+  const [activeTab, setActiveTab] = useState<'distributors' | 'downloads' | 'roi' | 'helpdesk'>('distributors');
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
   const [downloadToast, setDownloadToast] = useState<string | null>(null);
 
@@ -46,14 +57,88 @@ export const WhereToBuySupport: React.FC = () => {
     >
       <div className="container">
         
-        {/* Header & Section Switcher */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '40px' }}>
+        {/* Header */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '32px' }}>
           <p style={{ fontSize: '13px', fontWeight: 700, color: '#76b82a', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>
-            Support & Worldwide Presence
+            Direct Store & Global Support Network
           </p>
-          <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 800, color: '#111827', margin: '0 0 20px 0' }}>
+          <h2 style={{ fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 800, color: '#111827', margin: '0 0 16px 0' }}>
             Where to Buy & Technical Support
           </h2>
+          <p style={{ fontSize: '16px', color: '#6B7280', maxWidth: '680px', margin: '0 0 28px 0', lineHeight: 1.6 }}>
+            Order replacement probes directly from our online parts store, connect with a local certified greenhouse integrator in your region, or chat with technical support.
+          </p>
+
+          {/* DUAL BUTTONS + SUPPORT CHAT (As explicitly requested by user) */}
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
+            {/* Button 1: Shop Online Store */}
+            <button
+              onClick={onNavigateToStore}
+              className="btn btn-secondary"
+              style={{ 
+                padding: '14px 28px', 
+                fontSize: '14.5px', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '10px',
+                backgroundColor: '#F9FAFB',
+                borderColor: '#111827',
+                color: '#111827',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.06)'
+              }}
+            >
+              <ShoppingBag size={18} style={{ color: '#76b82a' }} />
+              Shop Online Store (Probes & Spares)
+            </button>
+
+            {/* Button 2: Find Local Distributor */}
+            <button
+              onClick={() => setActiveTab('distributors')}
+              className="btn btn-primary"
+              style={{ 
+                padding: '14px 28px', 
+                fontSize: '14.5px', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '10px',
+                boxShadow: '0 4px 16px rgba(118,184,42,0.25)'
+              }}
+            >
+              <MapPin size={18} />
+              Find Local Certified Distributor
+            </button>
+
+            {/* Button 3: Interactive Technical Support Chatbox */}
+            <button
+              onClick={onOpenSupportChat}
+              style={{
+                padding: '14px 26px',
+                fontSize: '14.5px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                borderRadius: '9999px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                backgroundColor: '#1E2421',
+                color: '#FFFFFF',
+                border: '1px solid #374151',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                transition: 'background-color 0.15s, transform 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#000000';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#1E2421';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <MessageSquare size={18} style={{ color: '#76b82a' }} />
+              Open Technical Support Chatbox
+            </button>
+          </div>
           
           {/* Top Pill Nav Tabs */}
           <div 
@@ -63,12 +148,14 @@ export const WhereToBuySupport: React.FC = () => {
               padding: '4px',
               borderRadius: '9999px',
               gap: '4px',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}
           >
             <button
               onClick={() => setActiveTab('distributors')}
               style={{
-                padding: '10px 24px',
+                padding: '10px 22px',
                 borderRadius: '9999px',
                 fontSize: '13.5px',
                 fontWeight: 600,
@@ -86,7 +173,7 @@ export const WhereToBuySupport: React.FC = () => {
             <button
               onClick={() => setActiveTab('downloads')}
               style={{
-                padding: '10px 24px',
+                padding: '10px 22px',
                 borderRadius: '9999px',
                 fontSize: '13.5px',
                 fontWeight: 600,
@@ -102,9 +189,27 @@ export const WhereToBuySupport: React.FC = () => {
             </button>
 
             <button
+              onClick={() => setActiveTab('helpdesk')}
+              style={{
+                padding: '10px 22px',
+                borderRadius: '9999px',
+                fontSize: '13.5px',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                backgroundColor: activeTab === 'helpdesk' ? '#FFFFFF' : 'transparent',
+                color: activeTab === 'helpdesk' ? '#111827' : '#6B7280',
+                boxShadow: activeTab === 'helpdesk' ? '0 2px 6px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              Support Hotlines & Pinouts
+            </button>
+
+            <button
               onClick={() => setActiveTab('roi')}
               style={{
-                padding: '10px 24px',
+                padding: '10px 22px',
                 borderRadius: '9999px',
                 fontSize: '13.5px',
                 fontWeight: 600,
@@ -265,7 +370,63 @@ export const WhereToBuySupport: React.FC = () => {
           </div>
         )}
 
-        {/* Tab 3: Commercial ROI Calculator */}
+        {/* Tab 3: Technical Support Hotlines & Chat Information */}
+        {activeTab === 'helpdesk' && (
+          <div style={{ maxWidth: '980px', margin: '0 auto' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+              
+              <div style={{ padding: '28px', borderRadius: '16px', backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                  <Phone size={22} style={{ color: '#76b82a' }} />
+                  <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111827', margin: 0 }}>Global Telephone Hotlines</h3>
+                </div>
+                <p style={{ fontSize: '13.5px', color: '#4B5563', lineHeight: 1.6, margin: '0 0 16px 0' }}>
+                  Reach our engineering team during business hours (NZST & EST):
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', fontWeight: 600 }}>
+                  <div style={{ color: '#111827' }}>🇳🇿 New Zealand: <span style={{ color: '#15803D' }}>+64 9 415 2380</span></div>
+                  <div style={{ color: '#111827' }}>🇺🇸 Americas Toll-Free: <span style={{ color: '#15803D' }}>+1 (800) 852-3088</span></div>
+                  <div style={{ color: '#111827' }}>🇲🇾 SE Asia Desk: <span style={{ color: '#15803D' }}>+60 3-8023 2388</span></div>
+                </div>
+              </div>
+
+              <div style={{ padding: '28px', borderRadius: '16px', backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                  <Mail size={22} style={{ color: '#0284C7' }} />
+                  <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111827', margin: 0 }}>Email Helpdesk</h3>
+                </div>
+                <p style={{ fontSize: '13.5px', color: '#4B5563', lineHeight: 1.6, margin: '0 0 16px 0' }}>
+                  Submit wiring schematics, photos of crop symptoms, or log files:
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+                  <div><strong>General Support:</strong> <a href="mailto:help@autogrow.com" style={{ color: '#0284C7' }}>help@autogrow.com</a></div>
+                  <div><strong>Commercial Skids:</strong> <a href="mailto:engineering@autogrow.com" style={{ color: '#0284C7' }}>engineering@autogrow.com</a></div>
+                  <div><strong>Operating Hours:</strong> Mon–Fri 11am–5pm NZST</div>
+                </div>
+              </div>
+
+              <div style={{ padding: '28px', borderRadius: '16px', backgroundColor: '#1E2421', color: '#FFFFFF', border: '1px solid #374151' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                  <MessageSquare size={22} style={{ color: '#76b82a' }} />
+                  <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>Grower Support Chatbox</h3>
+                </div>
+                <p style={{ fontSize: '13.5px', color: '#D1D5DB', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                  Instant interactive diagnostics for sensor calibration, 24VAC valve lockout, RS-485 bus wiring, and replacement parts.
+                </p>
+                <button
+                  onClick={onOpenSupportChat}
+                  className="btn btn-primary"
+                  style={{ width: '100%', padding: '12px', fontSize: '13.5px' }}
+                >
+                  Launch Interactive Support Chat
+                </button>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* Tab 4: Commercial ROI Calculator */}
         {activeTab === 'roi' && (
           <div style={{ maxWidth: '980px', margin: '0 auto', backgroundColor: '#FFFFFF', borderRadius: '16px', border: '1px solid #E5E7EB', padding: '36px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '36px', alignItems: 'center' }}>
