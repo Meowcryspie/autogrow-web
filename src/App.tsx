@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
-import { CropSolutionsSection } from './components/CropSolutionsSection';
-import { ProductsSection } from './components/ProductsSection';
-import { PhoneScalingAppSection } from './components/PhoneScalingAppSection';
-import { EcosystemSection } from './components/EcosystemSection';
-import { RoiCalculatorSection } from './components/RoiCalculatorSection';
-import { CommercialSolutionsSection } from './components/CommercialSolutionsSection';
-import { DistributorNetworkSection } from './components/DistributorNetworkSection';
-import { TechnicalDownloadsSection } from './components/TechnicalDownloadsSection';
+import { HeroSlider } from './components/HeroSlider';
+import { IntroColumns } from './components/IntroColumns';
+import { CategoryShowcase } from './components/CategoryShowcase';
+import { SpecializedSuite } from './components/SpecializedSuite';
+import { GrowerSuccessStories } from './components/GrowerSuccessStories';
+import { AppDownloadSection } from './components/AppDownloadSection';
+import { WhereToBuySupport } from './components/WhereToBuySupport';
 import { Footer } from './components/Footer';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { SearchModal } from './components/SearchModal';
-import { products } from './data/mockProducts';
 import type { ProductItem } from './types';
 import './index.css';
 
@@ -28,7 +25,7 @@ export const App: React.FC = () => {
 
     const element = document.getElementById(sectionId);
     if (element) {
-      const navOffset = 85;
+      const navOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - navOffset;
 
@@ -43,67 +40,58 @@ export const App: React.FC = () => {
     setSelectedProduct(product);
   };
 
-  const handleSelectProductById = (productId: string) => {
-    const found = products.find((p: ProductItem) => p.id === productId || p.modelCode === productId);
-    if (found) {
-      setSelectedProduct(found);
-    }
-  };
-
   return (
-    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-void)' }}>
-      {/* Navbar with hotline, dropdowns, and search */}
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#FFFFFF' }}>
+      
+      {/* 1. TrolMaster Top Bar & Sticky Header with Mega-Menu */}
       <Navbar 
         onSearchClick={() => setIsSearchOpen(true)}
         onNavigateToSection={handleNavigateToSection}
       />
 
-      {/* Main Content Sections */}
+      {/* Main Content Sections - Exact TrolMaster Layout */}
       <main style={{ flex: 1 }}>
-        {/* Tactical Asymmetrical Split Hero with Live MultiGrow Console */}
-        <HeroSection onNavigateToSection={handleNavigateToSection} />
+        
+        {/* 2. TrolMaster Banner Slider (Swiper Hero Banner) */}
+        <HeroSlider onNavigateToSection={handleNavigateToSection} />
 
-        {/* Plant-Centric Crop Steering Section (Tomatoes, Berries, NFT Greens, Indoor CEA) */}
-        <CropSolutionsSection onSelectProductById={handleSelectProductById} />
+        {/* 3. TrolMaster Centered Intro Columns */}
+        <IntroColumns />
 
-        {/* Controllers, Dosing Skids & Sensors Catalog */}
-        <ProductsSection onSelectProduct={handleSelectProduct} />
+        {/* 4. TrolMaster Full-Bleed Background Image Sections (tekst-met-achtergrond) */}
+        <CategoryShowcase onNavigateToSection={handleNavigateToSection} />
 
-        {/* 1:1 Responsive Phone Scaling Studio (IntelliGrow™ Mobile App) */}
-        <PhoneScalingAppSection />
+        {/* 5. TrolMaster Specialized Suite (post-slider) */}
+        <SpecializedSuite onSelectProduct={handleSelectProduct} />
 
-        {/* Hub-and-Spoke Architecture & Bus Signaling */}
-        <EcosystemSection />
+        {/* 6. TrolMaster Grower Success Stories (Case Studies) */}
+        <GrowerSuccessStories />
 
-        {/* Economic Model: Automated Fertigation & Water Savings Calculator */}
-        <RoiCalculatorSection onNavigateToSection={handleNavigateToSection} />
+        {/* 7. TrolMaster "Grow in your POCKET!" App Section + 1:1 Responsive Phone Scaler */}
+        <AppDownloadSection />
 
-        {/* Turnkey Commercial Greenhouse & CEA Facility Solutions */}
-        <CommercialSolutionsSection onNavigateToSection={handleNavigateToSection} />
+        {/* 8. TrolMaster Where to Buy, Technical Support & Economic Calculator */}
+        <WhereToBuySupport />
 
-        {/* Where to Buy: Global Certified Distributor Directory */}
-        <DistributorNetworkSection />
-
-        {/* Technical Downloads, Firmware Binaries & CAD Schematics */}
-        <TechnicalDownloadsSection />
       </main>
 
-      {/* Industrial Footer with Factory Support & Compliance Decals */}
+      {/* 9. TrolMaster 4-Tier Footer */}
       <Footer onNavigateToSection={handleNavigateToSection} />
 
-      {/* Product Specification & Terminal Pinout Modal */}
+      {/* Product Detail & Wiring Pinouts Modal */}
       <ProductDetailModal 
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
       />
 
-      {/* Quick Search Modal across Hardware, Crops, Distributors & CAD */}
+      {/* Quick Search Modal */}
       <SearchModal 
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
         onSelectProduct={handleSelectProduct}
         onNavigateToSection={handleNavigateToSection}
       />
+
     </div>
   );
 };
