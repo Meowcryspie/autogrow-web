@@ -172,16 +172,47 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = ({ onNa
                 </div>
               </div>
 
-              {/* 5-Year Cumulative */}
+              {/* 5-Year Cumulative & SVG Payback Curve */}
               <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '16px', borderRadius: '3px', border: '1px solid var(--border-subtle)', marginBottom: '24px' }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
-                  5-Year Cumulative Commercial Payback
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                    5-Year Cumulative Amortization Trajectory
+                  </div>
+                  <span className="decal-badge" style={{ color: 'var(--color-green)' }}>
+                    4.8 MO BREAKEVEN
+                  </span>
                 </div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
+                
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)', marginBottom: '10px' }}>
                   ${fiveYearRoi.toLocaleString()} USD
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  Typical hardware and installation payback period is achieved in <strong style={{ color: 'var(--color-green)' }}>4.8 months</strong>.
+
+                {/* SVG Payback Trajectory Curve */}
+                <div style={{ width: '100%', height: '56px', marginBottom: '8px' }}>
+                  <svg width="100%" height="100%" viewBox="0 0 300 60" preserveAspectRatio="none">
+                    <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,0.1)" />
+                    <line x1="40" y1="0" x2="40" y2="60" stroke="#00C8FF" strokeWidth="1.5" strokeDasharray="2 2" />
+                    
+                    {/* Payback slope curve */}
+                    <path 
+                      d="M 0 52 L 40 45 L 100 34 L 170 22 L 240 12 L 300 4" 
+                      fill="none" 
+                      stroke="#00E575" 
+                      strokeWidth="2.4" 
+                    />
+                    <circle cx="40" cy="45" r="3.5" fill="#00C8FF" />
+                  </svg>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                    <span>INSTALL</span>
+                    <span style={{ color: 'var(--color-cyan)' }}>M 4.8 (ROI)</span>
+                    <span>YR 1</span>
+                    <span>YR 3</span>
+                    <span>YR 5 (${(fiveYearRoi / 1000).toFixed(0)}k)</span>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                  Hardware & installation payback is typically amortized in <strong style={{ color: 'var(--color-green)' }}>4.8 months</strong>.
                 </div>
               </div>
             </div>

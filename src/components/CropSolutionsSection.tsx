@@ -209,52 +209,111 @@ export const CropSolutionsSection: React.FC<CropSolutionsSectionProps> = ({ onSe
             </div>
           </div>
 
-          {/* Right: Technical Crop Visual with Crosshair Framing */}
+          {/* Right: Technical Crop Visual with Interactive 24-Hr Dryback Curve */}
           <div 
             style={{
               position: 'relative',
-              minHeight: '360px',
+              minHeight: '420px',
               borderLeft: '1px solid var(--border-subtle)',
-              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              background: 'var(--bg-void)',
             }}
           >
-            <img 
-              src={selectedCrop.image} 
-              alt={selectedCrop.name}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                filter: 'brightness(0.75) contrast(1.15)',
-              }}
-            />
-            <div 
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(180deg, rgba(7, 11, 8, 0.1) 0%, rgba(7, 11, 8, 0.85) 100%)',
-              }}
-            />
-
-            {/* Tactical Decal Stamp in Corner */}
-            <div 
-              style={{
-                position: 'absolute',
-                bottom: '20px',
-                right: '20px',
-                background: 'rgba(7, 11, 8, 0.92)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: '3px',
-                padding: '10px 14px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-              }}
-            >
-              <div style={{ color: 'var(--text-muted)', fontSize: '9px', textTransform: 'uppercase' }}>
-                VALIDATED HORTICULTURAL PROTOCOL
+            {/* Top Crop Photo Banner */}
+            <div style={{ position: 'relative', height: '210px', overflow: 'hidden', borderBottom: '1px solid var(--border-subtle)' }}>
+              <img 
+                src={selectedCrop.image} 
+                alt={selectedCrop.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'brightness(0.7) contrast(1.2)',
+                }}
+              />
+              <div 
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, rgba(7, 11, 8, 0.1) 0%, rgba(7, 11, 8, 0.9) 100%)',
+                }}
+              />
+              <div 
+                style={{
+                  position: 'absolute',
+                  bottom: '12px',
+                  left: '16px',
+                  display: 'flex',
+                  gap: '6px',
+                }}
+              >
+                <span className="decal-badge" style={{ color: 'var(--color-green)' }}>
+                  RECIPE VALIDATED
+                </span>
+                <span className="decal-badge" style={{ color: '#FFFFFF' }}>
+                  {selectedCrop.targetDryback}
+                </span>
               </div>
-              <div style={{ color: 'var(--color-green)', fontWeight: 700 }}>
-                NZ CEA VERIFIED RECIPE #408
+            </div>
+
+            {/* Bottom 24-Hour Transpiration & Dryback SVG Instrument Chart */}
+            <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                    24-Hour Generative Crop Steering Curve (VWC% & Dryback)
+                  </span>
+                  <span style={{ fontSize: '10px', color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>
+                    FARMROAD™ TELEMETRY
+                  </span>
+                </div>
+
+                {/* SVG Curve */}
+                <div style={{ width: '100%', height: '90px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-subtle)', borderRadius: '2px', padding: '6px' }}>
+                  <svg width="100%" height="100%" viewBox="0 0 300 80" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="curveFill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#00E575" stopOpacity="0.25" />
+                        <stop offset="100%" stopColor="#00E575" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    {/* Grid lines */}
+                    <line x1="0" y1="20" x2="300" y2="20" stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
+                    <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
+                    
+                    {/* Irrigation pulse bars */}
+                    <line x1="75" y1="80" x2="75" y2="25" stroke="#00C8FF" strokeWidth="2" strokeDasharray="2 2" />
+                    <line x1="95" y1="80" x2="95" y2="20" stroke="#00C8FF" strokeWidth="2" strokeDasharray="2 2" />
+                    <line x1="115" y1="80" x2="115" y2="20" stroke="#00C8FF" strokeWidth="2" strokeDasharray="2 2" />
+                    <line x1="135" y1="80" x2="135" y2="22" stroke="#00C8FF" strokeWidth="2" strokeDasharray="2 2" />
+
+                    {/* VWC Curve Path */}
+                    <path 
+                      d="M 0 52 Q 40 54 75 25 L 95 20 L 115 20 L 135 22 Q 180 32 230 45 Q 270 52 300 56" 
+                      fill="none" 
+                      stroke="#00E575" 
+                      strokeWidth="2.2" 
+                    />
+                    <path 
+                      d="M 0 52 Q 40 54 75 25 L 95 20 L 115 20 L 135 22 Q 180 32 230 45 Q 270 52 300 56 L 300 80 L 0 80 Z" 
+                      fill="url(#curveFill)" 
+                    />
+                  </svg>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
+                  <span>00:00 (NIGHT)</span>
+                  <span>06:00 (PULSE START)</span>
+                  <span>12:00 (MAX TRANSPIRATION)</span>
+                  <span>18:00 (DRYBACK)</span>
+                  <span>24:00</span>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-subtle)', paddingTop: '10px', fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Calculated Dryback Rate:</span>
+                <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>{selectedCrop.targetDryback.split(' ')[0]} / CYCLE</span>
               </div>
             </div>
           </div>

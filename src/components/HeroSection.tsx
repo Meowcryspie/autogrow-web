@@ -7,10 +7,11 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection }) => {
   const [activeZone, setActiveZone] = useState<'zone1' | 'zone2' | 'zone3'>('zone1');
+  const [consoleMode, setConsoleMode] = useState<'telemetry' | 'wiring'>('telemetry');
 
   const zoneData = {
     zone1: {
-      name: 'ZONE 01 · VENLO BAY A',
+      name: 'BAY 01 · VENLO GLASSHOUSE',
       crop: 'High-Wire Vine Tomatoes',
       ec: '2.42 mS/cm',
       ph: '5.82 pH',
@@ -18,14 +19,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
       temp: '24.2°C',
       co2: '1,150 ppm',
       relays: [
-        { name: 'RIDGE VENT 1', state: '45% OPEN' },
-        { name: 'SHADE SCREEN', state: 'DEPLOYED' },
-        { name: 'BOILER VALVE', state: 'CLOSED' },
-        { name: 'FERTI-X SKID', state: 'INJECTING' },
+        { name: 'RIDGE VENT 1', state: '45% OPEN', active: true },
+        { name: 'THERMAL SCREEN', state: 'DEPLOYED', active: true },
+        { name: 'HYDRONIC BOILER', state: 'CLOSED', active: false },
+        { name: 'FERTI-X SKID', state: 'PULSING', active: true },
       ],
     },
     zone2: {
-      name: 'ZONE 02 · POLY BAY B',
+      name: 'BAY 02 · COMMERCIAL POLY',
       crop: 'Tabletop Strawberries',
       ec: '1.58 mS/cm',
       ph: '5.95 pH',
@@ -33,25 +34,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
       temp: '20.8°C',
       co2: '850 ppm',
       relays: [
-        { name: 'GABLE FAN 1', state: 'RUNNING' },
-        { name: 'MISTING LINE', state: 'PULSING' },
-        { name: 'ACID PUMP 1', state: 'IDLE' },
-        { name: 'DRAIN VALVE', state: 'MONITORING' },
+        { name: 'GABLE EXHAUST', state: 'RUNNING', active: true },
+        { name: 'MISTING LINE', state: 'PULSING', active: true },
+        { name: 'ACID INJECTION', state: 'STANDBY', active: false },
+        { name: 'DRAIN SENSOR', state: 'MONITORING', active: true },
       ],
     },
     zone3: {
-      name: 'ZONE 03 · INDOOR CEA',
-      crop: 'Leafy Greens Multi-Tier',
+      name: 'BAY 03 · VERTICAL CEA',
+      crop: 'Multi-Tier Leafy Greens',
       ec: '1.35 mS/cm',
       ph: '5.85 pH',
       vpd: '1.05 kPa',
       temp: '22.0°C',
       co2: '1,200 ppm',
       relays: [
-        { name: 'CHILLED HVAC', state: 'COOLING' },
-        { name: 'DEHUMIDIFIER', state: 'ACTIVE' },
-        { name: 'CO2 SOLENOID', state: 'INJECTING' },
-        { name: 'LED LIGHT RACK', state: '100% 16H' },
+        { name: 'CHILLED HVAC', state: 'MODULATING', active: true },
+        { name: 'DEHUMIDIFIER', state: 'DRAINING', active: true },
+        { name: 'CO2 SOLENOID', state: 'ACTIVE', active: true },
+        { name: 'LED LIGHT RACK', state: '100% 16H', active: true },
       ],
     },
   };
@@ -74,7 +75,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
     >
       <div className="container" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
         
-        {/* Asymmetric Split Layout: Left Narrative / Right Live Machine Console */}
+        {/* Asymmetrical Split Console Layout */}
         <div 
           style={{
             display: 'grid',
@@ -83,7 +84,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
             alignItems: 'center',
           }}
         >
-          {/* Left Column: Industrial Authority & Pedigree */}
+          {/* Left Column: Command Typography & Engineering Authority */}
           <div>
             {/* Decal Badge */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
@@ -161,7 +162,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
               </button>
             </div>
 
-            {/* Technical Ticker Strip (No Cards, Pure Hairline Data) */}
+            {/* Technical Ticker Strip (Hairline Data Grid) */}
             <div 
               style={{
                 display: 'grid',
@@ -176,7 +177,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                   32<span style={{ color: 'var(--color-green)' }}>Z</span>
                 </div>
                 <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  Zones Per Controller
+                  Zones / Master
                 </div>
               </div>
 
@@ -185,7 +186,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                   100<span style={{ color: 'var(--color-cyan)' }}>m³/h</span>
                 </div>
                 <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  FertiX Inline Flow
+                  FertiX Flow Rate
                 </div>
               </div>
 
@@ -194,7 +195,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                   ±0.03
                 </div>
                 <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  EC Repeatability
+                  EC Precision
                 </div>
               </div>
 
@@ -203,7 +204,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                   IP66
                 </div>
                 <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  Harsh CEA Die-Cast
+                  NEMA 4X Die-Cast
                 </div>
               </div>
             </div>
@@ -225,13 +226,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
                   MULTIGROW PRO // CONSOLE v1.4.2
                 </span>
               </div>
-              <span className="decal-badge" style={{ color: 'var(--color-green)' }}>
-                ONLINE · LOCAL LOGIC
-              </span>
+              
+              {/* Mode Toggle: Telemetry vs Wiring Schematics */}
+              <div style={{ display: 'flex', gap: '4px' }}>
+                <button
+                  onClick={() => setConsoleMode('telemetry')}
+                  style={{
+                    padding: '3px 8px',
+                    borderRadius: '2px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '10px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: consoleMode === 'telemetry' ? 'var(--color-green)' : 'rgba(255,255,255,0.05)',
+                    color: consoleMode === 'telemetry' ? '#070B08' : 'var(--text-muted)',
+                    fontWeight: 700,
+                  }}
+                >
+                  TELEMETRY
+                </button>
+                <button
+                  onClick={() => setConsoleMode('wiring')}
+                  style={{
+                    padding: '3px 8px',
+                    borderRadius: '2px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '10px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    background: consoleMode === 'wiring' ? 'var(--color-green)' : 'rgba(255,255,255,0.05)',
+                    color: consoleMode === 'wiring' ? '#070B08' : 'var(--text-muted)',
+                    fontWeight: 700,
+                  }}
+                >
+                  CAD PINOUT
+                </button>
+              </div>
             </div>
 
             {/* Zone Selector Buttons */}
-            <div style={{ display: 'flex', gap: '6px', marginBottom: '18px' }}>
+            <div style={{ display: 'flex', gap: '6px', marginBottom: '16px' }}>
               {[
                 { id: 'zone1', label: 'Bay 01 Vine' },
                 { id: 'zone2', label: 'Bay 02 Berries' },
@@ -260,92 +294,128 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection })
               ))}
             </div>
 
-            {/* Active Zone Label */}
-            <div style={{ marginBottom: '16px' }}>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                Active Compartment
-              </div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>
-                {current.name} · <span style={{ color: 'var(--color-cyan)', fontSize: '13px' }}>{current.crop}</span>
-              </div>
-            </div>
+            {consoleMode === 'telemetry' ? (
+              <>
+                {/* Active Zone Header */}
+                <div style={{ marginBottom: '14px' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                    Active Compartment
+                  </div>
+                  <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>
+                    {current.name} · <span style={{ color: 'var(--color-cyan)', fontSize: '12px' }}>{current.crop}</span>
+                  </div>
+                </div>
 
-            {/* 4-Quadrant High-Density Telemetry Readouts */}
-            <div 
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '8px',
-                marginBottom: '18px',
-              }}
-            >
-              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  Solution EC
-                </div>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
-                  {current.ec}
-                </div>
-              </div>
-
-              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  Solution pH
-                </div>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>
-                  {current.ph}
-                </div>
-              </div>
-
-              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  Canopy VPD
-                </div>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
-                  {current.vpd}
-                </div>
-              </div>
-
-              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
-                  Canopy Temp / CO2
-                </div>
-                <div style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
-                  {current.temp} · {current.co2}
-                </div>
-              </div>
-            </div>
-
-            {/* Relay Channels State */}
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '8px' }}>
-              Relay Channel Status (Solid-State Outputs)
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '16px' }}>
-              {current.relays.map((r, i) => (
+                {/* 4-Quadrant High-Density Telemetry Readouts */}
                 <div 
-                  key={i}
                   style={{
-                    background: 'var(--bg-void)',
-                    border: '1px solid var(--border-subtle)',
-                    padding: '8px 10px',
-                    borderRadius: '2px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    fontSize: '11px',
-                    fontFamily: 'var(--font-mono)',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gap: '8px',
+                    marginBottom: '16px',
                   }}
                 >
-                  <span style={{ color: 'var(--text-secondary)' }}>{r.name}</span>
-                  <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>{r.state}</span>
+                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                      Solution EC
+                    </div>
+                    <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
+                      {current.ec}
+                    </div>
+                  </div>
+
+                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                      Solution pH
+                    </div>
+                    <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>
+                      {current.ph}
+                    </div>
+                  </div>
+
+                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                      Canopy VPD
+                    </div>
+                    <div style={{ fontSize: '20px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                      {current.vpd}
+                    </div>
+                  </div>
+
+                  <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                      Canopy Temp / CO2
+                    </div>
+                    <div style={{ fontSize: '15px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                      {current.temp} · {current.co2}
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
+
+                {/* Relay Channels State */}
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '8px' }}>
+                  Solid-State Output Relays
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '16px' }}>
+                  {current.relays.map((r, i) => (
+                    <div 
+                      key={i}
+                      style={{
+                        background: 'var(--bg-void)',
+                        border: '1px solid var(--border-subtle)',
+                        padding: '8px 10px',
+                        borderRadius: '2px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        fontSize: '11px',
+                        fontFamily: 'var(--font-mono)',
+                      }}
+                    >
+                      <span style={{ color: 'var(--text-secondary)' }}>{r.name}</span>
+                      <span style={{ color: r.active ? 'var(--color-green)' : 'var(--text-muted)', fontWeight: 700 }}>
+                        {r.state}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              /* CAD Pinout Schematic View */
+              <div style={{ padding: '4px 0 16px' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '10px' }}>
+                  MultiGrow Pro Hardware Terminal Strip (DIN-Rail Enclosure)
+                </div>
+
+                <div style={{ background: 'var(--bg-void)', border: '1px solid var(--border-subtle)', borderRadius: '3px', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '6px' }}>
+                    <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>TB1 (1-4)</span>
+                    <span style={{ color: '#FFFFFF' }}>RS-485 Modbus RTU</span>
+                    <span style={{ color: 'var(--text-muted)' }}>115.2 kbps Dual Channel</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '6px' }}>
+                    <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>TB2 (1-8)</span>
+                    <span style={{ color: '#FFFFFF' }}>16-Bit Analog Inputs</span>
+                    <span style={{ color: 'var(--text-muted)' }}>0-10V / 4-20mA Clamped</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '6px' }}>
+                    <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>TB3 (1-16)</span>
+                    <span style={{ color: '#FFFFFF' }}>24VAC Solid State Bank</span>
+                    <span style={{ color: 'var(--text-muted)' }}>2.0A continuous snubber</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 1fr', fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ color: 'var(--color-cyan)', fontWeight: 700 }}>CAN-BUS</span>
+                    <span style={{ color: '#FFFFFF' }}>EnviroSensor RJ12 Bus</span>
+                    <span style={{ color: 'var(--text-muted)' }}>150m Daisy-chain reach</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Console Footer */}
             <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
               <span>WATCHDOG: HW TIMER OK</span>
-              <span>GALVANIC ISOLATION: 2.5kV</span>
+              <span style={{ color: 'var(--color-green)' }}>GALVANIC ISOLATION: 2.5kV</span>
             </div>
           </div>
         </div>

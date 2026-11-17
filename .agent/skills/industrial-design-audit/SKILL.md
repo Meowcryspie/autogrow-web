@@ -41,3 +41,4 @@ Rewrite all placeholder text:
 1. Run `npm.cmd run build` to verify zero TypeScript errors or broken imports.
 2. Verify that mechanical button states depress on click (`transform: translateY(1px)`).
 3. Confirm that all numbers render with monospaced tabular figures.
+
