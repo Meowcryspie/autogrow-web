@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { ProductItem } from '../types';
-import { X, CheckCircle2, Send, Check } from 'lucide-react';
+import { X, CheckCircle2, Send, Check, Terminal } from 'lucide-react';
 
 interface ProductDetailModalProps {
   product: ProductItem | null;
@@ -13,7 +13,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
     name: '',
     email: '',
     facilityType: 'Commercial Greenhouse',
-    targetCrops: 'Vine Crops / Berries',
+    targetCrops: 'High-Wire Vine Crops',
   });
 
   if (!product) return null;
@@ -33,7 +33,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
         position: 'fixed',
         inset: 0,
         zIndex: 2000,
-        background: 'rgba(0, 0, 0, 0.82)',
+        background: 'rgba(4, 7, 5, 0.88)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
@@ -43,16 +43,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
       onClick={onClose}
     >
       <div 
+        className="panel-chassis"
         style={{
-          background: '#090f0c',
-          border: '1px solid rgba(0, 255, 136, 0.3)',
-          borderRadius: '12px',
           width: '100%',
-          maxWidth: '820px',
-          maxHeight: '90vh',
+          maxWidth: '860px',
+          maxHeight: '92vh',
           overflowY: 'auto',
           position: 'relative',
-          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 255, 136, 0.15)',
+          borderRadius: '4px',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -61,34 +59,34 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
           onClick={onClose}
           style={{
             position: 'absolute',
-            top: '18px',
-            right: '18px',
-            background: 'rgba(255, 255, 255, 0.08)',
-            border: 'none',
-            color: '#fff',
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
+            top: '16px',
+            right: '16px',
+            background: 'rgba(255, 255, 255, 0.06)',
+            border: '1px solid var(--border-subtle)',
+            color: '#FFFFFF',
+            width: '32px',
+            height: '32px',
+            borderRadius: '2px',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 10,
-            transition: 'background 0.2s ease',
+            transition: 'background 0.14s ease',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)')}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)')}
         >
-          <X size={18} />
+          <X size={16} />
         </button>
 
         {/* Modal Header Frame */}
         <div 
           style={{
             position: 'relative',
-            height: '220px',
+            height: '200px',
             overflow: 'hidden',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: '1px solid var(--border-subtle)',
           }}
         >
           <img 
@@ -98,14 +96,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              filter: 'brightness(0.75)',
+              filter: 'brightness(0.65) contrast(1.15)',
             }}
           />
           <div 
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(180deg, rgba(9, 15, 12, 0.3) 0%, rgba(9, 15, 12, 0.95) 100%)',
+              background: 'linear-gradient(180deg, rgba(7, 11, 8, 0.2) 0%, rgba(7, 11, 8, 0.95) 100%)',
             }}
           />
           <div 
@@ -113,42 +111,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
               position: 'absolute',
               bottom: '20px',
               left: '28px',
+              right: '28px',
             }}
           >
             <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-              <span 
-                style={{
-                  padding: '4px 10px',
-                  background: 'rgba(0, 255, 136, 0.15)',
-                  border: '1px solid var(--color-green)',
-                  color: 'var(--color-green)',
-                  fontSize: '11px',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 700,
-                  borderRadius: '4px',
-                }}
-              >
-                {product.modelCode}
+              <span className="decal-badge" style={{ color: 'var(--color-green)', borderColor: 'rgba(0, 229, 117, 0.4)' }}>
+                MODEL [{product.modelCode}]
               </span>
               {product.badge && (
-                <span 
-                  style={{
-                    padding: '4px 10px',
-                    background: 'rgba(0, 229, 255, 0.15)',
-                    border: '1px solid var(--color-cyan)',
-                    color: '#fff',
-                    fontSize: '10px',
-                    fontFamily: 'var(--font-mono)',
-                    fontWeight: 600,
-                    borderRadius: '4px',
-                    textTransform: 'uppercase',
-                  }}
-                >
+                <span className="decal-badge" style={{ color: '#FFFFFF', borderColor: 'var(--border-medium)' }}>
                   {product.badge}
                 </span>
               )}
             </div>
-            <h2 style={{ fontSize: '26px', fontWeight: 800, color: '#fff', margin: 0, fontFamily: 'var(--font-display)' }}>
+            <h2 className="font-display" style={{ fontSize: '26px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
               {product.name}
             </h2>
           </div>
@@ -157,7 +133,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
         {/* Modal Body */}
         <div style={{ padding: '28px' }}>
           
-          <div style={{ fontSize: '13px', color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)', marginBottom: '12px', textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '12px', color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)', marginBottom: '12px', textTransform: 'uppercase' }}>
             {product.tagline}
           </div>
 
@@ -166,58 +142,95 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
           </p>
 
           {/* Technical Specifications Matrix */}
-          <h4 style={{ fontSize: '14px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', color: 'var(--color-green)', marginBottom: '12px' }}>
-            Technical Specifications & Operating Limits
-          </h4>
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '10px' }}>
+            Operating Tolerances & Technical Specifications
+          </div>
 
           <div 
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
               gap: '10px',
-              background: 'rgba(0, 0, 0, 0.4)',
+              background: 'var(--bg-void)',
               padding: '16px',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              borderRadius: '3px',
+              border: '1px solid var(--border-subtle)',
               marginBottom: '24px',
             }}
           >
             {product.specs.map((spec, idx) => (
               <div key={idx}>
-                <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                   {spec.label}
                 </div>
-                <div style={{ fontSize: '13px', color: '#fff', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                <div style={{ fontSize: '13px', color: '#FFFFFF', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                   {spec.value}
                 </div>
               </div>
             ))}
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                Hardware Bus
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                Hardware Bus Link
               </div>
-              <div style={{ fontSize: '13px', color: '#fff', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+              <div style={{ fontSize: '13px', color: '#FFFFFF', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                 {product.connectivity}
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                Power Supply
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                Power Specification
               </div>
-              <div style={{ fontSize: '13px', color: '#fff', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+              <div style={{ fontSize: '13px', color: '#FFFFFF', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                 {product.power}
               </div>
             </div>
           </div>
 
-          {/* Key Architectural Features */}
-          <h4 style={{ fontSize: '14px', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', color: '#fff', marginBottom: '12px' }}>
+          {/* Terminal Block & Pinout Schematics (If Present) */}
+          {product.terminalPinout && product.terminalPinout.length > 0 && (
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: 'var(--color-green)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '10px' }}>
+                <Terminal size={14} />
+                Terminal Block & Wiring Pinout Breakdown
+              </div>
+              <div 
+                style={{
+                  background: 'var(--bg-void)',
+                  border: '1px solid var(--border-subtle)',
+                  borderRadius: '3px',
+                  overflow: 'hidden',
+                }}
+              >
+                {product.terminalPinout.map((pin, pIdx) => (
+                  <div 
+                    key={pIdx}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '120px 1fr 1fr',
+                      gap: '12px',
+                      padding: '10px 14px',
+                      borderBottom: pIdx < (product.terminalPinout?.length || 0) - 1 ? '1px solid rgba(255, 255, 255, 0.05)' : 'none',
+                      fontSize: '12px',
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
+                    <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>{pin.terminal}</span>
+                    <span style={{ color: '#FFFFFF' }}>{pin.signal}</span>
+                    <span style={{ color: 'var(--text-muted)' }}>{pin.spec}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Key Features */}
+          <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '10px' }}>
             Engineering Capabilities
-          </h4>
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', marginBottom: '28px' }}>
             {product.keyFeatures.map((feat, idx) => (
               <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                <Check size={16} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
+                <Check size={14} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
                 <span>{feat}</span>
               </div>
             ))}
@@ -226,27 +239,28 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
           {/* Quotation / Distributor Inquiry Form */}
           <div 
             style={{
-              background: 'rgba(16, 25, 20, 0.7)',
-              border: '1px solid rgba(0, 255, 136, 0.25)',
-              borderRadius: '8px',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-subtle)',
+              borderTop: '1px solid var(--border-chamfer)',
+              borderRadius: '3px',
               padding: '20px',
             }}
           >
-            <h4 style={{ fontSize: '15px', color: '#fff', margin: '0 0 10px 0', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
-              Request Commercial Quote / Distributor Wiring Spec
+            <h4 style={{ fontSize: '14px', color: '#FFFFFF', margin: '0 0 10px 0', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+              Request Direct Technical Wiring & Commercial Pricing
             </h4>
             
             {inquirySent ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--color-green)', padding: '16px 0' }}>
-                <CheckCircle2 size={20} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px' }}>
-                  Thank you! An Autogrow technical specialist will send the complete CAD wiring schematic to your email within 1 business hour.
+                <CheckCircle2 size={18} />
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '13px' }}>
+                  Inquiry logged. An Autogrow technical field specialist will send the complete CAD schematics to your email within 1 business hour.
                 </span>
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '4px' }}>
+                  <label style={{ display: 'block', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '4px', fontFamily: 'var(--font-mono)' }}>
                     Grower / Lead Engineer Name
                   </label>
                   <input 
@@ -258,10 +272,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                     style={{
                       width: '100%',
                       padding: '8px 12px',
-                      background: 'rgba(0, 0, 0, 0.5)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: '6px',
-                      color: '#fff',
+                      background: 'var(--bg-void)',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: '3px',
+                      color: '#FFFFFF',
                       fontSize: '13px',
                       outline: 'none',
                     }}
@@ -269,22 +283,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '4px' }}>
+                  <label style={{ display: 'block', fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '4px', fontFamily: 'var(--font-mono)' }}>
                     Business Email
                   </label>
                   <input 
                     type="email"
                     required
-                    placeholder="grower@cea-farm.com"
+                    placeholder="engineer@cea-facility.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     style={{
                       width: '100%',
                       padding: '8px 12px',
-                      background: 'rgba(0, 0, 0, 0.5)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: '6px',
-                      color: '#fff',
+                      background: 'var(--bg-void)',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: '3px',
+                      color: '#FFFFFF',
                       fontSize: '13px',
                       outline: 'none',
                     }}
@@ -294,27 +308,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                 <div style={{ gridColumn: 'span 2' }}>
                   <button
                     type="submit"
-                    className="btn-glow"
-                    style={{
-                      width: '100%',
-                      padding: '12px',
-                      background: 'var(--color-green)',
-                      color: '#060a08',
-                      border: 'none',
-                      borderRadius: '6px',
-                      fontWeight: 700,
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '13px',
-                      textTransform: 'uppercase',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                    }}
+                    className="btn-machine-primary"
+                    style={{ width: '100%' }}
                   >
-                    <Send size={15} />
-                    Request Technical Specification Package
+                    <Send size={14} />
+                    Dispatch Technical Schematics Package
                   </button>
                 </div>
               </form>

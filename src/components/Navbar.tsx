@@ -4,13 +4,9 @@ import {
   X, 
   ChevronDown, 
   Search, 
-  Globe, 
-  ShieldCheck, 
   ArrowUpRight,
   Cpu,
-  Layers,
   Smartphone,
-  BookOpen,
   MapPin
 } from 'lucide-react';
 
@@ -40,33 +36,36 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
 
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
-      {/* Top Utility Announcement Bar (TrolMaster Style) */}
+      {/* Top Utility Announcement Bar (TrolMaster Industrial Style) */}
       <div
         style={{
           background: '#040705',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-          fontSize: '12px',
+          borderBottom: '1px solid var(--border-subtle)',
+          fontSize: '11px',
+          fontFamily: 'var(--font-mono)',
           color: 'var(--text-secondary)',
           padding: '6px 0',
-          transition: 'all 0.2s ease',
         }}
       >
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span className="beacon-pulse" />
-              <strong style={{ color: 'var(--color-green)' }}>Global Support:</strong> +1 (800) 852-3088 · 24/7 CEA Emergency Response
+              <strong style={{ color: 'var(--color-green)' }}>Global Hotline:</strong> +1 (800) 852-3088 · Auckland Global HQ +64 (9) 415-2380
             </span>
-            <span style={{ display: 'none', color: 'var(--text-muted)' }}>|</span>
+            <span style={{ color: 'var(--border-subtle)' }} className="hide-mobile">|</span>
             <span style={{ color: 'var(--text-muted)' }} className="hide-mobile">
-              Auckland, NZ · California, USA · Melbourne, AU
+              New Zealand Engineering · Deployed Across 45+ Countries
             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
-              <Globe size={13} color="var(--color-green)" />
-              <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Global / EN</span>
+            <div 
+              onClick={() => handleNavClick('distributors')}
+              style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer', color: 'var(--text-secondary)' }}
+            >
+              <MapPin size={12} color="var(--color-green)" />
+              <span style={{ color: '#FFFFFF', fontWeight: 600 }}>Where to Buy</span>
             </div>
             <a
               href="https://meowcryspie.github.io/farmgrow/"
@@ -81,8 +80,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                 gap: '4px',
               }}
             >
-              <span>IntelliGrow™ Web Portal</span>
-              <ArrowUpRight size={13} />
+              <span>IntelliGrow™ Cloud</span>
+              <ArrowUpRight size={12} />
             </a>
           </div>
         </div>
@@ -91,12 +90,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
       {/* Main Tactical Navbar */}
       <div
         style={{
-          background: isScrolled ? 'rgba(7, 11, 9, 0.88)' : 'rgba(7, 11, 9, 0.72)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: isScrolled ? 'rgba(7, 11, 8, 0.94)' : 'rgba(7, 11, 8, 0.82)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
           borderBottom: '1px solid var(--border-subtle)',
-          boxShadow: isScrolled ? '0 10px 30px rgba(0, 0, 0, 0.8)' : 'none',
-          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          transition: 'all 0.14s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
         <div
@@ -105,28 +103,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            height: '74px',
+            height: '70px',
           }}
         >
-          {/* Brand Logo (TrolMaster Style Typography) */}
+          {/* Brand Logo (TrolMaster Industrial Monogram) */}
           <div
             onClick={() => handleNavClick('hero')}
-            style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
           >
             <div
               style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '10px',
-                background: 'linear-gradient(135deg, rgba(0, 229, 117, 0.2), rgba(0, 229, 117, 0.05))',
-                border: '1px solid var(--border-glow)',
+                width: '36px',
+                height: '36px',
+                borderRadius: '3px',
+                background: 'var(--bg-surface-elevated)',
+                border: '1px solid var(--border-medium)',
+                borderTop: '1px solid var(--border-chamfer)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 16px var(--color-green-glow)',
               }}
             >
-              <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+              <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
                 <path d="M16 3 L27 9 L27 23 L16 29 L5 23 L5 9 Z" stroke="#00E575" strokeWidth="2.2" strokeLinejoin="round" />
                 <path d="M16 8 C16 8 22 13 22 18 C22 21.5 19.3 24 16 24 C12.7 24 10 21.5 10 18 C10 13 16 8 16 8 Z" fill="#00E575" />
                 <line x1="16" y1="13" x2="16" y2="24" stroke="#070B09" strokeWidth="2" strokeLinecap="round" />
@@ -136,31 +134,31 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <span
-                  className="font-tech"
+                  className="font-display"
                   style={{
-                    fontSize: '24px',
-                    fontWeight: 700,
-                    letterSpacing: '1px',
+                    fontSize: '22px',
+                    fontWeight: 800,
+                    letterSpacing: '0.04em',
                     color: '#FFFFFF',
                     lineHeight: 1,
                   }}
                 >
-                  AUTOGROW
+                  AUTOGROW<span style={{ color: 'var(--color-green)' }}>.</span>
                 </span>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-green)', display: 'inline-block' }} />
+                <span className="decal-badge" style={{ fontSize: '9px', padding: '1px 5px' }}>CEA-PRO</span>
               </div>
               <span
                 style={{
-                  fontSize: '9.5px',
-                  letterSpacing: '1.8px',
-                  color: 'var(--text-secondary)',
+                  fontSize: '9px',
+                  fontFamily: 'var(--font-mono)',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-muted)',
                   textTransform: 'uppercase',
-                  fontWeight: 600,
                   display: 'block',
-                  marginTop: '2px',
+                  marginTop: '1px',
                 }}
               >
-                Intelligent CEA Automation
+                NZ Industrial Controllers
               </span>
             </div>
           </div>
@@ -170,11 +168,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '28px',
+              gap: '24px',
             }}
             className="hide-mobile"
           >
-            {/* Controllers Dropdown */}
+            {/* 1. Controllers Dropdown */}
             <div
               style={{ position: 'relative' }}
               onMouseEnter={() => setActiveDropdown('controllers')}
@@ -189,358 +187,315 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick, onNavigateToSecti
                   background: 'none',
                   border: 'none',
                   color: activeDropdown === 'controllers' ? 'var(--color-green)' : 'var(--text-primary)',
-                  fontSize: '14.5px',
+                  fontSize: '13.5px',
+                  fontFamily: 'var(--font-mono)',
                   fontWeight: 600,
                   cursor: 'pointer',
                   padding: '8px 0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
                 }}
               >
                 <span>Controllers</span>
-                <ChevronDown size={14} />
+                <ChevronDown size={13} />
               </button>
 
               {activeDropdown === 'controllers' && (
                 <div
+                  className="panel-chassis"
                   style={{
                     position: 'absolute',
                     top: '100%',
                     left: '-20px',
-                    width: '320px',
-                    background: '#0B120E',
-                    border: '1px solid var(--border-glow)',
-                    borderRadius: '16px',
+                    width: '340px',
                     padding: '12px',
-                    boxShadow: '0 20px 45px rgba(0,0,0,0.8), 0 0 20px rgba(0, 229, 117, 0.15)',
-                    backdropFilter: 'blur(24px)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '6px',
+                    gap: '4px',
                   }}
                 >
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '10px 12px', borderRadius: '10px', cursor: 'pointer', transition: 'background 0.15s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0, 229, 117, 0.1)')}
+                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '14px', color: '#FFF' }}>MultiGrow Pro (MGC-1)</strong>
-                      <span className="badge-tactical" style={{ fontSize: '10px' }}>Glasshouse</span>
+                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>MultiGrow Master [MGC-Pro]</strong>
+                      <span className="decal-badge" style={{ color: 'var(--color-green)' }}>32 ZONES</span>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Multi-compartment commercial greenhouse brain</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Multi-area commercial greenhouse & boiler brain</span>
                   </div>
 
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '10px 12px', borderRadius: '10px', cursor: 'pointer', transition: 'background 0.15s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0, 229, 117, 0.1)')}
+                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '14px', color: '#FFF' }}>IntelliClimate (ICC-2)</strong>
-                      <span className="badge-tactical" style={{ fontSize: '10px' }}>Indoor CEA</span>
+                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>SatuGrow FertiX Skid [SGF-100]</strong>
+                      <span className="decal-badge" style={{ color: 'var(--color-cyan)' }}>100m³/hr</span>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Dynamic VPD, CO2 & multi-stage climate controller</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Multi-zone inline precision fertigation on skid</span>
                   </div>
 
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '10px 12px', borderRadius: '10px', cursor: 'pointer', transition: 'background 0.15s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0, 229, 117, 0.1)')}
+                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '14px', color: '#FFF' }}>IntelliDose (IDC-4)</strong>
-                      <span className="badge-tactical" style={{ fontSize: '10px' }}>8-Part Doser</span>
+                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>SatuGrow Pro [SGP-1]</strong>
+                      <span className="decal-badge">ALL-IN-ONE</span>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Automated nutrient dosing and pH regulation</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Climate + batch tank fertigation for single bay</span>
                   </div>
 
                   <div
                     onClick={() => handleNavClick('products')}
-                    style={{ padding: '10px 12px', borderRadius: '10px', cursor: 'pointer', transition: 'background 0.15s ease' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0, 229, 117, 0.1)')}
+                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
                     onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <strong style={{ fontSize: '14px', color: '#FFF' }}>EC Mini Link (ECM-1)</strong>
-                      <span className="badge-tactical" style={{ fontSize: '10px' }}>Compact</span>
+                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>IntelliDose Pro [IDC-4]</strong>
+                      <span className="decal-badge">8-CHANNEL</span>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Set-and-forget EC doser with cloud telemetry</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>8-part automated nutrient & pH precision doser</span>
+                  </div>
+
+                  <div
+                    onClick={() => handleNavClick('products')}
+                    style={{ padding: '8px 10px', borderRadius: '2px', cursor: 'pointer', transition: 'background 0.14s ease' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <strong style={{ fontSize: '13px', color: '#FFF', fontFamily: 'var(--font-mono)' }}>IntelliClimate [ICC-2]</strong>
+                      <span className="decal-badge">VPD CEA</span>
+                    </div>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Dynamic canopy VPD, HVAC & CO2 controller</span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Ecosystem */}
+            {/* 2. Crop Steering */}
+            <button
+              onClick={() => handleNavClick('crops')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-primary)',
+                fontSize: '13.5px',
+                fontFamily: 'var(--font-mono)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                padding: '8px 0',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+              }}
+            >
+              Crops
+            </button>
+
+            {/* 3. Architecture Ecosystem */}
             <button
               onClick={() => handleNavClick('ecosystem')}
               style={{
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '14.5px',
+                fontSize: '13.5px',
+                fontFamily: 'var(--font-mono)',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'color 0.15s ease',
+                padding: '8px 0',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
               }}
             >
               Ecosystem
             </button>
 
-            {/* Phone Scaling & App Studio */}
+            {/* 4. Phone Scaling Studio */}
             <button
-              onClick={() => handleNavClick('phone-app')}
+              onClick={() => handleNavClick('phone-scaling')}
               style={{
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '14.5px',
+                fontSize: '13.5px',
+                fontFamily: 'var(--font-mono)',
                 fontWeight: 600,
                 cursor: 'pointer',
+                padding: '8px 0',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                transition: 'color 0.15s ease',
+                gap: '5px',
               }}
             >
-              <span>IntelliGrow™ App</span>
-              <span className="badge-tactical" style={{ fontSize: '10px', padding: '2px 6px' }}>Interactive</span>
+              <Smartphone size={14} style={{ color: 'var(--color-cyan)' }} />
+              <span>Mobile Studio</span>
             </button>
 
-            {/* Solutions */}
+            {/* 5. ROI Calculator */}
             <button
-              onClick={() => handleNavClick('solutions')}
+              onClick={() => handleNavClick('roi-calculator')}
               style={{
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '14.5px',
+                fontSize: '13.5px',
+                fontFamily: 'var(--font-mono)',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'color 0.15s ease',
+                padding: '8px 0',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
               }}
             >
-              Commercial CEA
+              ROI Calculator
             </button>
 
-            {/* Downloads */}
+            {/* 6. Support & CAD */}
             <button
-              onClick={() => handleNavClick('downloads')}
+              onClick={() => handleNavClick('support')}
               style={{
                 background: 'none',
                 border: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '14.5px',
+                fontSize: '13.5px',
+                fontFamily: 'var(--font-mono)',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'color 0.15s ease',
+                padding: '8px 0',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
               }}
             >
-              Support & Docs
+              Support & CAD
             </button>
           </nav>
 
-          {/* Right Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            {/* Search Trigger */}
+          {/* Right Action Group */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Quick Search Button */}
             <button
               onClick={onSearchClick}
-              aria-label="Search equipment"
+              title="Search hardware & specs"
               style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '10px',
-                background: 'rgba(255, 255, 255, 0.05)',
+                width: '36px',
+                height: '36px',
+                borderRadius: '3px',
+                background: 'rgba(255, 255, 255, 0.04)',
                 border: '1px solid var(--border-subtle)',
-                color: 'var(--text-primary)',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
+                transition: 'all 0.14s ease',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
             >
-              <Search size={17} />
+              <Search size={16} />
             </button>
 
-            {/* Launch Web Portal CTA */}
-            <a
-              href="https://meowcryspie.github.io/farmgrow/"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary"
-              style={{ height: '42px', padding: '0 18px', fontSize: '13.5px' }}
+            {/* Get Engineering Spec CTA */}
+            <button
+              onClick={() => handleNavClick('products')}
+              className="btn-machine-primary hide-mobile"
+              style={{ padding: '8px 18px', fontSize: '11px' }}
             >
-              <ShieldCheck size={16} />
-              <span>Launch Live App</span>
-            </a>
+              <Cpu size={14} />
+              Commercial Systems
+            </button>
 
-            {/* Mobile Hamburger Toggle */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
               style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '10px',
-                background: 'rgba(255, 255, 255, 0.05)',
+                width: '36px',
+                height: '36px',
+                borderRadius: '3px',
+                background: 'rgba(255, 255, 255, 0.04)',
                 border: '1px solid var(--border-subtle)',
-                color: 'var(--text-primary)',
-                display: 'flex',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+                display: 'none',
                 alignItems: 'center',
                 justifyContent: 'center',
-                cursor: 'pointer',
               }}
               className="show-mobile"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div
           style={{
-            position: 'fixed',
-            inset: '110px 0 0 0',
-            background: 'rgba(5, 9, 7, 0.98)',
-            backdropFilter: 'blur(20px)',
-            zIndex: 999,
+            background: 'var(--bg-void)',
+            borderBottom: '1px solid var(--border-subtle)',
+            padding: '20px 24px',
             display: 'flex',
             flexDirection: 'column',
-            padding: '24px',
-            gap: '16px',
-            overflowY: 'auto',
+            gap: '12px',
           }}
         >
           <button
             onClick={() => handleNavClick('products')}
-            style={{
-              padding: '14px 16px',
-              borderRadius: '12px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border-subtle)',
-              color: '#FFF',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '16px',
-              fontWeight: 600,
-            }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Cpu size={18} color="var(--color-green)" />
-              All Controllers & Dosing
-            </span>
-            <ChevronDown size={16} />
+            01 // CONTROLLERS & SKIDS
           </button>
-
+          <button
+            onClick={() => handleNavClick('crops')}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+          >
+            02 // CROPS & AGRONOMY
+          </button>
           <button
             onClick={() => handleNavClick('ecosystem')}
-            style={{
-              padding: '14px 16px',
-              borderRadius: '12px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border-subtle)',
-              color: '#FFF',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              fontSize: '16px',
-              fontWeight: 600,
-            }}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
           >
-            <Layers size={18} color="var(--color-green)" />
-            Autogrow Ecosystem Architecture
+            03 // ARCHITECTURE ECOSYSTEM
           </button>
-
           <button
-            onClick={() => handleNavClick('phone-app')}
-            style={{
-              padding: '14px 16px',
-              borderRadius: '12px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border-glow)',
-              color: 'var(--color-green)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '16px',
-              fontWeight: 700,
-            }}
+            onClick={() => handleNavClick('phone-scaling')}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Smartphone size={18} />
-              IntelliGrow™ Mobile App Simulator
-            </span>
-            <span className="badge-tactical">Interactive</span>
+            04 // INTELLIGROW™ MOBILE STUDIO
           </button>
-
           <button
-            onClick={() => handleNavClick('solutions')}
-            style={{
-              padding: '14px 16px',
-              borderRadius: '12px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border-subtle)',
-              color: '#FFF',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              fontSize: '16px',
-              fontWeight: 600,
-            }}
+            onClick={() => handleNavClick('roi-calculator')}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
           >
-            <MapPin size={18} color="var(--color-green)" />
-            Commercial CEA Solutions
+            05 // ROI CALCULATOR
           </button>
-
           <button
-            onClick={() => handleNavClick('downloads')}
-            style={{
-              padding: '14px 16px',
-              borderRadius: '12px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border-subtle)',
-              color: '#FFF',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              fontSize: '16px',
-              fontWeight: 600,
-            }}
+            onClick={() => handleNavClick('distributors')}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
           >
-            <BookOpen size={18} color="var(--color-green)" />
-            Support, Manuals & Firmware
+            06 // WHERE TO BUY (DISTRIBUTORS)
           </button>
-
-          <div style={{ marginTop: 'auto', paddingTop: '20px' }}>
-            <a
-              href="https://meowcryspie.github.io/farmgrow/"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary"
-              style={{ width: '100%', height: '52px' }}
-            >
-              Launch Live Demonstration App
-            </a>
-          </div>
+          <button
+            onClick={() => handleNavClick('support')}
+            style={{ textAlign: 'left', background: 'none', border: 'none', color: '#FFF', fontSize: '15px', fontFamily: 'var(--font-mono)' }}
+          >
+            07 // TECHNICAL DOWNLOADS & CAD
+          </button>
         </div>
       )}
-
-      {/* Responsive media query styles */}
-      <style>{`
-        @media (max-width: 992px) {
-          .hide-mobile { display: none !important; }
-          .show-mobile { display: flex !important; }
-        }
-        @media (min-width: 993px) {
-          .show-mobile { display: none !important; }
-        }
-      `}</style>
     </header>
   );
 };

@@ -1,326 +1,355 @@
-import React from 'react';
-import { ArrowRight, ShieldCheck, Radio, Cpu, Layers } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, Cpu, Radio, Terminal } from 'lucide-react';
 
 interface HeroSectionProps {
   onNavigateToSection: (sectionId: string) => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigateToSection }) => {
+  const [activeZone, setActiveZone] = useState<'zone1' | 'zone2' | 'zone3'>('zone1');
+
+  const zoneData = {
+    zone1: {
+      name: 'ZONE 01 · VENLO BAY A',
+      crop: 'High-Wire Vine Tomatoes',
+      ec: '2.42 mS/cm',
+      ph: '5.82 pH',
+      vpd: '1.18 kPa',
+      temp: '24.2°C',
+      co2: '1,150 ppm',
+      relays: [
+        { name: 'RIDGE VENT 1', state: '45% OPEN' },
+        { name: 'SHADE SCREEN', state: 'DEPLOYED' },
+        { name: 'BOILER VALVE', state: 'CLOSED' },
+        { name: 'FERTI-X SKID', state: 'INJECTING' },
+      ],
+    },
+    zone2: {
+      name: 'ZONE 02 · POLY BAY B',
+      crop: 'Tabletop Strawberries',
+      ec: '1.58 mS/cm',
+      ph: '5.95 pH',
+      vpd: '0.95 kPa',
+      temp: '20.8°C',
+      co2: '850 ppm',
+      relays: [
+        { name: 'GABLE FAN 1', state: 'RUNNING' },
+        { name: 'MISTING LINE', state: 'PULSING' },
+        { name: 'ACID PUMP 1', state: 'IDLE' },
+        { name: 'DRAIN VALVE', state: 'MONITORING' },
+      ],
+    },
+    zone3: {
+      name: 'ZONE 03 · INDOOR CEA',
+      crop: 'Leafy Greens Multi-Tier',
+      ec: '1.35 mS/cm',
+      ph: '5.85 pH',
+      vpd: '1.05 kPa',
+      temp: '22.0°C',
+      co2: '1,200 ppm',
+      relays: [
+        { name: 'CHILLED HVAC', state: 'COOLING' },
+        { name: 'DEHUMIDIFIER', state: 'ACTIVE' },
+        { name: 'CO2 SOLENOID', state: 'INJECTING' },
+        { name: 'LED LIGHT RACK', state: '100% 16H' },
+      ],
+    },
+  };
+
+  const current = zoneData[activeZone];
+
   return (
     <section 
       id="hero"
       style={{
         position: 'relative',
-        minHeight: '92vh',
+        minHeight: '88vh',
         display: 'flex',
         alignItems: 'center',
-        overflow: 'hidden',
-        borderBottom: '1px solid var(--border-color)',
-        paddingTop: '60px',
-        paddingBottom: '80px',
+        borderBottom: '1px solid var(--border-subtle)',
+        paddingTop: '64px',
+        paddingBottom: '72px',
+        background: 'var(--bg-void)',
       }}
     >
-      {/* Background Hero Image with Tactical CEA Dark Overlay */}
-      <div 
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(180deg, rgba(6, 10, 8, 0.82) 0%, rgba(6, 10, 8, 0.94) 75%, rgba(6, 10, 8, 1) 100%),
-            linear-gradient(90deg, rgba(6, 10, 8, 0.95) 0%, rgba(6, 10, 8, 0.65) 50%, rgba(6, 10, 8, 0.95) 100%),
-            url('assets/images/hero-greenhouse.jpg')
-          `,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          zIndex: 0,
-        }}
-      />
-
-      {/* Cyber AgTech Grid Lines & Ambient Glow */}
-      <div 
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            radial-gradient(circle at 75% 25%, rgba(0, 255, 136, 0.12) 0%, transparent 55%),
-            radial-gradient(circle at 20% 70%, rgba(0, 229, 255, 0.07) 0%, transparent 45%)
-          `,
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Hero Content */}
       <div className="container" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
-        <div style={{ maxWidth: '860px' }}>
-          
-          {/* Top Tactical Status Badge */}
-          <div 
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '6px 14px',
-              borderRadius: '999px',
-              background: 'rgba(0, 255, 136, 0.08)',
-              border: '1px solid rgba(0, 255, 136, 0.3)',
-              marginBottom: '24px',
-              boxShadow: '0 0 20px rgba(0, 255, 136, 0.15)',
-            }}
-          >
-            <span className="beacon-pulse" />
-            <span 
-              style={{ 
-                fontFamily: 'var(--font-mono)', 
-                fontSize: '11px', 
-                color: 'var(--color-green)',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                fontWeight: 600,
+        
+        {/* Asymmetric Split Layout: Left Narrative / Right Live Machine Console */}
+        <div 
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+            gap: '48px',
+            alignItems: 'center',
+          }}
+        >
+          {/* Left Column: Industrial Authority & Pedigree */}
+          <div>
+            {/* Decal Badge */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+              <span className="beacon-pulse" />
+              <span className="decal-badge" style={{ color: 'var(--color-green)', borderColor: 'rgba(0, 229, 117, 0.4)' }}>
+                NZ CEA HERITAGE · 30+ YEARS · 45+ COUNTRIES
+              </span>
+            </div>
+
+            {/* Display Headline */}
+            <h1 
+              className="font-display"
+              style={{
+                fontSize: 'clamp(2.6rem, 5vw, 4.4rem)',
+                lineHeight: 1.02,
+                fontWeight: 800,
+                color: '#FFFFFF',
+                letterSpacing: '0.02em',
+                margin: '0 0 20px 0',
               }}
             >
-              Autogrow IntelliSeries™ · Industrial CEA Automation
-            </span>
-            <span 
-              style={{
-                fontSize: '10px',
-                padding: '2px 8px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '4px',
-                color: '#fff',
-                fontFamily: 'var(--font-mono)',
-              }}
-            >
-              v3.2 Live
-            </span>
-          </div>
+              COMMERCIAL GREENHOUSE <br />
+              <span style={{ color: 'var(--color-green)' }}>CLIMATE & FERTIGATION</span> <br />
+              AUTOMATION
+            </h1>
 
-          {/* Main Headline */}
-          <h1 
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2.5rem, 5.5vw, 4.4rem)',
-              lineHeight: 1.05,
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '0.02em',
-              marginBottom: '22px',
-              color: '#ffffff',
-            }}
-          >
-            PRECISION CLIMATE & <br />
-            <span 
+            {/* Factual Subhead */}
+            <p 
               style={{
-                background: 'linear-gradient(135deg, #00FF88 0%, #00E5FF 70%, #ffffff 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              FERTIGATION DOSING
-            </span>
-            <br />
-            AT COMMERCIAL SCALE
-          </h1>
-
-          {/* Subtitle / Value Proposition */}
-          <p 
-            style={{
-              fontSize: 'clamp(1rem, 1.25vw, 1.15rem)',
-              color: 'var(--text-secondary)',
-              lineHeight: 1.6,
-              maxWidth: '680px',
-              marginBottom: '36px',
-            }}
-          >
-            TrolMaster-grade tactical control meets Autogrow's 30+ years of New Zealand agricultural engineering. 
-            Automate microclimates, multi-reservoir nutrition, and crop-steering telemetry across commercial greenhouses and vertical farms worldwide.
-          </p>
-
-          {/* Action CTAs */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', marginBottom: '50px' }}>
-            <button
-              onClick={() => onNavigateToSection('products')}
-              className="btn-glow"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '14px 28px',
-                borderRadius: '6px',
-                background: 'var(--color-green)',
-                color: '#060a08',
-                fontWeight: 700,
-                fontSize: '14px',
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <Cpu size={18} />
-              Explore Hardware Systems
-              <ArrowRight size={18} />
-            </button>
-
-            <button
-              onClick={() => onNavigateToSection('phone-scaling')}
-              className="btn-ghost"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '14px 26px',
-                borderRadius: '6px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                fontWeight: 600,
-                fontSize: '14px',
-                letterSpacing: '0.03em',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <Radio size={18} style={{ color: 'var(--color-cyan)' }} />
-              Live Phone Scaling Demo
-            </button>
-
-            <button
-              onClick={() => onNavigateToSection('ecosystem')}
-              style={{
-                background: 'transparent',
-                border: 'none',
+                fontSize: 'clamp(1rem, 1.2vw, 1.12rem)',
                 color: 'var(--text-secondary)',
-                padding: '10px 14px',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
+                lineHeight: 1.65,
+                maxWidth: '620px',
+                marginBottom: '32px',
               }}
             >
-              <Layers size={16} />
-              View Ecosystem Architecture
-            </button>
+              TrolMaster-grade tactical reliability powered by Autogrow’s 30+ years of New Zealand agricultural engineering. 
+              Autonomous multi-bay climate coordination, high-volume inline fertigation (up to 100 m³/hr), and sub-500ms cloud crop steering.
+            </p>
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center', marginBottom: '40px' }}>
+              <button
+                onClick={() => onNavigateToSection('products')}
+                className="btn-machine-primary"
+              >
+                <Cpu size={16} />
+                Explore Controllers & Skids
+                <ArrowRight size={16} />
+              </button>
+
+              <button
+                onClick={() => onNavigateToSection('phone-scaling')}
+                className="btn-machine-secondary"
+              >
+                <Radio size={16} style={{ color: 'var(--color-cyan)' }} />
+                IntelliGrow™ Mobile Studio
+              </button>
+
+              <button
+                onClick={() => onNavigateToSection('roi-calculator')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--text-secondary)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: '10px 14px',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Economic Model
+              </button>
+            </div>
+
+            {/* Technical Ticker Strip (No Cards, Pure Hairline Data) */}
+            <div 
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '12px',
+                paddingTop: '20px',
+                borderTop: '1px solid var(--border-subtle)',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  32<span style={{ color: 'var(--color-green)' }}>Z</span>
+                </div>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  Zones Per Controller
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  100<span style={{ color: 'var(--color-cyan)' }}>m³/h</span>
+                </div>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  FertiX Inline Flow
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  ±0.03
+                </div>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  EC Repeatability
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  IP66
+                </div>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  Harsh CEA Die-Cast
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Tactical Specs Ticker Grid (TrolMaster style) */}
+          {/* Right Column: MultiGrow Virtual Machine Diagnostic Console */}
           <div 
+            className="panel-chassis"
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
-              gap: '16px',
-              paddingTop: '24px',
-              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              padding: '24px',
+              background: 'var(--bg-surface)',
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '24px', fontWeight: 700, color: '#ffffff' }}>
-                30<span style={{ color: 'var(--color-green)' }}>+</span> YRS
-              </span>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                CEA Engineering Heritage
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '24px', fontWeight: 700, color: '#ffffff' }}>
-                45<span style={{ color: 'var(--color-cyan)' }}>+</span> CTYS
-              </span>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Active Worldwide Deployments
+            {/* Top Console Bar */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Terminal size={14} style={{ color: 'var(--color-green)' }} />
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: '#FFFFFF', fontWeight: 700 }}>
+                  MULTIGROW PRO // CONSOLE v1.4.2
+                </span>
+              </div>
+              <span className="decal-badge" style={{ color: 'var(--color-green)' }}>
+                ONLINE · LOCAL LOGIC
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '24px', fontWeight: 700, color: '#ffffff' }}>
-                ±0.05 <span style={{ color: 'var(--color-green)', fontSize: '14px' }}>EC</span>
-              </span>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Continuous Dosing Precision
-              </span>
+            {/* Zone Selector Buttons */}
+            <div style={{ display: 'flex', gap: '6px', marginBottom: '18px' }}>
+              {[
+                { id: 'zone1', label: 'Bay 01 Vine' },
+                { id: 'zone2', label: 'Bay 02 Berries' },
+                { id: 'zone3', label: 'Bay 03 CEA' },
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveZone(tab.id as any)}
+                  style={{
+                    flex: 1,
+                    padding: '6px 8px',
+                    borderRadius: '2px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    border: activeZone === tab.id ? '1px solid var(--color-green)' : '1px solid var(--border-subtle)',
+                    background: activeZone === tab.id ? 'rgba(0, 229, 117, 0.12)' : 'var(--bg-void)',
+                    color: activeZone === tab.id ? 'var(--color-green)' : 'var(--text-muted)',
+                    transition: 'all 0.14s ease',
+                  }}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '24px', fontWeight: 700, color: '#ffffff' }}>
-                99.98<span style={{ color: 'var(--color-green)' }}>%</span>
-              </span>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Hardware Telemetry Uptime
-              </span>
+            {/* Active Zone Label */}
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                Active Compartment
+              </div>
+              <div style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>
+                {current.name} · <span style={{ color: 'var(--color-cyan)', fontSize: '13px' }}>{current.crop}</span>
+              </div>
+            </div>
+
+            {/* 4-Quadrant High-Density Telemetry Readouts */}
+            <div 
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px',
+                marginBottom: '18px',
+              }}
+            >
+              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  Solution EC
+                </div>
+                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
+                  {current.ec}
+                </div>
+              </div>
+
+              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  Solution pH
+                </div>
+                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-cyan)', fontFamily: 'var(--font-mono)' }}>
+                  {current.ph}
+                </div>
+              </div>
+
+              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  Canopy VPD
+                </div>
+                <div style={{ fontSize: '20px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  {current.vpd}
+                </div>
+              </div>
+
+              <div style={{ background: 'var(--bg-void)', padding: '12px', borderRadius: '3px', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>
+                  Canopy Temp / CO2
+                </div>
+                <div style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
+                  {current.temp} · {current.co2}
+                </div>
+              </div>
+            </div>
+
+            {/* Relay Channels State */}
+            <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '8px' }}>
+              Relay Channel Status (Solid-State Outputs)
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '16px' }}>
+              {current.relays.map((r, i) => (
+                <div 
+                  key={i}
+                  style={{
+                    background: 'var(--bg-void)',
+                    border: '1px solid var(--border-subtle)',
+                    padding: '8px 10px',
+                    borderRadius: '2px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: '11px',
+                    fontFamily: 'var(--font-mono)',
+                  }}
+                >
+                  <span style={{ color: 'var(--text-secondary)' }}>{r.name}</span>
+                  <span style={{ color: 'var(--color-green)', fontWeight: 700 }}>{r.state}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Console Footer */}
+            <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+              <span>WATCHDOG: HW TIMER OK</span>
+              <span>GALVANIC ISOLATION: 2.5kV</span>
             </div>
           </div>
-
         </div>
-      </div>
 
-      {/* Floating Tactical Telemetry Card in Hero Corner */}
-      <div 
-        className="hide-mobile"
-        style={{
-          position: 'absolute',
-          right: '5%',
-          bottom: '12%',
-          width: '320px',
-          background: 'rgba(11, 18, 14, 0.85)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(0, 255, 136, 0.25)',
-          borderRadius: '10px',
-          padding: '18px',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 255, 136, 0.1)',
-          zIndex: 3,
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="beacon-pulse" />
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-green)', fontWeight: 600 }}>
-              ZONE 01 · MULTIGROW PRO
-            </span>
-          </div>
-          <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>RS485 CH-04</span>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '14px' }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Target EC</div>
-            <div style={{ fontSize: '20px', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-mono)' }}>
-              2.24 <span style={{ fontSize: '11px', color: 'var(--color-green)' }}>mS/cm</span>
-            </div>
-          </div>
-
-          <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Target pH</div>
-            <div style={{ fontSize: '20px', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-mono)' }}>
-              5.82 <span style={{ fontSize: '11px', color: 'var(--color-cyan)' }}>pH</span>
-            </div>
-          </div>
-
-          <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>VPD Deficit</div>
-            <div style={{ fontSize: '20px', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-mono)' }}>
-              1.18 <span style={{ fontSize: '11px', color: 'var(--color-green)' }}>kPa</span>
-            </div>
-          </div>
-
-          <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>CO2 Level</div>
-            <div style={{ fontSize: '20px', fontWeight: 700, color: '#fff', fontFamily: 'var(--font-mono)' }}>
-              1,150 <span style={{ fontSize: '11px', color: '#ffcc00' }}>ppm</span>
-            </div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-secondary)', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '10px' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <ShieldCheck size={14} style={{ color: 'var(--color-green)' }} />
-            Fail-Safe Watchdog Active
-          </span>
-          <span style={{ color: 'var(--color-green)', fontFamily: 'var(--font-mono)', fontSize: '10px' }}>NORMAL</span>
-        </div>
       </div>
     </section>
   );

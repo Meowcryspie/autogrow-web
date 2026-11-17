@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
-import { EcosystemSection } from './components/EcosystemSection';
+import { CropSolutionsSection } from './components/CropSolutionsSection';
 import { ProductsSection } from './components/ProductsSection';
 import { PhoneScalingAppSection } from './components/PhoneScalingAppSection';
+import { EcosystemSection } from './components/EcosystemSection';
+import { RoiCalculatorSection } from './components/RoiCalculatorSection';
 import { CommercialSolutionsSection } from './components/CommercialSolutionsSection';
+import { DistributorNetworkSection } from './components/DistributorNetworkSection';
 import { TechnicalDownloadsSection } from './components/TechnicalDownloadsSection';
 import { Footer } from './components/Footer';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { SearchModal } from './components/SearchModal';
+import { products } from './data/mockProducts';
 import type { ProductItem } from './types';
 import './index.css';
 
@@ -24,7 +28,7 @@ export const App: React.FC = () => {
 
     const element = document.getElementById(sectionId);
     if (element) {
-      const navOffset = 90;
+      const navOffset = 85;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - navOffset;
 
@@ -39,8 +43,15 @@ export const App: React.FC = () => {
     setSelectedProduct(product);
   };
 
+  const handleSelectProductById = (productId: string) => {
+    const found = products.find((p: ProductItem) => p.id === productId || p.modelCode === productId);
+    if (found) {
+      setSelectedProduct(found);
+    }
+  };
+
   return (
-    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-void)' }}>
       {/* Navbar with hotline, dropdowns, and search */}
       <Navbar 
         onSearchClick={() => setIsSearchOpen(true)}
@@ -49,35 +60,44 @@ export const App: React.FC = () => {
 
       {/* Main Content Sections */}
       <main style={{ flex: 1 }}>
-        {/* Tactical Hero */}
+        {/* Tactical Asymmetrical Split Hero with Live MultiGrow Console */}
         <HeroSection onNavigateToSection={handleNavigateToSection} />
 
-        {/* Hub-and-Spoke Ecosystem Architecture (TrolMaster style) */}
-        <EcosystemSection />
+        {/* Plant-Centric Crop Steering Section (Tomatoes, Berries, NFT Greens, Indoor CEA) */}
+        <CropSolutionsSection onSelectProductById={handleSelectProductById} />
 
-        {/* Tactical Products Grid with Specs & Badges */}
+        {/* Controllers, Dosing Skids & Sensors Catalog */}
         <ProductsSection onSelectProduct={handleSelectProduct} />
 
-        {/* 1:1 Responsive Phone Scaling Studio with Live IntelliGrow App */}
+        {/* 1:1 Responsive Phone Scaling Studio (IntelliGrow™ Mobile App) */}
         <PhoneScalingAppSection />
 
-        {/* Commercial Greenhouse & CEA Solutions */}
+        {/* Hub-and-Spoke Architecture & Bus Signaling */}
+        <EcosystemSection />
+
+        {/* Economic Model: Automated Fertigation & Water Savings Calculator */}
+        <RoiCalculatorSection onNavigateToSection={handleNavigateToSection} />
+
+        {/* Turnkey Commercial Greenhouse & CEA Facility Solutions */}
         <CommercialSolutionsSection onNavigateToSection={handleNavigateToSection} />
 
-        {/* Technical Downloads, Firmware & Manuals */}
+        {/* Where to Buy: Global Certified Distributor Directory */}
+        <DistributorNetworkSection />
+
+        {/* Technical Downloads, Firmware Binaries & CAD Schematics */}
         <TechnicalDownloadsSection />
       </main>
 
-      {/* TrolMaster Obsidian Dark Footer */}
+      {/* Industrial Footer with Factory Support & Compliance Decals */}
       <Footer onNavigateToSection={handleNavigateToSection} />
 
-      {/* Product Specification & Wiring Modal */}
+      {/* Product Specification & Terminal Pinout Modal */}
       <ProductDetailModal 
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
       />
 
-      {/* Quick Search Modal */}
+      {/* Quick Search Modal across Hardware, Crops, Distributors & CAD */}
       <SearchModal 
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

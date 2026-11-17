@@ -11,16 +11,16 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
     <section 
       id="solutions" 
       style={{
-        padding: '100px 0',
-        background: 'var(--bg-main)',
+        padding: '96px 0',
+        background: 'var(--bg-void)',
         position: 'relative',
-        borderBottom: '1px solid var(--border-color)',
+        borderBottom: '1px solid var(--border-subtle)',
       }}
     >
       <div className="container">
         
         {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto 60px' }}>
+        <div style={{ maxWidth: '820px', marginBottom: '40px' }}>
           <div 
             style={{
               display: 'inline-flex',
@@ -31,43 +31,42 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
               color: 'var(--color-green)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              marginBottom: '10px',
             }}
           >
             <Building2 size={14} />
-            Commercial Deployments
+            Commercial Protected Cropping
           </div>
           <h2 
+            className="font-display"
             style={{
-              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '0.02em',
+              lineHeight: 1.05,
+              color: '#FFFFFF',
               margin: '0 0 16px 0',
             }}
           >
-            Commercial CEA Solutions
+            Turnkey Facility Automation Packages
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '16px', lineHeight: 1.6 }}>
-            Tailored engineering architectures for commercial glasshouses, indoor vertical multi-tier farms, and precision fertigation blending centers.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+            Tailored engineering architectures for commercial Venlo glasshouse acreage, indoor multi-tier vertical cleanrooms, and high-volume inline fertigation centers.
           </p>
         </div>
 
         {/* Solutions Grid */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {SOLUTIONS_DATA.map((solution, idx) => {
             const isReversed = idx % 2 === 1;
 
             return (
               <div 
                 key={solution.id}
-                className="card-tactical"
+                className="panel-chassis"
                 style={{
-                  borderRadius: '12px',
                   overflow: 'hidden',
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
                   alignItems: 'center',
                 }}
               >
@@ -88,17 +87,14 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      filter: 'brightness(0.85) contrast(1.1)',
-                      transition: 'transform 0.5s ease',
+                      filter: 'brightness(0.75) contrast(1.15)',
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.04)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                   />
                   <div 
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(180deg, rgba(6, 10, 8, 0.2) 0%, rgba(6, 10, 8, 0.8) 100%)',
+                      background: 'linear-gradient(180deg, rgba(7, 11, 8, 0.1) 0%, rgba(7, 11, 8, 0.8) 100%)',
                     }}
                   />
                 </div>
@@ -125,40 +121,41 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                   >
                     {solution.subtitle}
                   </div>
+
                   <h3 
+                    className="font-display"
                     style={{
                       fontSize: '26px',
                       fontWeight: 800,
-                      color: '#ffffff',
-                      marginBottom: '14px',
-                      fontFamily: 'var(--font-display)',
-                      textTransform: 'uppercase',
+                      color: '#FFFFFF',
+                      marginBottom: '12px',
                     }}
                   >
                     {solution.title}
                   </h3>
+
                   <p 
                     style={{
                       fontSize: '14px',
                       color: 'var(--text-secondary)',
                       lineHeight: 1.6,
-                      marginBottom: '24px',
+                      marginBottom: '20px',
                     }}
                   >
                     {solution.description}
                   </p>
 
-                  {/* Metrics Row */}
+                  {/* Metrics Row (Hairline Spec Matrix) */}
                   <div 
                     style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(3, 1fr)',
-                      gap: '12px',
-                      padding: '16px',
-                      background: 'rgba(0, 0, 0, 0.35)',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                      marginBottom: '24px',
+                      gap: '10px',
+                      padding: '14px',
+                      background: 'var(--bg-void)',
+                      borderRadius: '3px',
+                      border: '1px solid var(--border-subtle)',
+                      marginBottom: '20px',
                     }}
                   >
                     {solution.metrics.map((metric, mIdx) => (
@@ -166,7 +163,7 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                         <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-green)', fontFamily: 'var(--font-mono)' }}>
                           {metric.value}
                         </div>
-                        <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                           {metric.label}
                         </div>
                       </div>
@@ -174,44 +171,23 @@ export const CommercialSolutionsSection: React.FC<CommercialSolutionsSectionProp
                   </div>
 
                   {/* Key Features Checkmarks */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', marginBottom: '24px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '6px', marginBottom: '24px' }}>
                     {solution.features.map((feat, fIdx) => (
-                      <div key={fIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                        <CheckCircle2 size={16} style={{ color: 'var(--color-cyan)', flexShrink: 0 }} />
+                      <div key={fIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: 'var(--text-secondary)' }}>
+                        <CheckCircle2 size={14} style={{ color: 'var(--color-cyan)', flexShrink: 0 }} />
                         <span>{feat}</span>
                       </div>
                     ))}
                   </div>
 
-                  {/* CTA button */}
+                  {/* Action */}
                   <div>
                     <button
                       onClick={() => onNavigateToSection('products')}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        background: 'transparent',
-                        border: '1px solid rgba(0, 255, 136, 0.4)',
-                        color: 'var(--color-green)',
-                        padding: '10px 20px',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(0, 255, 136, 0.1)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'transparent';
-                      }}
+                      className="btn-machine-secondary"
+                      style={{ padding: '8px 18px', fontSize: '12px' }}
                     >
-                      View Engineered Systems
+                      View Engineered Package
                       <ArrowRight size={14} />
                     </button>
                   </div>

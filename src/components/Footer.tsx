@@ -1,9 +1,5 @@
 import React from 'react';
-import { 
-  Mail, 
-  Phone, 
-  MapPin 
-} from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 interface FooterProps {
   onNavigateToSection: (sectionId: string) => void;
@@ -14,70 +10,71 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection }) => {
     <footer 
       style={{
         background: '#040705',
-        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-        padding: '80px 0 30px',
+        borderTop: '1px solid var(--border-subtle)',
+        padding: '80px 0 32px',
         color: 'var(--text-secondary)',
       }}
     >
       <div className="container">
         
-        {/* Main Grid */}
+        {/* Main Columns Grid */}
         <div 
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '40px',
-            marginBottom: '60px',
+            marginBottom: '56px',
           }}
         >
-          {/* Column 1: Brand & Origin */}
+          {/* Column 1: Brand & Pedigree */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
               <div 
                 style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '6px',
-                  background: 'linear-gradient(135deg, #00FF88 0%, #00B359 100%)',
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '3px',
+                  background: 'var(--bg-surface-elevated)',
+                  border: '1px solid var(--border-medium)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#060a08',
+                  color: 'var(--color-green)',
                   fontWeight: 900,
-                  fontSize: '18px',
+                  fontSize: '16px',
                   fontFamily: 'var(--font-display)',
                 }}
               >
                 A
               </div>
               <span 
+                className="font-display"
                 style={{
-                  fontFamily: 'var(--font-display)',
                   fontWeight: 800,
                   fontSize: '22px',
                   letterSpacing: '0.04em',
-                  color: '#ffffff',
+                  color: '#FFFFFF',
                 }}
               >
                 AUTOGROW<span style={{ color: 'var(--color-green)' }}>.</span>
               </span>
             </div>
 
-            <p style={{ fontSize: '13px', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: '20px' }}>
-              Pioneering commercial greenhouse and vertical farming automation for over 30 years. Engineered in New Zealand, deployed across 45+ countries.
+            <p style={{ fontSize: '13px', lineHeight: 1.65, color: 'var(--text-secondary)', marginBottom: '18px' }}>
+              Pioneering commercial greenhouse and vertical farming automation for over 30 years. Engineered with precision in New Zealand, deployed across 45+ countries.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11.5px', fontFamily: 'var(--font-mono)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <MapPin size={14} style={{ color: 'var(--color-green)' }} />
+                <MapPin size={13} style={{ color: 'var(--color-green)' }} />
                 <span>Rosedale, Auckland, New Zealand</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Phone size={14} style={{ color: 'var(--color-green)' }} />
+                <Phone size={13} style={{ color: 'var(--color-green)' }} />
                 <span>Global Support: +1 (800) 852-3088</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Mail size={14} style={{ color: 'var(--color-green)' }} />
+                <Mail size={13} style={{ color: 'var(--color-green)' }} />
                 <span>support@autogrow.com</span>
               </div>
             </div>
@@ -85,177 +82,149 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection }) => {
 
           {/* Column 2: Flagship Hardware */}
           <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '18px', letterSpacing: '0.05em' }}>
-              Controllers & Dosing
+            <h4 style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '16px', letterSpacing: '0.06em' }}>
+              Controllers & Skids
             </h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12.5px', fontFamily: 'var(--font-mono)' }}>
               <li>
                 <button 
                   onClick={() => onNavigateToSection('products')}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left', transition: 'color 0.2s ease' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-green)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  MultiGrow Pro [MGC-Pro]
+                  MultiGrow Master [MGC-Pro]
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => onNavigateToSection('products')}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left', transition: 'color 0.2s ease' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-green)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  IntelliClimate [ICC-2]
+                  SatuGrow FertiX Skid [100m³/h]
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => onNavigateToSection('products')}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left', transition: 'color 0.2s ease' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-green)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  IntelliDose [IDC-4]
+                  SatuGrow Pro All-in-One
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => onNavigateToSection('products')}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left', transition: 'color 0.2s ease' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-green)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  EC Mini Doser [ECM-1]
+                  IntelliDose 8-Channel [IDC-4]
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => onNavigateToSection('products')}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left', transition: 'color 0.2s ease' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-green)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  EnviroSensor 4-in-1 [ESS-4]
+                  IntelliClimate CEA [ICC-2]
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => onNavigateToSection('products')}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left', transition: 'color 0.2s ease' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-green)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  Substrate SMS Pro [SMS-Pro]
+                  EnviroSensor Pro Canopy Pod
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Commercial Solutions */}
+          {/* Column 3: Agronomy & Systems */}
           <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '18px', letterSpacing: '0.05em' }}>
-              Solutions & Software
+            <h4 style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '16px', letterSpacing: '0.06em' }}>
+              Crop Solutions & Tools
             </h4>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px' }}>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12.5px', fontFamily: 'var(--font-mono)' }}>
               <li>
                 <button 
-                  onClick={() => onNavigateToSection('solutions')}
+                  onClick={() => onNavigateToSection('crops')}
                   style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  Commercial Glasshouses
+                  High-Wire Vine Crops
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => onNavigateToSection('solutions')}
+                  onClick={() => onNavigateToSection('crops')}
                   style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  Indoor Vertical CEA
+                  Tabletop Berries & Soft Fruit
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => onNavigateToSection('solutions')}
+                  onClick={() => onNavigateToSection('crops')}
                   style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  Precision Fertigation Centers
+                  Leafy Greens NFT Channels
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => onNavigateToSection('phone-scaling')}
+                  onClick={() => onNavigateToSection('roi-calculator')}
                   style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  IntelliGrow™ Mobile App
+                  Fertilizer & Water ROI Calculator
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => onNavigateToSection('support')}
+                  onClick={() => onNavigateToSection('distributors')}
                   style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                 >
-                  Firmware & CAD Schematics
+                  Where to Buy (Distributor Map)
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Newsletter & Certifications */}
+          {/* Column 4: Engineering Whitepaper Newsletter */}
           <div>
-            <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '18px', letterSpacing: '0.05em' }}>
+            <h4 style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', marginBottom: '16px', letterSpacing: '0.06em' }}>
               CEA Engineering Dispatch
             </h4>
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '14px' }}>
               Subscribe for firmware releases, sensor calibration guides, and commercial crop steering whitepapers.
             </p>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', gap: '6px', marginBottom: '18px' }}>
               <input 
                 type="email" 
                 placeholder="engineer@farm.com"
                 style={{
                   flex: 1,
-                  padding: '8px 12px',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  borderRadius: '4px',
-                  color: '#fff',
+                  padding: '8px 10px',
+                  background: 'var(--bg-void)',
+                  border: '1px solid var(--border-subtle)',
+                  borderRadius: '2px',
+                  color: '#FFFFFF',
                   fontSize: '12px',
                   fontFamily: 'var(--font-mono)',
                   outline: 'none',
                 }}
               />
               <button
-                className="btn-glow"
-                style={{
-                  padding: '8px 14px',
-                  background: 'var(--color-green)',
-                  color: '#060a08',
-                  fontWeight: 700,
-                  fontSize: '12px',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                }}
+                className="btn-machine-primary"
+                style={{ padding: '8px 14px', fontSize: '11px' }}
               >
                 Join
               </button>
             </div>
 
             {/* Certifications Badge Bar */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              {['CE MARKED', 'FCC CLASS A', 'RoHS', 'IP65 RATED', 'ISO 9001'].map((cert, idx) => (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+              {['CE COMPLIANT', 'FCC CLASS A', 'RoHS', 'IP66 DIE-CAST', 'ISO 9001'].map((cert, idx) => (
                 <span 
                   key={idx}
-                  style={{
-                    padding: '3px 8px',
-                    borderRadius: '3px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    fontSize: '10px',
-                    fontFamily: 'var(--font-mono)',
-                    color: 'var(--text-muted)',
-                  }}
+                  className="decal-badge"
+                  style={{ fontSize: '9px', padding: '2px 6px' }}
                 >
                   {cert}
                 </span>
@@ -264,26 +233,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToSection }) => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Hairline Bar */}
         <div 
           style={{
-            borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-            paddingTop: '24px',
+            borderTop: '1px solid var(--border-subtle)',
+            paddingTop: '20px',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '16px',
-            fontSize: '12px',
+            gap: '14px',
+            fontSize: '11.5px',
+            fontFamily: 'var(--font-mono)',
             color: 'var(--text-muted)',
           }}
         >
           <div>
-            © {new Date().getFullYear()} Autogrow Systems Ltd. All Rights Reserved. Engineered with precision in New Zealand. Reference inspired by TrolMaster® UI architecture.
+            © {new Date().getFullYear()} Autogrow Systems Ltd. All Rights Reserved. Engineered in New Zealand. Reference inspired by TrolMaster® UI architecture.
           </div>
-          <div style={{ display: 'flex', gap: '20px' }}>
+          <div style={{ display: 'flex', gap: '16px' }}>
             <span>Privacy Policy</span>
-            <span>Terms of Hardware Warranty</span>
+            <span>Hardware Warranty Terms</span>
             <span>Distributor Portal</span>
             <span>Security Bug Bounty</span>
           </div>

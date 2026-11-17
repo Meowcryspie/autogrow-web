@@ -58,32 +58,17 @@ export const PhoneScalingAppSection: React.FC = () => {
     <section 
       id="phone-scaling" 
       style={{
-        padding: '100px 0',
-        background: 'linear-gradient(180deg, #060a08 0%, #080f0b 50%, #060a08 100%)',
+        padding: '96px 0',
+        background: 'var(--bg-void)',
         position: 'relative',
-        borderBottom: '1px solid var(--border-color)',
+        borderBottom: '1px solid var(--border-subtle)',
         overflow: 'hidden',
       }}
     >
-      {/* Background ambient lighting */}
-      <div 
-        style={{
-          position: 'absolute',
-          top: '30%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '700px',
-          height: '700px',
-          background: 'radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, rgba(0, 229, 255, 0.03) 40%, transparent 70%)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         
         {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: '820px', margin: '0 auto 40px' }}>
+        <div style={{ maxWidth: '820px', marginBottom: '36px' }}>
           <div 
             style={{
               display: 'inline-flex',
@@ -94,45 +79,42 @@ export const PhoneScalingAppSection: React.FC = () => {
               color: 'var(--color-green)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              marginBottom: '10px',
             }}
           >
             <Smartphone size={14} />
             Mobile App & Viewport Scaling Studio
           </div>
           <h2 
+            className="font-display"
             style={{
-              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '0.02em',
+              lineHeight: 1.05,
+              color: '#FFFFFF',
               margin: '0 0 16px 0',
             }}
           >
             IntelliGrow™ Mobile Scaler
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '16px', lineHeight: 1.6 }}>
-            Experience 1:1 responsive viewport scaling replicating TrolMaster's mobile showcase. 
-            Adjust viewport widths and magnification dynamically while interacting with real-time Autogrow telemetry.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+            Experience 1:1 responsive viewport scaling replicating TrolMaster’s mobile showcase. 
+            Adjust viewport widths and zoom magnification dynamically while interacting with real-time Autogrow telemetry and pulse dosing.
           </p>
         </div>
 
-        {/* Viewport Control Bar (TrolMaster phone scaling toolbar) */}
+        {/* Viewport Control Bar */}
         <div 
+          className="panel-chassis"
           style={{
-            maxWidth: '860px',
+            maxWidth: '920px',
             margin: '0 auto 40px',
-            background: 'rgba(11, 18, 14, 0.9)',
-            border: '1px solid rgba(0, 255, 136, 0.25)',
-            borderRadius: '12px',
-            padding: '16px 24px',
+            padding: '14px 20px',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '16px',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
           }}
         >
           {/* Preset Buttons */}
@@ -276,8 +258,8 @@ export const PhoneScalingAppSection: React.FC = () => {
                 height: `${activePreset.height}px`,
                 background: '#040705',
                 borderRadius: '46px',
-                border: '9px solid #1f2723',
-                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 255, 136, 0.15)',
+                border: '9px solid #1a221d',
+                boxShadow: '0 25px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08)',
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',

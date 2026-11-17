@@ -24,3 +24,4 @@ When creating or modifying any front-end UI, component, layout, or copy for this
 
 ## 4. Verification Before Output
 Always audit code against `DESIGN_RULEBOOK.md`. If a component looks like an off-the-shelf template or AI demo, redesign it with mechanical weight, asymmetry, and industrial authority.
+

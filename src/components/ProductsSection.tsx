@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { products } from '../data/mockProducts';
 import type { ProductItem, ProductCategory } from '../types';
-import { ArrowUpRight, Cpu, Layers, Activity, Cloud, Check } from 'lucide-react';
+import { ArrowUpRight, Cpu, Layers, Activity, Cloud, Check, Droplets } from 'lucide-react';
 
 interface ProductsSectionProps {
   onSelectProduct: (product: ProductItem) => void;
@@ -15,27 +15,27 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
     : products.filter((p: ProductItem) => p.category === activeCategory);
 
   const categories: { id: ProductCategory; label: string; icon: React.ReactNode }[] = [
-    { id: 'all', label: 'All Hardware Systems', icon: <Layers size={14} /> },
-    { id: 'climate', label: 'Climate Controllers', icon: <Cpu size={14} /> },
-    { id: 'dosing', label: 'Fertigation & Dosing', icon: <Cpu size={14} /> },
-    { id: 'sensors', label: 'Sensory Probes', icon: <Activity size={14} /> },
-    { id: 'cloud', label: 'Cloud & Telemetry', icon: <Cloud size={14} /> },
+    { id: 'all', label: 'All Equipment', icon: <Layers size={13} /> },
+    { id: 'controllers', label: 'Master Controllers', icon: <Cpu size={13} /> },
+    { id: 'dosing-skids', label: 'Fertigation & Skids', icon: <Droplets size={13} /> },
+    { id: 'sensors', label: 'Precision Sensory Bus', icon: <Activity size={13} /> },
+    { id: 'software', label: 'Agronomy Software', icon: <Cloud size={13} /> },
   ];
 
   return (
     <section 
       id="products" 
       style={{
-        padding: '100px 0',
-        background: 'var(--bg-main)',
+        padding: '96px 0',
+        background: 'var(--bg-void)',
         position: 'relative',
-        borderBottom: '1px solid var(--border-color)',
+        borderBottom: '1px solid var(--border-subtle)',
       }}
     >
       <div className="container">
         
         {/* Section Header */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '50px' }}>
+        <div style={{ maxWidth: '820px', marginBottom: '40px' }}>
           <div 
             style={{
               display: 'inline-flex',
@@ -46,26 +46,27 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
               color: 'var(--color-green)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              marginBottom: '10px',
             }}
           >
             <Cpu size={14} />
-            Hardware Lineup
+            Horticultural Instrumentation Catalog
           </div>
           <h2 
+            className="font-display"
             style={{
-              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '0.02em',
+              lineHeight: 1.05,
+              color: '#FFFFFF',
               margin: '0 0 16px 0',
             }}
           >
-            Controllers, Dosing & Sensing
+            Commercial Controllers, Dosing Skids & Sensors
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '16px', maxWidth: '720px', lineHeight: 1.6 }}>
-            Every controller is designed for 24/7 continuous operation in harsh greenhouse conditions, featuring industrial-grade galvanic isolation and fail-safe hardware overrides.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+            Every controller is engineered for 24/7 continuous duty in corrosive, high-humidity CEA environments. 
+            Featuring 2.5 kV galvanic isolation, industrial terminal blocks, and fail-safe hardware overrides.
           </p>
 
           {/* Category Tabs */}
@@ -73,9 +74,8 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              justifyContent: 'center',
-              gap: '10px',
-              marginTop: '30px',
+              gap: '8px',
+              marginTop: '28px',
             }}
           >
             {categories.map(cat => (
@@ -85,22 +85,23 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 20px',
-                  borderRadius: '6px',
-                  fontSize: '13px',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  borderRadius: '3px',
+                  fontSize: '12px',
                   fontFamily: 'var(--font-mono)',
                   letterSpacing: '0.04em',
                   fontWeight: 600,
                   cursor: 'pointer',
                   border: activeCategory === cat.id 
                     ? '1px solid var(--color-green)' 
-                    : '1px solid rgba(255, 255, 255, 0.08)',
+                    : '1px solid var(--border-subtle)',
                   background: activeCategory === cat.id 
-                    ? 'rgba(0, 255, 136, 0.12)' 
-                    : 'rgba(255, 255, 255, 0.02)',
+                    ? 'rgba(0, 229, 117, 0.12)' 
+                    : 'var(--bg-surface)',
                   color: activeCategory === cat.id ? 'var(--color-green)' : 'var(--text-secondary)',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.14s ease',
+                  textTransform: 'uppercase',
                 }}
               >
                 {cat.icon}
@@ -110,35 +111,33 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
           </div>
         </div>
 
-        {/* Product Cards Grid */}
+        {/* Product Cards Grid (TrolMaster Tactile Panels) */}
         <div 
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
-            gap: '24px',
+            gap: '20px',
           }}
         >
           {filteredProducts.map((product: ProductItem) => (
             <div 
               key={product.id}
-              className="card-tactical"
+              className="panel-chassis"
               style={{
-                borderRadius: '10px',
-                overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                transition: 'all 0.3s ease',
+                transition: 'all 0.2s ease',
               }}
             >
               <div>
-                {/* Product Image Frame */}
+                {/* Image Frame */}
                 <div 
                   style={{
                     position: 'relative',
-                    height: '220px',
+                    height: '210px',
                     overflow: 'hidden',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                    borderBottom: '1px solid var(--border-subtle)',
                   }}
                 >
                   <img 
@@ -148,130 +147,121 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      filter: 'brightness(0.85) contrast(1.1)',
-                      transition: 'transform 0.5s ease',
+                      filter: 'brightness(0.8) contrast(1.15)',
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                   />
-
-                  {/* Gradient Overlay */}
                   <div 
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(180deg, rgba(6, 10, 8, 0.2) 0%, rgba(6, 10, 8, 0.9) 100%)',
+                      background: 'linear-gradient(180deg, rgba(7, 11, 8, 0.1) 0%, rgba(7, 11, 8, 0.85) 100%)',
                     }}
                   />
 
-                  {/* Badges */}
+                  {/* Decal Badges on Top */}
                   <div 
                     style={{
                       position: 'absolute',
-                      top: '14px',
-                      left: '14px',
+                      top: '12px',
+                      left: '12px',
                       display: 'flex',
-                      gap: '8px',
+                      gap: '6px',
                     }}
                   >
-                    <span 
-                      style={{
-                        padding: '4px 8px',
-                        background: 'rgba(0, 0, 0, 0.8)',
-                        border: '1px solid rgba(0, 255, 136, 0.4)',
-                        color: 'var(--color-green)',
-                        fontSize: '11px',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 700,
-                        borderRadius: '4px',
-                      }}
-                    >
+                    <span className="decal-badge" style={{ color: 'var(--color-green)', borderColor: 'rgba(0, 229, 117, 0.4)' }}>
                       {product.modelCode}
                     </span>
                     {product.badge && (
-                      <span 
-                        style={{
-                          padding: '4px 8px',
-                          background: 'rgba(0, 229, 255, 0.2)',
-                          border: '1px solid rgba(0, 229, 255, 0.5)',
-                          color: '#ffffff',
-                          fontSize: '10px',
-                          fontFamily: 'var(--font-mono)',
-                          fontWeight: 600,
-                          borderRadius: '4px',
-                          textTransform: 'uppercase',
-                        }}
-                      >
+                      <span className="decal-badge" style={{ color: '#FFFFFF' }}>
                         {product.badge}
                       </span>
                     )}
                   </div>
+
+                  {product.capacity && (
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        bottom: '10px',
+                        left: '12px',
+                        fontSize: '11px',
+                        fontFamily: 'var(--font-mono)',
+                        color: 'var(--color-cyan)',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {product.capacity}
+                    </div>
+                  )}
                 </div>
 
-                {/* Card Body */}
-                <div style={{ padding: '24px' }}>
+                {/* Body Content */}
+                <div style={{ padding: '22px' }}>
                   <h3 
+                    className="font-display"
                     style={{
                       fontSize: '20px',
-                      fontWeight: 700,
-                      color: '#ffffff',
-                      marginBottom: '6px',
+                      fontWeight: 800,
+                      color: '#FFFFFF',
+                      marginBottom: '4px',
                     }}
                   >
                     {product.name}
                   </h3>
+
                   <div 
                     style={{
-                      fontSize: '12px',
-                      color: 'var(--color-cyan)',
+                      fontSize: '11.5px',
+                      color: 'var(--color-green)',
                       fontFamily: 'var(--font-mono)',
-                      marginBottom: '14px',
+                      marginBottom: '12px',
                       textTransform: 'uppercase',
                     }}
                   >
                     {product.tagline}
                   </div>
+
                   <p 
                     style={{
                       fontSize: '13px',
                       color: 'var(--text-secondary)',
-                      lineHeight: 1.5,
-                      marginBottom: '20px',
+                      lineHeight: 1.55,
+                      marginBottom: '18px',
                     }}
                   >
                     {product.description}
                   </p>
 
-                  {/* Quick Specs Matrix */}
+                  {/* Specs Matrix */}
                   <div 
                     style={{
                       display: 'grid',
                       gridTemplateColumns: '1fr 1fr',
                       gap: '8px',
                       padding: '12px',
-                      background: 'rgba(0, 0, 0, 0.35)',
-                      borderRadius: '6px',
-                      border: '1px solid rgba(255, 255, 255, 0.05)',
-                      marginBottom: '20px',
+                      background: 'var(--bg-void)',
+                      borderRadius: '2px',
+                      border: '1px solid var(--border-subtle)',
+                      marginBottom: '18px',
                     }}
                   >
                     {product.specs.slice(0, 4).map((spec: { label: string; value: string }, i: number) => (
-                      <div key={i} style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                      <div key={i}>
+                        <div style={{ fontSize: '9.5px', color: 'var(--text-muted)', textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
                           {spec.label}
-                        </span>
-                        <span style={{ fontSize: '12px', color: '#ffffff', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#FFFFFF', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                           {spec.value}
-                        </span>
+                        </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Key Features Bullets */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '16px' }}>
+                  {/* Features Bullets */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                     {product.keyFeatures.slice(0, 3).map((f: string, i: number) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-                        <Check size={14} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
+                        <Check size={13} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
                         <span>{f}</span>
                       </div>
                     ))}
@@ -282,9 +272,9 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
               {/* Card Footer Actions */}
               <div 
                 style={{
-                  padding: '16px 24px',
-                  background: 'rgba(0, 0, 0, 0.25)',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                  padding: '14px 22px',
+                  background: 'var(--bg-void)',
+                  borderTop: '1px solid var(--border-subtle)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
@@ -296,22 +286,24 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({ onSelectProduc
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
-                    background: 'transparent',
+                    background: 'none',
                     border: 'none',
                     color: 'var(--color-green)',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontWeight: 700,
                     fontFamily: 'var(--font-mono)',
                     cursor: 'pointer',
                     padding: 0,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
                   }}
                 >
-                  SPECIFICATIONS & WIRING
-                  <ArrowUpRight size={14} />
+                  Wiring & Pinouts
+                  <ArrowUpRight size={13} />
                 </button>
 
-                <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                  IP65 CEA
+                <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                  IP66 CEA RATED
                 </span>
               </div>
             </div>

@@ -1,14 +1,15 @@
-export type ProductCategory = 'all' | 'climate' | 'dosing' | 'sensors' | 'cloud';
+export type ProductCategory = 'all' | 'controllers' | 'dosing-skids' | 'sensors' | 'software';
 
 export interface ProductItem {
   id: string;
   modelCode: string;
   name: string;
-  category: 'climate' | 'dosing' | 'sensors' | 'cloud';
+  category: 'controllers' | 'dosing-skids' | 'sensors' | 'software';
   tagline: string;
   description: string;
   image: string;
   badge?: string;
+  capacity?: string;
   specs: {
     label: string;
     value: string;
@@ -17,6 +18,11 @@ export interface ProductItem {
   connectivity: string;
   power: string;
   idealFor: string;
+  terminalPinout?: {
+    terminal: string;
+    signal: string;
+    spec: string;
+  }[];
 }
 
 export interface EcosystemNode {
@@ -28,6 +34,20 @@ export interface EcosystemNode {
   description: string;
   specs: string;
   iconName: string;
+}
+
+export interface CropSolution {
+  id: string;
+  name: string;
+  scientificGroup: string;
+  targetVPD: string;
+  targetEC: string;
+  targetPH: string;
+  targetDryback: string;
+  irrigationStrategy: string;
+  recommendedHardware: string[];
+  description: string;
+  image: string;
 }
 
 export interface SolutionItem {
@@ -45,10 +65,20 @@ export interface SolutionItem {
 
 export interface DownloadItem {
   id: string;
-  category: 'Manuals' | 'Firmware' | 'Wiring' | 'Brochures';
+  category: 'Manuals' | 'Firmware' | 'Wiring' | 'Brochures' | 'CAD';
   title: string;
   product: string;
   version: string;
   fileSize: string;
   date: string;
+}
+
+export interface DistributorLocation {
+  id: string;
+  region: string;
+  country: string;
+  partnerName: string;
+  territory: string;
+  supportPhone: string;
+  email: string;
 }

@@ -115,3 +115,4 @@ Before any page or component is committed or deployed, audit against this checkl
 - [ ] **Does the hardware look real and tangible?** *If no, add mechanical details, port labels, silkscreen typography, and enclosure specs.*
 - [ ] **Do numerical readouts use monospace tabular numbers?** *If no, apply tabular formatting to prevent layout shifts.*
 - [ ] **Is negative space generous and confident?** *If no, let key elements breathe and eliminate cramped clutter.*
+

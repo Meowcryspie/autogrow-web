@@ -8,23 +8,25 @@ import {
   Wrench, 
   CheckCircle2, 
   HardDriveDownload, 
-  Search
+  Search,
+  Box
 } from 'lucide-react';
 
 export const TechnicalDownloadsSection: React.FC = () => {
-  const [selectedCat, setSelectedCat] = useState<'All' | 'Manuals' | 'Firmware' | 'Wiring' | 'Brochures'>('All');
+  const [selectedCat, setSelectedCat] = useState<'All' | 'Manuals' | 'Firmware' | 'Wiring' | 'Brochures' | 'CAD'>('All');
   const [searchFilter, setSearchFilter] = useState('');
   const [downloadSuccessToast, setDownloadSuccessToast] = useState<string | null>(null);
 
-  const categories: ('All' | 'Manuals' | 'Firmware' | 'Wiring' | 'Brochures')[] = [
+  const categories: ('All' | 'Manuals' | 'Firmware' | 'Wiring' | 'Brochures' | 'CAD')[] = [
     'All',
     'Manuals',
     'Firmware',
+    'CAD',
     'Wiring',
     'Brochures',
   ];
 
-  const filteredItems = DOWNLOADS_DATA.filter(item => {
+  const filteredItems = DOWNLOADS_DATA.filter((item: DownloadItem) => {
     const matchesCat = selectedCat === 'All' || item.category === selectedCat;
     const matchesSearch = 
       item.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
@@ -33,7 +35,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
   });
 
   const handleSimulateDownload = (item: DownloadItem) => {
-    setDownloadSuccessToast(`Downloading ${item.title} (${item.fileSize})...`);
+    setDownloadSuccessToast(`Packaging ${item.title} (${item.fileSize})...`);
     setTimeout(() => {
       setDownloadSuccessToast(null);
     }, 3500);
@@ -43,16 +45,16 @@ export const TechnicalDownloadsSection: React.FC = () => {
     <section 
       id="support" 
       style={{
-        padding: '100px 0',
-        background: 'var(--bg-card)',
+        padding: '96px 0',
+        background: 'var(--bg-primary)',
         position: 'relative',
-        borderBottom: '1px solid var(--border-color)',
+        borderBottom: '1px solid var(--border-subtle)',
       }}
     >
       <div className="container">
         
         {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto 50px' }}>
+        <div style={{ maxWidth: '820px', marginBottom: '40px' }}>
           <div 
             style={{
               display: 'inline-flex',
@@ -63,66 +65,65 @@ export const TechnicalDownloadsSection: React.FC = () => {
               color: 'var(--color-green)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              marginBottom: '10px',
             }}
           >
             <HardDriveDownload size={14} />
             Support & Documentation
           </div>
           <h2 
+            className="font-display"
             style={{
-              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '0.02em',
+              lineHeight: 1.05,
+              color: '#FFFFFF',
               margin: '0 0 16px 0',
             }}
           >
-            Technical Downloads & Firmware
+            Technical Downloads, CAD & Firmware
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '16px', lineHeight: 1.6 }}>
-            Access industrial schematics, high-voltage wiring diagrams, controller firmware binaries, and comprehensive engineering guides.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+            Direct access to production firmware binaries (v1.4.2), CAD 3D DXF schematics, relay snubber wiring guides, and CE/FCC compliance certificates.
           </p>
         </div>
 
         {/* Filter & Search Bar */}
         <div 
+          className="panel-chassis"
           style={{
-            maxWidth: '900px',
-            margin: '0 auto 30px',
+            maxWidth: '960px',
+            padding: '14px 20px',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '16px',
-            background: 'rgba(11, 18, 14, 0.7)',
-            padding: '16px 20px',
-            borderRadius: '10px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            gap: '14px',
+            marginBottom: '24px',
           }}
         >
           {/* Category Tabs */}
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setSelectedCat(cat)}
                 style={{
                   padding: '6px 14px',
-                  borderRadius: '6px',
-                  fontSize: '12px',
+                  borderRadius: '2px',
+                  fontSize: '11px',
                   fontFamily: 'var(--font-mono)',
                   fontWeight: 600,
                   cursor: 'pointer',
                   border: selectedCat === cat 
                     ? '1px solid var(--color-green)' 
-                    : '1px solid rgba(255, 255, 255, 0.1)',
+                    : '1px solid var(--border-subtle)',
                   background: selectedCat === cat 
-                    ? 'rgba(0, 255, 136, 0.15)' 
-                    : 'rgba(255, 255, 255, 0.03)',
+                    ? 'rgba(0, 229, 117, 0.12)' 
+                    : 'var(--bg-void)',
                   color: selectedCat === cat ? 'var(--color-green)' : 'var(--text-secondary)',
-                  transition: 'all 0.2s ease',
+                  transition: 'all 0.14s ease',
+                  textTransform: 'uppercase',
                 }}
               >
                 {cat}
@@ -136,26 +137,26 @@ export const TechnicalDownloadsSection: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              background: 'rgba(0, 0, 0, 0.4)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '6px',
+              background: 'var(--bg-void)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '2px',
               padding: '6px 12px',
             }}
           >
-            <Search size={14} style={{ color: 'var(--text-muted)' }} />
+            <Search size={13} style={{ color: 'var(--text-muted)' }} />
             <input 
               type="text"
-              placeholder="Search guides, firmware..."
+              placeholder="Search guides, firmware, CAD..."
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#fff',
+                color: '#FFFFFF',
                 fontSize: '12px',
                 fontFamily: 'var(--font-mono)',
                 outline: 'none',
-                width: '180px',
+                width: '190px',
               }}
             />
           </div>
@@ -165,59 +166,56 @@ export const TechnicalDownloadsSection: React.FC = () => {
         {downloadSuccessToast && (
           <div 
             style={{
-              maxWidth: '900px',
-              margin: '0 auto 20px',
+              maxWidth: '960px',
+              marginBottom: '16px',
               padding: '12px 18px',
-              borderRadius: '6px',
-              background: 'rgba(0, 255, 136, 0.15)',
+              borderRadius: '3px',
+              background: 'rgba(0, 229, 117, 0.12)',
               border: '1px solid var(--color-green)',
               color: 'var(--color-green)',
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              fontSize: '13px',
+              fontSize: '12px',
               fontFamily: 'var(--font-mono)',
             }}
           >
-            <CheckCircle2 size={16} />
+            <CheckCircle2 size={15} />
             <span>{downloadSuccessToast}</span>
           </div>
         )}
 
         {/* Downloads Table List */}
         <div 
+          className="panel-chassis"
           style={{
-            maxWidth: '900px',
-            margin: '0 auto',
-            background: 'rgba(11, 18, 14, 0.8)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '10px',
+            maxWidth: '960px',
             overflow: 'hidden',
           }}
         >
-          {filteredItems.map((item, idx) => (
+          {filteredItems.map((item: DownloadItem, idx: number) => (
             <div 
               key={item.id}
               style={{
-                padding: '18px 24px',
-                borderBottom: idx < filteredItems.length - 1 ? '1px solid rgba(255, 255, 255, 0.06)' : 'none',
+                padding: '16px 20px',
+                borderBottom: idx < filteredItems.length - 1 ? '1px solid var(--border-subtle)' : 'none',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: '16px',
-                transition: 'background 0.2s ease',
+                transition: 'background 0.14s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)')}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-surface-elevated)')}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                 <div 
                   style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '8px',
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '2px',
+                    background: 'var(--bg-void)',
+                    border: '1px solid var(--border-subtle)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -225,66 +223,47 @@ export const TechnicalDownloadsSection: React.FC = () => {
                     flexShrink: 0,
                   }}
                 >
-                  {item.category === 'Firmware' && <Cpu size={20} />}
-                  {item.category === 'Wiring' && <Wrench size={20} />}
-                  {(item.category === 'Manuals' || item.category === 'Brochures') && <FileText size={20} />}
+                  {item.category === 'Firmware' && <Cpu size={18} />}
+                  {item.category === 'Wiring' && <Wrench size={18} />}
+                  {item.category === 'CAD' && <Box size={18} />}
+                  {(item.category === 'Manuals' || item.category === 'Brochures') && <FileText size={18} />}
                 </div>
 
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span 
-                      style={{
-                        padding: '2px 6px',
-                        borderRadius: '3px',
-                        background: 'rgba(255, 255, 255, 0.06)',
-                        fontSize: '10px',
-                        fontFamily: 'var(--font-mono)',
-                        color: 'var(--color-green)',
-                      }}
-                    >
-                      {item.category.toUpperCase()}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                    <span className="decal-badge">
+                      {item.category}
                     </span>
                     <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
                       {item.product} · {item.version}
                     </span>
                   </div>
-                  <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#ffffff', margin: 0 }}>
+                  <h4 style={{ fontSize: '13.5px', fontWeight: 600, color: '#FFFFFF', margin: 0 }}>
                     {item.title}
                   </h4>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
                 <div className="hide-mobile" style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '11px', color: '#fff', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ fontSize: '11px', color: '#FFFFFF', fontFamily: 'var(--font-mono)' }}>
                     {item.fileSize}
                   </div>
                   <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>
-                    Updated {item.date}
+                    {item.date}
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleSimulateDownload(item)}
-                  className="btn-glow"
+                  className="btn-machine-primary"
                   style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '8px 16px',
-                    borderRadius: '6px',
-                    background: 'var(--color-green)',
-                    color: '#060a08',
-                    fontWeight: 700,
-                    fontSize: '12px',
-                    fontFamily: 'var(--font-mono)',
-                    border: 'none',
-                    cursor: 'pointer',
-                    letterSpacing: '0.04em',
+                    padding: '6px 14px',
+                    fontSize: '11px',
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  <Download size={14} />
+                  <Download size={13} />
                   Download
                 </button>
               </div>
@@ -292,7 +271,7 @@ export const TechnicalDownloadsSection: React.FC = () => {
           ))}
 
           {filteredItems.length === 0 && (
-            <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <div style={{ padding: '36px', textAlign: 'center', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
               No technical documents match your filter.
             </div>
           )}

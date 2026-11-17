@@ -25,11 +25,11 @@ export const EcosystemSection: React.FC = () => {
       case 'brain':
         return { label: 'CENTRAL CONTROLLER', color: 'var(--color-green)' };
       case 'sensor':
-        return { label: 'PRECISION SENSOR', color: 'var(--color-cyan)' };
+        return { label: 'PRECISION SENSORY BUS', color: 'var(--color-cyan)' };
       case 'actuator':
-        return { label: 'ACTUATOR & PUMP', color: '#ffb703' };
+        return { label: 'DOSING SKID & VALVES', color: 'var(--color-amber)' };
       case 'cloud':
-        return { label: 'CLOUD & TELEMETRY', color: '#a06cd5' };
+        return { label: 'AGRONOMY AI & CLOUD', color: '#c084fc' };
       default:
         return { label: 'ECOSYSTEM NODE', color: 'var(--color-green)' };
     }
@@ -39,16 +39,16 @@ export const EcosystemSection: React.FC = () => {
     <section 
       id="ecosystem" 
       style={{
-        padding: '100px 0',
-        background: 'var(--bg-card)',
-        borderBottom: '1px solid var(--border-color)',
+        padding: '96px 0',
+        background: 'var(--bg-primary)',
+        borderBottom: '1px solid var(--border-subtle)',
         position: 'relative',
       }}
     >
       <div className="container">
         
         {/* Section Header */}
-        <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto 60px' }}>
+        <div style={{ maxWidth: '820px', marginBottom: '40px' }}>
           <div 
             style={{
               display: 'inline-flex',
@@ -59,85 +59,84 @@ export const EcosystemSection: React.FC = () => {
               color: 'var(--color-green)',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              marginBottom: '10px',
             }}
           >
             <Network size={14} />
-            Modular CEA Architecture
+            Hardware & Bus Topology
           </div>
           <h2 
+            className="font-display"
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2rem, 3.8vw, 3.2rem)',
+              fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
               fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '0.03em',
-              marginBottom: '16px',
+              lineHeight: 1.05,
+              color: '#FFFFFF',
+              margin: '0 0 16px 0',
             }}
           >
-            The Autogrow Ecosystem
+            Modular CEA Automation Architecture
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '16px', lineHeight: 1.6 }}>
-            Similar to TrolMaster's daisy-chain topology, Autogrow links controllers, smart multi-variable sensors, 
-            peristaltic dosing stations, and cloud analytics into a singular, fail-safe nervous system.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+            Similar to TrolMaster’s daisy-chain bus, Autogrow links central controllers, aspirated sensory pods, 
+            high-volume fertigation skids, and FarmRoad agronomy AI into a singular, fail-safe nervous system.
           </p>
-        </div>
 
-        {/* Filter Pills */}
-        <div 
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '10px',
-            marginBottom: '40px',
-          }}
-        >
-          {[
-            { id: 'all', label: 'All Architecture Nodes' },
-            { id: 'brain', label: 'Master Controllers (Brain)' },
-            { id: 'sensor', label: 'Sensory Probes' },
-            { id: 'actuator', label: 'Dosing & Stations' },
-            { id: 'cloud', label: 'IntelliGrow™ Cloud' },
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedRole(tab.id as any)}
-              style={{
-                padding: '8px 18px',
-                borderRadius: '6px',
-                fontSize: '12px',
-                fontFamily: 'var(--font-mono)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                fontWeight: 600,
-                border: selectedRole === tab.id 
-                  ? '1px solid var(--color-green)' 
-                  : '1px solid rgba(255, 255, 255, 0.1)',
-                background: selectedRole === tab.id 
-                  ? 'rgba(0, 255, 136, 0.12)' 
-                  : 'rgba(255, 255, 255, 0.03)',
-                color: selectedRole === tab.id ? 'var(--color-green)' : 'var(--text-secondary)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
+          {/* Filter Pills */}
+          <div 
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+              marginTop: '28px',
+            }}
+          >
+            {[
+              { id: 'all', label: 'All Architecture Nodes' },
+              { id: 'brain', label: 'Master Controllers' },
+              { id: 'sensor', label: 'Sensory Bus' },
+              { id: 'actuator', label: 'Dosing Skids' },
+              { id: 'cloud', label: 'Cloud & Yield AI' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedRole(tab.id as any)}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '3px',
+                  fontSize: '12px',
+                  fontFamily: 'var(--font-mono)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  fontWeight: 600,
+                  border: selectedRole === tab.id 
+                    ? '1px solid var(--color-green)' 
+                    : '1px solid var(--border-subtle)',
+                  background: selectedRole === tab.id 
+                    ? 'rgba(0, 229, 117, 0.12)' 
+                    : 'var(--bg-surface)',
+                  color: selectedRole === tab.id ? 'var(--color-green)' : 'var(--text-secondary)',
+                  cursor: 'pointer',
+                  transition: 'all 0.14s ease',
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Ecosystem Interactive Grid & Detail Panel */}
         <div 
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '30px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gap: '24px',
             alignItems: 'start',
           }}
         >
           {/* Node Cards List */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px' }}>
             {filteredNodes.map((node: EcosystemNode) => {
               const isSelected = activeNode.id === node.id;
               const roleInfo = getRoleBadge(node.role);
@@ -146,41 +145,40 @@ export const EcosystemSection: React.FC = () => {
                 <div
                   key={node.id}
                   onClick={() => setActiveNode(node)}
-                  className={`card-tactical ${isSelected ? 'active' : ''}`}
+                  className="panel-chassis"
                   style={{
-                    padding: '20px',
-                    borderRadius: '8px',
+                    padding: '16px 20px',
                     cursor: 'pointer',
-                    background: isSelected ? 'rgba(0, 255, 136, 0.05)' : 'rgba(16, 25, 20, 0.6)',
-                    borderColor: isSelected ? 'var(--color-green)' : 'var(--border-color)',
-                    transition: 'all 0.2s ease',
+                    background: isSelected ? 'var(--bg-surface-elevated)' : 'var(--bg-card)',
+                    borderColor: isSelected ? 'var(--color-green)' : 'var(--border-subtle)',
+                    transition: 'all 0.14s ease',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                     <div 
                       style={{
-                        width: '44px',
-                        height: '44px',
-                        borderRadius: '8px',
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '3px',
+                        background: 'var(--bg-void)',
+                        border: '1px solid var(--border-subtle)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: roleInfo.color,
                       }}
                     >
-                      {node.role === 'brain' && <Cpu size={22} />}
-                      {node.role === 'sensor' && <Activity size={22} />}
-                      {node.role === 'actuator' && <Zap size={22} />}
-                      {node.role === 'cloud' && <Cloud size={22} />}
+                      {node.role === 'brain' && <Cpu size={20} />}
+                      {node.role === 'sensor' && <Activity size={20} />}
+                      {node.role === 'actuator' && <Zap size={20} />}
+                      {node.role === 'cloud' && <Cloud size={20} />}
                     </div>
 
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: roleInfo.color, fontWeight: 700 }}>
                           [{node.code}]
                         </span>
@@ -188,18 +186,18 @@ export const EcosystemSection: React.FC = () => {
                           {node.categoryTitle}
                         </span>
                       </div>
-                      <h4 style={{ fontSize: '15px', fontWeight: 700, color: '#ffffff', margin: 0 }}>
+                      <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#FFFFFF', margin: 0 }}>
                         {node.name}
                       </h4>
                     </div>
                   </div>
 
                   <ArrowRight 
-                    size={18} 
+                    size={16} 
                     style={{ 
                       color: isSelected ? 'var(--color-green)' : 'var(--text-muted)',
-                      transform: isSelected ? 'translateX(4px)' : 'none',
-                      transition: 'transform 0.2s ease',
+                      transform: isSelected ? 'translateX(3px)' : 'none',
+                      transition: 'transform 0.14s ease',
                     }} 
                   />
                 </div>
@@ -207,58 +205,43 @@ export const EcosystemSection: React.FC = () => {
             })}
           </div>
 
-          {/* Active Node Detail Stage (TrolMaster Specification Canvas) */}
+          {/* Active Node Detail Stage (TrolMaster Engineering Canvas) */}
           <div 
+            className="panel-chassis"
             style={{
-              background: 'rgba(11, 18, 14, 0.85)',
-              border: '1px solid var(--border-color)',
-              borderRadius: '12px',
               padding: '32px',
               position: 'relative',
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
+              background: 'var(--bg-surface)',
             }}
           >
             {/* Header info */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
               <div>
-                <span 
-                  style={{
-                    display: 'inline-block',
-                    padding: '4px 10px',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    fontFamily: 'var(--font-mono)',
-                    fontWeight: 700,
-                    color: getRoleBadge(activeNode.role).color,
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    marginBottom: '10px',
-                  }}
-                >
-                  {getRoleBadge(activeNode.role).label} · MODEL {activeNode.code}
+                <span className="decal-badge" style={{ color: getRoleBadge(activeNode.role).color, marginBottom: '8px' }}>
+                  {getRoleBadge(activeNode.role).label} · [{activeNode.code}]
                 </span>
-                <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', margin: 0, fontFamily: 'var(--font-display)', textTransform: 'uppercase' }}>
+                <h3 className="font-display" style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
                   {activeNode.name}
                 </h3>
               </div>
 
               <div 
                 style={{
-                  width: '52px',
-                  height: '52px',
-                  borderRadius: '10px',
-                  background: 'rgba(0, 255, 136, 0.08)',
-                  border: '1px solid rgba(0, 255, 136, 0.25)',
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '3px',
+                  background: 'var(--bg-void)',
+                  border: '1px solid var(--border-subtle)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: 'var(--color-green)',
                 }}
               >
-                {activeNode.role === 'brain' && <Cpu size={26} />}
-                {activeNode.role === 'sensor' && <Activity size={26} />}
-                {activeNode.role === 'actuator' && <Zap size={26} />}
-                {activeNode.role === 'cloud' && <Cloud size={26} />}
+                {activeNode.role === 'brain' && <Cpu size={24} />}
+                {activeNode.role === 'sensor' && <Activity size={24} />}
+                {activeNode.role === 'actuator' && <Zap size={24} />}
+                {activeNode.role === 'cloud' && <Cloud size={24} />}
               </div>
             </div>
 
@@ -269,53 +252,53 @@ export const EcosystemSection: React.FC = () => {
             {/* Tactical Protocol Specs */}
             <div 
               style={{
-                background: 'rgba(0, 0, 0, 0.35)',
-                borderRadius: '8px',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                background: 'var(--bg-void)',
+                borderRadius: '3px',
+                border: '1px solid var(--border-subtle)',
                 padding: '16px',
                 marginBottom: '24px',
               }}
             >
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '8px' }}>
-                Hardware Bus & Signaling
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', marginBottom: '6px' }}>
+                Hardware Bus Signaling & Physical Topology
               </div>
-              <div style={{ fontSize: '13px', color: '#fff', fontFamily: 'var(--font-mono)', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '13px', color: '#FFFFFF', fontFamily: 'var(--font-mono)', lineHeight: 1.5 }}>
                 {activeNode.specs}
               </div>
             </div>
 
             {/* Architecture Highlights */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px', marginBottom: '28px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px', marginBottom: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                <CheckCircle2 size={16} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
+                <CheckCircle2 size={15} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
                 <span>Hot-swappable modular bus with daisy-chain capability up to 1000m.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                <CheckCircle2 size={16} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
-                <span>Isolated galvanic barrier protecting circuitry against inductive spikes.</span>
+                <CheckCircle2 size={15} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
+                <span>Isolated 2.5 kV galvanic barrier protecting against inductive pump spikes.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                <CheckCircle2 size={16} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
-                <span>Continuous cloud sync with on-device offline failsafe autonomy.</span>
+                <CheckCircle2 size={15} style={{ color: 'var(--color-green)', flexShrink: 0 }} />
+                <span>Continuous cloud sync with on-device offline fail-safe logic preservation.</span>
               </div>
             </div>
 
-            {/* Topology Diagram Graphic Box */}
+            {/* Footer Specifications */}
             <div 
               style={{
-                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                paddingTop: '20px',
+                borderTop: '1px solid var(--border-subtle)',
+                paddingTop: '16px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <ShieldCheck size={16} style={{ color: 'var(--color-green)' }} />
-                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Industrial IP65 Rated Enclosure</span>
+                <ShieldCheck size={15} style={{ color: 'var(--color-green)' }} />
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Industrial IP66 / NEMA 4X Rated</span>
               </div>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-cyan)' }}>
-                NZ STANDARDS COMPLIANT
+                NEW ZEALAND ENGINEERED
               </span>
             </div>
 
