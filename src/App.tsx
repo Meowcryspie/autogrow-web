@@ -96,9 +96,8 @@ export const App: React.FC = () => {
             {/* 7. TrolMaster "Grow in your POCKET!" App Section + 1:1 Responsive Phone Scaler */}
             <AppDownloadSection />
 
-            {/* 8. TrolMaster Where to Buy, Technical Support & Economic Calculator (Dual Buttons + Live Chat) */}
+            {/* 8. TrolMaster Where to Buy, Technical Support & Economic Calculator */}
             <WhereToBuySupport 
-              onNavigateToStore={() => handleNavigateToPage('store')}
               onOpenSupportChat={() => setIsChatOpen(true)}
             />
           </>

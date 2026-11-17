@@ -9,7 +9,6 @@ import {
   Wrench, 
   Box,
   ArrowRight,
-  ShoppingBag,
   MapPin,
   MessageSquare
 } from 'lucide-react';
@@ -17,12 +16,10 @@ import { DOWNLOADS_DATA, DISTRIBUTORS_DATA } from '../data/mockProducts';
 import type { DownloadItem, DistributorLocation } from '../types';
 
 interface WhereToBuySupportProps {
-  onNavigateToStore?: () => void;
   onOpenSupportChat?: () => void;
 }
 
 export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({ 
-  onNavigateToStore, 
   onOpenSupportChat 
 }) => {
   const [activeTab, setActiveTab] = useState<'distributors' | 'downloads' | 'roi' | 'helpdesk'>('distributors');
@@ -69,35 +66,14 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
             Order replacement probes directly from our online parts store, connect with a local certified greenhouse integrator in your region, or chat with technical support.
           </p>
 
-          {/* DUAL BUTTONS + SUPPORT CHAT (As explicitly requested by user) */}
-          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px' }}>
-            {/* Button 1: Shop Online Store */}
-            <button
-              onClick={onNavigateToStore}
-              className="btn btn-secondary"
-              style={{ 
-                padding: '14px 28px', 
-                fontSize: '14.5px', 
-                display: 'inline-flex', 
-                alignItems: 'center', 
-                gap: '10px',
-                backgroundColor: '#F9FAFB',
-                borderColor: '#111827',
-                color: '#111827',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.06)'
-              }}
-            >
-              <ShoppingBag size={18} style={{ color: '#76b82a' }} />
-              Shop Online Store (Probes & Spares)
-            </button>
-
-            {/* Button 2: Find Local Distributor */}
+          {/* Primary Action Button (Single Green Button as requested) */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '36px' }}>
             <button
               onClick={() => setActiveTab('distributors')}
               className="btn btn-primary"
               style={{ 
-                padding: '14px 28px', 
-                fontSize: '14.5px', 
+                padding: '14px 34px', 
+                fontSize: '15px', 
                 display: 'inline-flex', 
                 alignItems: 'center', 
                 gap: '10px',
@@ -106,37 +82,7 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
             >
               <MapPin size={18} />
               Find Local Certified Distributor
-            </button>
-
-            {/* Button 3: Interactive Technical Support Chatbox */}
-            <button
-              onClick={onOpenSupportChat}
-              style={{
-                padding: '14px 26px',
-                fontSize: '14.5px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                borderRadius: '9999px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                backgroundColor: '#1E2421',
-                color: '#FFFFFF',
-                border: '1px solid #374151',
-                boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
-                transition: 'background-color 0.15s, transform 0.15s'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#000000';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#1E2421';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              <MessageSquare size={18} style={{ color: '#76b82a' }} />
-              Open Technical Support Chatbox
+              <ArrowRight size={16} />
             </button>
           </div>
           

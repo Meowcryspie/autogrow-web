@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ShoppingCart, CheckCircle2, Search } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, CheckCircle2, Search, Cpu, Wrench, Layers } from 'lucide-react';
 import { STORE_PRODUCTS } from '../data/mockProducts';
 import type { StoreProduct } from '../types';
 
@@ -9,24 +9,24 @@ interface StorePageProps {
 }
 
 export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateToSection }) => {
-  const [selectedCat, setSelectedCat] = useState<'all' | 'probes' | 'sensors' | 'parts' | 'calibration'>('all');
+  const [selectedCat, setSelectedCat] = useState<'all' | 'controllers' | 'hardware' | 'parts'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [cartItems, setCartItems] = useState<{ product: StoreProduct; quantity: number }[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const categories: { id: 'all' | 'probes' | 'sensors' | 'parts' | 'calibration'; label: string }[] = [
-    { id: 'all', label: 'All Products' },
-    { id: 'probes', label: 'pH & EC Probes' },
-    { id: 'sensors', label: 'Sensory Pods & Meters' },
-    { id: 'parts', label: 'Replacement Parts & Pumps' },
-    { id: 'calibration', label: 'Calibration Standards' },
+  const categories: { id: 'all' | 'controllers' | 'hardware' | 'parts'; label: string; icon: any }[] = [
+    { id: 'all', label: 'All Products', icon: Layers },
+    { id: 'controllers', label: 'Controllers', icon: Cpu },
+    { id: 'hardware', label: 'Hardware', icon: Layers },
+    { id: 'parts', label: 'Spare Parts', icon: Wrench },
   ];
 
   const filteredProducts = STORE_PRODUCTS.filter(p => {
     const matchesCat = selectedCat === 'all' || p.category === selectedCat;
     const matchesQuery = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         p.modelCode.toLowerCase().includes(searchQuery.toLowerCase());
+                         p.modelCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         p.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCat && matchesQuery;
   });
 
@@ -92,7 +92,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
           Quote Cart ({totalCartCount})
           {totalCartCount > 0 && (
             <span style={{ backgroundColor: '#76b82a', color: '#FFFFFF', padding: '2px 8px', borderRadius: '999px', fontSize: '11px' }}>
-              ${totalCartValue}
+              ${totalCartValue.toLocaleString()}
             </span>
           )}
         </button>
@@ -129,11 +129,11 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
               marginBottom: '16px',
             }}
           >
-            Sensors, Replacement Probes & Spares
+            Online Store
           </h1>
 
           <p style={{ fontSize: '17px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
-            Order genuine factory replacement sensors, peristaltic cartridges, toroidal conductivity probes, and NIST-traceable calibration standards with fast worldwide dispatch.
+            Order genuine commercial controllers, hardware instrumentation, sensory pods, and spare parts directly from Autogrow with worldwide courier dispatch.
           </p>
         </div>
       </div>
@@ -163,35 +163,46 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
             border: '1px solid #E5E7EB',
           }}
         >
-          {/* Categories */}
+          {/* Categories: Differentiated by Controller, Hardware, Spare Part */}
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCat(cat.id)}
-                style={{
-                  padding: '7px 16px',
-                  borderRadius: '9999px',
-                  fontSize: '12.5px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  border: selectedCat === cat.id ? '1px solid #76b82a' : '1px solid #D1D5DB',
-                  backgroundColor: selectedCat === cat.id ? '#F0FDF4' : '#FFFFFF',
-                  color: selectedCat === cat.id ? '#15803D' : '#4B5563',
-                  transition: 'all 0.15s',
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
+            {categories.map(cat => {
+              const Icon = cat.icon;
+              const count = cat.id === 'all' 
+                ? STORE_PRODUCTS.length 
+                : STORE_PRODUCTS.filter(p => p.category === cat.id).length;
+
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCat(cat.id)}
+                  style={{
+                    padding: '8px 18px',
+                    borderRadius: '9999px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    border: selectedCat === cat.id ? '1px solid #76b82a' : '1px solid #D1D5DB',
+                    backgroundColor: selectedCat === cat.id ? '#F0FDF4' : '#FFFFFF',
+                    color: selectedCat === cat.id ? '#15803D' : '#4B5563',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  <Icon size={14} style={{ color: selectedCat === cat.id ? '#15803D' : '#9CA3AF' }} />
+                  {cat.label} ({count})
+                </button>
+              );
+            })}
           </div>
 
           {/* Search Box */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#FFFFFF', padding: '8px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', width: '260px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#FFFFFF', padding: '8px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', width: '280px' }}>
             <Search size={14} style={{ color: '#9CA3AF' }} />
             <input 
               type="text" 
-              placeholder="Search probes, parts, codes..."
+              placeholder="Search controllers, hardware, parts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{ border: 'none', outline: 'none', fontSize: '13px', width: '100%', color: '#111827' }}
@@ -209,114 +220,128 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
             gap: '24px',
           }}
         >
-          {filteredProducts.map((p) => (
-            <div
-              key={p.id}
-              style={{
-                borderRadius: '16px',
-                overflow: 'hidden',
-                backgroundColor: '#FFFFFF',
-                border: '1px solid #E5E7EB',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 12px 28px rgba(0,0,0,0.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.04)';
-              }}
-            >
-              {/* Product Image */}
-              <div style={{ position: 'relative', height: '190px', backgroundColor: '#F9FAFB', overflow: 'hidden' }}>
-                <img 
-                  src={p.image} 
-                  alt={p.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <span 
-                  style={{
-                    position: 'absolute',
-                    top: '12px',
-                    left: '12px',
-                    backgroundColor: '#111827',
-                    color: '#FFFFFF',
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    padding: '3px 8px',
-                    borderRadius: '4px',
-                    letterSpacing: '0.04em',
-                  }}
-                >
-                  [{p.modelCode}]
-                </span>
+          {filteredProducts.map((p) => {
+            const badgeLabel = p.category === 'controllers' 
+              ? 'CONTROLLER' 
+              : p.category === 'hardware' 
+                ? 'HARDWARE' 
+                : 'SPARE PART';
 
-                <span 
-                  style={{
-                    position: 'absolute',
-                    top: '12px',
-                    right: '12px',
-                    backgroundColor: '#DCFCE7',
-                    color: '#15803D',
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    padding: '3px 8px',
-                    borderRadius: '4px',
-                  }}
-                >
-                  IN STOCK
-                </span>
-              </div>
+            const badgeColor = p.category === 'controllers'
+              ? { bg: '#FEF3C7', text: '#92400E' }
+              : p.category === 'hardware'
+                ? { bg: '#E0F2FE', text: '#0369A1' }
+                : { bg: '#DCFCE7', text: '#15803D' };
 
-              {/* Product Info */}
-              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-                <div>
-                  <h3 style={{ fontSize: '16.5px', fontWeight: 800, color: '#111827', margin: '0 0 8px 0', lineHeight: 1.3 }}>
-                    {p.name}
-                  </h3>
-                  <p style={{ fontSize: '12.5px', color: '#6B7280', lineHeight: 1.5, margin: '0 0 12px 0' }}>
-                    {p.description}
-                  </p>
-                  <div style={{ fontSize: '11.5px', color: '#15803D', fontFamily: 'monospace', fontWeight: 600, marginBottom: '16px' }}>
-                    {p.specs}
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #F3F4F6', paddingTop: '14px' }}>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: '#111827', fontFamily: 'monospace' }}>
-                    ${p.price} <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 400 }}>USD</span>
-                  </div>
-
-                  <button
-                    onClick={() => handleAddToCart(p)}
-                    className="btn btn-primary"
-                    style={{ padding: '8px 18px', fontSize: '12px' }}
+            return (
+              <div
+                key={p.id}
+                style={{
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E5E7EB',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(0,0,0,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.04)';
+                }}
+              >
+                {/* Product Image */}
+                <div style={{ position: 'relative', height: '190px', backgroundColor: '#F9FAFB', overflow: 'hidden' }}>
+                  <img 
+                    src={p.image} 
+                    alt={p.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <span 
+                    style={{
+                      position: 'absolute',
+                      top: '12px',
+                      left: '12px',
+                      backgroundColor: '#111827',
+                      color: '#FFFFFF',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: '4px',
+                      letterSpacing: '0.04em',
+                    }}
                   >
-                    Add to Cart
-                  </button>
+                    [{p.modelCode}]
+                  </span>
+
+                  <span 
+                    style={{
+                      position: 'absolute',
+                      top: '12px',
+                      right: '12px',
+                      backgroundColor: badgeColor.bg,
+                      color: badgeColor.text,
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    {badgeLabel}
+                  </span>
+                </div>
+
+                {/* Product Info */}
+                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                  <div>
+                    <h3 style={{ fontSize: '16.5px', fontWeight: 800, color: '#111827', margin: '0 0 8px 0', lineHeight: 1.3 }}>
+                      {p.name}
+                    </h3>
+                    <p style={{ fontSize: '12.5px', color: '#6B7280', lineHeight: 1.5, margin: '0 0 12px 0' }}>
+                      {p.description}
+                    </p>
+                    <div style={{ fontSize: '11.5px', color: '#15803D', fontFamily: 'monospace', fontWeight: 600, marginBottom: '16px' }}>
+                      {p.specs}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #F3F4F6', paddingTop: '14px' }}>
+                    <div style={{ fontSize: '20px', fontWeight: 800, color: '#111827', fontFamily: 'monospace' }}>
+                      ${p.price.toLocaleString()} <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 400 }}>USD</span>
+                    </div>
+
+                    <button
+                      onClick={() => handleAddToCart(p)}
+                      className="btn btn-primary"
+                      style={{ padding: '8px 18px', fontSize: '12px' }}
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Commercial Skids Referral Strip */}
+        {/* Commercial Engineering Referral Strip */}
         <div style={{ marginTop: '56px', padding: '24px', backgroundColor: '#F9FAFB', borderRadius: '12px', border: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#111827', margin: '0 0 4px 0' }}>Looking for full commercial skid systems or turnkey automation?</h4>
-            <p style={{ fontSize: '13px', color: '#6B7280', margin: 0 }}>Explore our SatuGrow FertiX dosing rigs and multi-area greenhouse controllers.</p>
+            <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#111827', margin: '0 0 4px 0' }}>Need facility-scale engineering or custom fertigation skids?</h4>
+            <p style={{ fontSize: '13px', color: '#6B7280', margin: 0 }}>Review technical wiring schematics or contact our Auckland engineering desk.</p>
           </div>
           <button
             onClick={() => onNavigateToSection?.('suite')}
             className="btn btn-secondary"
             style={{ padding: '8px 20px', fontSize: '13px' }}
           >
-            Explore Master Controllers
+            Explore Hardware Lineup
           </button>
         </div>
       </div>
@@ -365,7 +390,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
               {cartItems.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '60px 0', color: '#9CA3AF' }}>
                   <ShoppingCart size={40} style={{ margin: '0 auto 12px', color: '#D1D5DB' }} />
-                  <p style={{ margin: 0 }}>Your cart is empty. Browse parts above.</p>
+                  <p style={{ margin: 0 }}>Your cart is empty. Browse controllers, hardware, and spare parts above.</p>
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '55vh', overflowY: 'auto' }}>
@@ -374,11 +399,11 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
                       <div>
                         <div style={{ fontWeight: 700, fontSize: '14px', color: '#111827' }}>{item.product.name}</div>
                         <div style={{ fontSize: '12px', color: '#6B7280' }}>
-                          ${item.product.price} × {item.quantity}
+                          ${item.product.price.toLocaleString()} × {item.quantity}
                         </div>
                       </div>
                       <div style={{ fontWeight: 700, fontFamily: 'monospace', color: '#111827' }}>
-                        ${item.product.price * item.quantity}
+                        ${(item.product.price * item.quantity).toLocaleString()}
                       </div>
                     </div>
                   ))}
@@ -390,18 +415,18 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
               <div style={{ borderTop: '1px solid #E5E7EB', paddingTop: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 800, color: '#111827', marginBottom: '16px' }}>
                   <span>Total Estimated Cost:</span>
-                  <span style={{ fontFamily: 'monospace' }}>${totalCartValue} USD</span>
+                  <span style={{ fontFamily: 'monospace' }}>${totalCartValue.toLocaleString()} USD</span>
                 </div>
                 <button
                   onClick={() => {
-                    alert('Order inquiry dispatched! An Autogrow parts specialist will verify your facility voltage and shipping schedule within 1 business hour.');
+                    alert('Order inquiry dispatched! An Autogrow technical specialist will verify your facility voltage and shipping schedule within 1 business hour.');
                     setCartItems([]);
                     setIsCartOpen(false);
                   }}
                   className="btn btn-primary"
                   style={{ width: '100%', padding: '14px', fontSize: '14px' }}
                 >
-                  Submit Commercial Parts Order
+                  Submit Commercial Order Inquiry
                 </button>
               </div>
             )}

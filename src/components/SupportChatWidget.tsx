@@ -76,7 +76,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
       } else if (lower.includes('alarm') || lower.includes('solenoid') || lower.includes('24vac') || lower.includes('lockout') || lower.includes('fault')) {
         botResponse = 'MultiGrow 24VAC Solenoid Lockout typically occurs when an inductive current spike exceeds 2.5 Amps on terminal TB3, or when valve wiring has shorted in the field.\n\nDiagnostic Steps:\n1. Check that your solenoid coil impedance is between 25–40 Ohms.\n2. Verify that the snubber diode is intact across the relay terminals.\n3. Clear fault from console under Menu > System > Reset Fault Alarms.';
       } else if (lower.includes('replace') || lower.includes('probe') || lower.includes('part') || lower.includes('store') || lower.includes('buy')) {
-        botResponse = 'Genuine replacement sensors (pH Sense Plus, EC Toroidal, WCS Substrate TDR), peristaltic pump cartridges, and calibration standards are available directly in our Online Parts Store with fast worldwide dispatch.';
+        botResponse = 'Genuine replacement sensors (pH Sense Plus, EC Toroidal, WCS Substrate TDR), peristaltic pump cartridges, and calibration standards are available directly in our Online Store with fast worldwide dispatch.';
         isStore = true;
       } else if (lower.includes('rs-485') || lower.includes('wire') || lower.includes('envirosensor') || lower.includes('cable')) {
         botResponse = 'EnviroSensor pods use a daisy-chain bus topology over RJ12 connectors or TB1 on MultiGrow. Ensure you use 24 AWG shielded twisted pair cable with 120-Ohm characteristic impedance. Always terminate the furthest pod with a 120-Ohm resistor to prevent signal reflection across runs over 100 meters.';
@@ -268,7 +268,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
                         style={{ padding: '6px 14px', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                       >
                         <ShoppingBag size={13} />
-                        Open Online Parts Store
+                        Open Online Store
                       </button>
                     </div>
                   )}

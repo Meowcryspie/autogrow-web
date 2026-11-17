@@ -7,13 +7,13 @@ import {
   Signal, 
   Droplet, 
   Thermometer, 
-  Wind, 
-  Sun, 
   Activity, 
   Play,
   Layers,
-  Settings,
-  Bell
+  Plus,
+  ShieldCheck,
+  CheckCircle2,
+  Sliders
 } from 'lucide-react';
 
 interface ViewportPreset {
@@ -26,20 +26,37 @@ interface ViewportPreset {
 
 export const AppDownloadSection: React.FC = () => {
   const presets: ViewportPreset[] = [
-    { id: 'compact', name: 'Compact', width: 340, height: 680, deviceLabel: '340 × 680 · SE / Pocket' },
+    { id: 'compact', name: 'Compact', width: 340, height: 690, deviceLabel: '340 × 690 · SE / Pocket' },
     { id: 'standard', name: 'Standard', width: 380, height: 760, deviceLabel: '380 × 760 · iPhone / Pixel' },
     { id: 'promax', name: 'Pro Max', width: 420, height: 820, deviceLabel: '420 × 820 · Pro Max / Ultra' },
   ];
 
   const [activePreset, setActivePreset] = useState<ViewportPreset>(presets[1]);
   const [zoomScale, setZoomScale] = useState<number>(95);
-  const [activeAppTab, setActiveAppTab] = useState<'sensors' | 'dosing' | 'substrate'>('sensors');
+  
+  // App screen switcher: 'farms' | 'tank' | 'pairing'
+  const [activeScreen, setActiveScreen] = useState<'farms' | 'tank' | 'pairing'>('farms');
 
-  // Interactive pulse dosing simulation
+  // Interactive Tank state
+  const [liveEC, setLiveEC] = useState<number>(1.82);
+  const [targetEC, setTargetEC] = useState<number>(1.80);
+  const [livePH, setLivePH] = useState<number>(5.85);
+  const [dosingMode, setDosingMode] = useState<'Auto' | 'Manual' | 'Off'>('Auto');
   const [isDosingPulsing, setIsDosingPulsing] = useState<boolean>(false);
-  const [liveEC, setLiveEC] = useState<number>(2.24);
-  const [livePH, setLivePH] = useState<number>(5.82);
-  const [lastDosedText, setLastDosedText] = useState<string>('14 mins ago');
+  const [lastDosedText, setLastDosedText] = useState<string>('12 mins ago');
+  const [selectedStage, setSelectedStage] = useState<string>('Bloom');
+
+  const stagePresets = [
+    { label: 'Seedling', target: 0.8 },
+    { label: 'Veg', target: 1.4 },
+    { label: 'Bloom', target: 1.8 },
+    { label: 'Peak', target: 2.2 },
+  ];
+
+  const handleStageSelect = (stage: { label: string; target: number }) => {
+    setSelectedStage(stage.label);
+    setTargetEC(stage.target);
+  };
 
   const triggerManualDose = () => {
     setIsDosingPulsing(true);
@@ -48,7 +65,7 @@ export const AppDownloadSection: React.FC = () => {
       setLiveEC(prev => Number((prev + 0.04).toFixed(2)));
       setLivePH(prev => Number((prev - 0.02).toFixed(2)));
       setLastDosedText('Just now');
-    }, 1600);
+    }, 1400);
   };
 
   return (
@@ -75,20 +92,37 @@ export const AppDownloadSection: React.FC = () => {
           }}
         >
           
-          {/* Left Column: Exact TrolMaster Copy & App Store Badges */}
+          {/* Left Column: Official Autogrow App Copy & Controls */}
           <div>
-            <h1 
+            <div 
               style={{
-                fontSize: 'clamp(2.5rem, 4.5vw, 4rem)',
-                fontWeight: 900,
-                color: '#111827',
-                lineHeight: 1.05,
-                letterSpacing: '-0.02em',
-                marginBottom: '24px',
+                display: 'inline-block',
+                backgroundColor: '#DCFCE7',
+                color: '#15803D',
+                padding: '4px 12px',
+                borderRadius: '9999px',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                marginBottom: '16px',
               }}
             >
-              Grow in your <span style={{ color: '#76b82a' }}>POCKET!</span>
-            </h1>
+              The Official Autogrow Mobile App
+            </div>
+
+            <h2 
+              style={{
+                fontSize: 'clamp(2.4rem, 4.2vw, 3.8rem)',
+                fontWeight: 900,
+                color: '#111827',
+                lineHeight: 1.08,
+                letterSpacing: '-0.02em',
+                marginBottom: '20px',
+              }}
+            >
+              Manage all your farms in your <span style={{ color: '#76b82a' }}>POCKET.</span>
+            </h2>
 
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '28px' }}>
               <div 
@@ -110,84 +144,134 @@ export const AppDownloadSection: React.FC = () => {
                 A
               </div>
               <div>
-                <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
-                  All-in-one control and monitoring tool on smart phone.
+                <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
+                  Real-time multi-farm precision telemetry & closed-loop dosing control.
                 </h3>
-                <p style={{ fontSize: '15px', color: '#4B5563', margin: 0 }}>
-                  Get the IntelliGrow app now on the App Store and Google Play. Manage climate, watering, and CO2 with our smart controllers from anywhere in the world.
+                <p style={{ fontSize: '14.5px', color: '#4B5563', margin: 0, lineHeight: 1.6 }}>
+                  Built directly around commercial grower workflows. Track live EC, pH, and rootzone moisture across all polyhouses and tanks. Receive instant alarm alerts and steer recipes from anywhere.
                 </p>
               </div>
             </div>
 
-            {/* App Store Download Badges */}
-            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '40px' }}>
-              <a 
-                href="#app-store" 
-                onClick={(e) => e.preventDefault()}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  backgroundColor: '#111827',
-                  color: '#FFFFFF',
-                  padding: '10px 22px',
-                  borderRadius: '10px',
-                  textDecoration: 'none',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  transition: 'background 0.15s',
-                }}
-              >
-                <div style={{ fontSize: '22px' }}>🍎</div>
-                <div>
-                  <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#9CA3AF' }}>Download on the</div>
-                  <div style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.1 }}>App Store</div>
-                </div>
-              </a>
+            {/* Interactive Screen Switcher Pills */}
+            <div style={{ marginBottom: '28px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
+                Preview Active App Screen:
+              </div>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => setActiveScreen('farms')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '9999px',
+                    fontSize: '12.5px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: activeScreen === 'farms' ? '1px solid #76b82a' : '1px solid #D1D5DB',
+                    backgroundColor: activeScreen === 'farms' ? '#F0FDF4' : '#FFFFFF',
+                    color: activeScreen === 'farms' ? '#15803D' : '#4B5563',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  1. My Farms Dashboard
+                </button>
 
-              <a 
-                href="#google-play" 
-                onClick={(e) => e.preventDefault()}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  backgroundColor: '#111827',
-                  color: '#FFFFFF',
-                  padding: '10px 22px',
-                  borderRadius: '10px',
-                  textDecoration: 'none',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  transition: 'background 0.15s',
-                }}
-              >
-                <div style={{ fontSize: '20px' }}>▶</div>
-                <div>
-                  <div style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#9CA3AF' }}>GET IT ON</div>
-                  <div style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.1 }}>Google Play</div>
-                </div>
-              </a>
+                <button
+                  onClick={() => setActiveScreen('tank')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '9999px',
+                    fontSize: '12.5px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: activeScreen === 'tank' ? '1px solid #76b82a' : '1px solid #D1D5DB',
+                    backgroundColor: activeScreen === 'tank' ? '#F0FDF4' : '#FFFFFF',
+                    color: activeScreen === 'tank' ? '#15803D' : '#4B5563',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  2. Tank Telemetry & EC Gauge
+                </button>
+
+                <button
+                  onClick={() => setActiveScreen('pairing')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '9999px',
+                    fontSize: '12.5px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: activeScreen === 'pairing' ? '1px solid #76b82a' : '1px solid #D1D5DB',
+                    backgroundColor: activeScreen === 'pairing' ? '#F0FDF4' : '#FFFFFF',
+                    color: activeScreen === 'pairing' ? '#15803D' : '#4B5563',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  3. Device Pairing Flow
+                </button>
+              </div>
             </div>
 
-            {/* Viewport Presets & Zoom Tooling (User Requirement: 1:1 Phone Scaling) */}
+            {/* App Store Download Badges */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '32px' }}>
+              <div 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  backgroundColor: '#111827',
+                  color: '#FFFFFF',
+                  padding: '10px 18px',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  border: '1px solid #374151',
+                }}
+              >
+                <Smartphone size={22} style={{ color: '#76b82a' }} />
+                <div>
+                  <div style={{ fontSize: '9px', textTransform: 'uppercase', color: '#9CA3AF', letterSpacing: '0.04em' }}>Download on the</div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, lineHeight: 1.1 }}>App Store</div>
+                </div>
+              </div>
+
+              <div 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  backgroundColor: '#111827',
+                  color: '#FFFFFF',
+                  padding: '10px 18px',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  border: '1px solid #374151',
+                }}
+              >
+                <Play size={20} style={{ color: '#76b82a' }} />
+                <div>
+                  <div style={{ fontSize: '9px', textTransform: 'uppercase', color: '#9CA3AF', letterSpacing: '0.04em' }}>Get it on</div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, lineHeight: 1.1 }}>Google Play</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 1:1 Responsive Viewport Scaler Toolbar */}
             <div 
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: '12px',
-                padding: '18px 22px',
                 border: '1px solid #E5E7EB',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                padding: '16px 20px',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                <Smartphone size={16} style={{ color: '#76b82a' }} />
-                <span style={{ fontSize: '13px', fontWeight: 700, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  Interactive Phone Viewport Scaler
-                </span>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: '#111827', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Smartphone size={14} style={{ color: '#76b82a' }} />
+                Phone Simulator Scale & Presets
               </div>
 
-              {/* Preset Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '14px' }}>
-                <span style={{ fontSize: '12px', color: '#6B7280', fontWeight: 500 }}>Device:</span>
+              {/* Viewport Presets */}
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
                 {presets.map(p => (
                   <button
                     key={p.id}
@@ -195,7 +279,7 @@ export const AppDownloadSection: React.FC = () => {
                     style={{
                       padding: '5px 12px',
                       borderRadius: '6px',
-                      fontSize: '12px',
+                      fontSize: '11.5px',
                       fontWeight: 600,
                       cursor: 'pointer',
                       border: activePreset.id === p.id ? '1px solid #76b82a' : '1px solid #D1D5DB',
@@ -238,7 +322,7 @@ export const AppDownloadSection: React.FC = () => {
 
           </div>
 
-          {/* Right Column: Scalable Mobile Device Chassis with Live Telemetry */}
+          {/* Right Column: Scalable Mobile Device Chassis with OUR ACTUAL APP */}
           <div 
             style={{
               display: 'flex',
@@ -308,176 +392,433 @@ export const AppDownloadSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* App Shell */}
+              {/* App Shell Body */}
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#F9FAFB', overflowY: 'auto' }}>
                 
-                {/* App Header */}
-                <div style={{ padding: '12px 18px', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <div style={{ fontSize: '9px', color: '#15803D', fontWeight: 700, textTransform: 'uppercase' }}>
-                        FACILITY #04 · NORTH CANTERBURY
+                {/* ================= SCREEN 1: MY FARMS DASHBOARD ================= */}
+                {activeScreen === 'farms' && (
+                  <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {/* Top Header */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#111827', margin: '0 0 2px 0', letterSpacing: '-0.02em' }}>
+                          My farms
+                        </h3>
+                        <div style={{ fontSize: '11.5px', color: '#15803D', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 600 }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#15803D' }} />
+                          Live telemetry active
+                        </div>
                       </div>
-                      <div style={{ fontSize: '15px', fontWeight: 800, color: '#111827' }}>
-                        ZONE A: VINE TOMATOES
+
+                      <div style={{ backgroundColor: '#DCFCE7', color: '#15803D', fontSize: '11px', fontWeight: 700, padding: '4px 10px', borderRadius: '999px' }}>
+                        8 of 10 online
                       </div>
                     </div>
-                    <span style={{ padding: '3px 8px', borderRadius: '4px', backgroundColor: '#DCFCE7', color: '#15803D', fontSize: '9.5px', fontWeight: 700 }}>
-                      ONLINE
-                    </span>
-                  </div>
-                </div>
 
-                {/* Sub-Tabs */}
-                <div style={{ display: 'flex', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E7EB' }}>
-                  {[
-                    { id: 'sensors', label: 'Sensors' },
-                    { id: 'dosing', label: 'Dosing' },
-                    { id: 'substrate', label: 'Substrate' },
-                  ].map(tab => (
+                    {/* Add Device Button */}
                     <button
-                      key={tab.id}
-                      onClick={() => setActiveAppTab(tab.id as any)}
+                      onClick={() => setActiveScreen('pairing')}
                       style={{
-                        flex: 1,
-                        padding: '9px 4px',
-                        fontSize: '11.5px',
-                        fontWeight: activeAppTab === tab.id ? 700 : 500,
+                        backgroundColor: '#111827',
+                        color: '#FFFFFF',
+                        padding: '12px',
+                        borderRadius: '12px',
+                        fontWeight: 700,
+                        fontSize: '13px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px',
                         border: 'none',
-                        background: 'none',
-                        borderBottom: activeAppTab === tab.id ? '2px solid #76b82a' : 'none',
-                        color: activeAppTab === tab.id ? '#15803D' : '#6B7280',
                         cursor: 'pointer',
                       }}
                     >
-                      {tab.label}
+                      <Plus size={16} />
+                      Add a device
                     </button>
-                  ))}
-                </div>
 
-                {/* Tab Content */}
-                <div style={{ flex: 1, padding: '14px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  
-                  {activeAppTab === 'sensors' && (
-                    <>
-                      {/* Metric Dual Cards */}
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '8px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                          <div style={{ fontSize: '9.5px', color: '#6B7280', textTransform: 'uppercase', fontWeight: 600 }}>CONDUCTIVITY</div>
-                          <div style={{ fontSize: '24px', fontWeight: 800, color: '#111827', margin: '4px 0', fontFamily: 'monospace' }}>
-                            {liveEC}
-                          </div>
-                          <div style={{ fontSize: '9.5px', color: '#15803D', fontWeight: 600 }}>Target: 2.20 mS/cm</div>
-                        </div>
-
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '8px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                          <div style={{ fontSize: '9.5px', color: '#6B7280', textTransform: 'uppercase', fontWeight: 600 }}>SOLUTION pH</div>
-                          <div style={{ fontSize: '24px', fontWeight: 800, color: '#111827', margin: '4px 0', fontFamily: 'monospace' }}>
-                            {livePH}
-                          </div>
-                          <div style={{ fontSize: '9.5px', color: '#0284C7', fontWeight: 600 }}>Target: 5.80 pH</div>
-                        </div>
+                    {/* 3 Summary KPI Cards */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                      <div style={{ backgroundColor: '#FFFFFF', padding: '10px', borderRadius: '10px', border: '1px solid #E5E7EB', textAlign: 'center' }}>
+                        <div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 500 }}>Tanks</div>
+                        <div style={{ fontSize: '20px', fontWeight: 800, color: '#111827', fontFamily: 'monospace' }}>10</div>
                       </div>
-
-                      {/* Quad Climate Grid */}
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid #E5E7EB' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: '#6B7280', fontWeight: 600 }}>
-                            <Thermometer size={12} style={{ color: '#D97706' }} /> TEMP
-                          </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#111827', fontFamily: 'monospace' }}>24.5°C</div>
-                        </div>
-
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid #E5E7EB' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: '#6B7280', fontWeight: 600 }}>
-                            <Droplet size={12} style={{ color: '#0284C7' }} /> RH
-                          </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#111827', fontFamily: 'monospace' }}>68.2%</div>
-                        </div>
-
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid #E5E7EB' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: '#6B7280', fontWeight: 600 }}>
-                            <Wind size={12} style={{ color: '#16A34A' }} /> VPD
-                          </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#15803D', fontFamily: 'monospace' }}>1.15 kPa</div>
-                        </div>
-
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '10px', borderRadius: '6px', border: '1px solid #E5E7EB' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '9px', color: '#6B7280', fontWeight: 600 }}>
-                            <Sun size={12} style={{ color: '#D97706' }} /> CO2
-                          </div>
-                          <div style={{ fontSize: '16px', fontWeight: 700, color: '#111827', fontFamily: 'monospace' }}>1,120 ppm</div>
-                        </div>
+                      <div style={{ backgroundColor: '#FFFFFF', padding: '10px', borderRadius: '10px', border: '1px solid #E5E7EB', textAlign: 'center' }}>
+                        <div style={{ fontSize: '11px', color: '#DC2626', fontWeight: 600 }}>Alarms</div>
+                        <div style={{ fontSize: '20px', fontWeight: 800, color: '#DC2626', fontFamily: 'monospace' }}>1</div>
                       </div>
-                    </>
-                  )}
-
-                  {activeAppTab === 'dosing' && (
-                    <>
-                      <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '8px', border: '1px solid #E5E7EB' }}>
-                        <div style={{ fontSize: '9.5px', color: '#6B7280', fontWeight: 600 }}>ACTIVE RECIPE</div>
-                        <div style={{ fontSize: '14px', fontWeight: 700, color: '#111827', margin: '2px 0' }}>BLOOM BOOST #03</div>
-                        <div style={{ fontSize: '11px', color: '#6B7280' }}>Proportional A/B/pH injection active.</div>
-                      </div>
-
-                      <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
-                        <button
-                          onClick={triggerManualDose}
-                          disabled={isDosingPulsing}
-                          style={{
-                            width: '100%',
-                            padding: '12px',
-                            borderRadius: '6px',
-                            backgroundColor: isDosingPulsing ? '#DCFCE7' : '#76b82a',
-                            color: isDosingPulsing ? '#15803D' : '#FFFFFF',
-                            border: 'none',
-                            fontWeight: 700,
-                            fontSize: '12px',
-                            textTransform: 'uppercase',
-                            cursor: isDosingPulsing ? 'wait' : 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '6px',
-                          }}
-                        >
-                          <Play size={14} />
-                          {isDosingPulsing ? 'Dosing in Progress...' : 'Trigger 10ml Pulse Dose'}
-                        </button>
-                        <div style={{ textAlign: 'center', fontSize: '9.5px', color: '#9CA3AF', marginTop: '6px' }}>
-                          Last dosed: {lastDosedText}
-                        </div>
-                      </div>
-                    </>
-                  )}
-
-                  {activeAppTab === 'substrate' && (
-                    <div style={{ backgroundColor: '#FFFFFF', padding: '14px', borderRadius: '8px', border: '1px solid #E5E7EB' }}>
-                      <div style={{ fontSize: '10px', color: '#0284C7', fontWeight: 700 }}>WCS-PRO SUBSTRATE POD</div>
-                      <div style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '4px 0' }}>VWC: 62.4%</div>
-                      <div style={{ fontSize: '11px', color: '#6B7280' }}>Pore Water EC: 3.2 mS/cm · Temp: 21.6°C</div>
-                      <div style={{ marginTop: '10px', fontSize: '11px', color: '#15803D', fontWeight: 600 }}>
-                        ✓ Target dryback on schedule (-12.0%)
+                      <div style={{ backgroundColor: '#FFFFFF', padding: '10px', borderRadius: '10px', border: '1px solid #E5E7EB', textAlign: 'center' }}>
+                        <div style={{ fontSize: '11px', color: '#6B7280', fontWeight: 500 }}>Offline</div>
+                        <div style={{ fontSize: '20px', fontWeight: 800, color: '#111827', fontFamily: 'monospace' }}>2</div>
                       </div>
                     </div>
-                  )}
 
-                </div>
+                    {/* Farm Cards */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {/* Farm 1: Cameron Highlands */}
+                      <div 
+                        onClick={() => setActiveScreen('tank')}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: '14px',
+                          border: '1px solid #E5E7EB',
+                          padding: '14px',
+                          cursor: 'pointer',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                        }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                          <span style={{ fontSize: '10px', fontWeight: 700, backgroundColor: '#DCFCE7', color: '#15803D', padding: '2px 8px', borderRadius: '4px' }}>
+                            ALL ONLINE
+                          </span>
+                          <span style={{ fontSize: '11px', color: '#6B7280' }}>Cameron Highlands</span>
+                        </div>
+                        <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
+                          Highlands Hydroponics
+                        </h4>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#4B5563', borderTop: '1px solid #F3F4F6', paddingTop: '8px' }}>
+                          <span>4 Tanks Active</span>
+                          <span>Avg EC: <strong style={{ color: '#15803D' }}>1.85 mS/cm</strong></span>
+                        </div>
+                      </div>
 
-                {/* Bottom App Bar */}
-                <div style={{ height: '44px', borderTop: '1px solid #E5E7EB', backgroundColor: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'space-around', color: '#9CA3AF' }}>
-                  <Activity size={16} style={{ color: '#76b82a' }} />
-                  <Layers size={16} />
-                  <Bell size={16} />
-                  <Settings size={16} />
-                </div>
+                      {/* Farm 2: Pahang Berry Farm */}
+                      <div 
+                        onClick={() => setActiveScreen('tank')}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: '14px',
+                          border: '1px solid #E5E7EB',
+                          padding: '14px',
+                          cursor: 'pointer',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                        }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                          <span style={{ fontSize: '10px', fontWeight: 700, backgroundColor: '#FEF3C7', color: '#B45309', padding: '2px 8px', borderRadius: '4px' }}>
+                            1 ATTENTION
+                          </span>
+                          <span style={{ fontSize: '11px', color: '#6B7280' }}>Genting Highlands</span>
+                        </div>
+                        <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
+                          Pahang Berry Bay
+                        </h4>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#4B5563', borderTop: '1px solid #F3F4F6', paddingTop: '8px' }}>
+                          <span>6 Tanks Active</span>
+                          <span>Avg EC: <strong style={{ color: '#15803D' }}>2.12 mS/cm</strong></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                {/* Home Bar */}
-                <div style={{ height: '14px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
-                  <div style={{ width: '90px', height: '3px', backgroundColor: '#D1D5DB', borderRadius: '999px' }} />
-                </div>
+                {/* ================= SCREEN 2: TANK TELEMETRY & EC GAUGE ================= */}
+                {activeScreen === 'tank' && (
+                  <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {/* Top Bar with Back to Farms */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <button
+                        onClick={() => setActiveScreen('farms')}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          fontSize: '12px',
+                          color: '#15803D',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '2px',
+                        }}
+                      >
+                        ← All farms
+                      </button>
+                      <span style={{ fontSize: '10px', fontWeight: 700, backgroundColor: '#DCFCE7', color: '#15803D', padding: '2px 6px', borderRadius: '4px' }}>
+                        LIVE 3s
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111827', margin: '0 0 2px 0' }}>
+                        Tank 1 - Bloom NFT
+                      </h3>
+                      <div style={{ fontSize: '11.5px', color: '#6B7280' }}>
+                        Highlands Hydroponics · Zone 01
+                      </div>
+                    </div>
+
+                    {/* Circular EC Gauge Card */}
+                    <div style={{ backgroundColor: '#FFFFFF', borderRadius: '16px', border: '1px solid #E5E7EB', padding: '18px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', marginBottom: '8px' }}>
+                        Electrical Conductivity (EC)
+                      </div>
+
+                      {/* Gauge Value Display */}
+                      <div style={{ position: 'relative', width: '130px', height: '130px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <svg width="130" height="130" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)', position: 'absolute' }}>
+                          <circle cx="50" cy="50" r="40" fill="transparent" stroke="#E5E7EB" strokeWidth="8" />
+                          <circle cx="50" cy="50" r="40" fill="transparent" stroke="#76b82a" strokeWidth="8" strokeDasharray="251.2" strokeDashoffset="70" strokeLinecap="round" />
+                        </svg>
+                        <span style={{ fontSize: '28px', fontWeight: 900, color: '#111827', fontFamily: 'monospace', lineHeight: 1 }}>
+                          {liveEC.toFixed(2)}
+                        </span>
+                        <span style={{ fontSize: '11px', color: '#6B7280', fontWeight: 600 }}>mS/cm</span>
+                      </div>
+
+                      {/* Target Stepper */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', marginTop: '12px' }}>
+                        <button
+                          onClick={() => setTargetEC(prev => Math.max(0.6, Number((prev - 0.1).toFixed(1))))}
+                          style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#F3F4F6', border: '1px solid #D1D5DB', fontWeight: 800, fontSize: '14px', cursor: 'pointer' }}
+                        >
+                          -
+                        </button>
+                        <div style={{ fontSize: '12px', color: '#374151' }}>
+                          Target: <strong style={{ color: '#15803D' }}>{targetEC.toFixed(1)}</strong> mS
+                        </div>
+                        <button
+                          onClick={() => setTargetEC(prev => Math.min(3.5, Number((prev + 0.1).toFixed(1))))}
+                          style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#F3F4F6', border: '1px solid #D1D5DB', fontWeight: 800, fontSize: '14px', cursor: 'pointer' }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Secondary Metrics: pH & Water Temp */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                      <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#6B7280', marginBottom: '4px' }}>
+                          <Droplet size={12} style={{ color: '#0284C7' }} />
+                          pH Level
+                        </div>
+                        <div style={{ fontSize: '18px', fontWeight: 800, color: '#111827', fontFamily: 'monospace' }}>
+                          {livePH.toFixed(2)}
+                        </div>
+                        <div style={{ fontSize: '10px', color: '#15803D', fontWeight: 600 }}>Optimal (5.8–6.2)</div>
+                      </div>
+
+                      <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#6B7280', marginBottom: '4px' }}>
+                          <Thermometer size={12} style={{ color: '#D97706' }} />
+                          Water Temp
+                        </div>
+                        <div style={{ fontSize: '18px', fontWeight: 800, color: '#111827', fontFamily: 'monospace' }}>
+                          21.4°C
+                        </div>
+                        <div style={{ fontSize: '10px', color: '#15803D', fontWeight: 600 }}>Chiller Stable</div>
+                      </div>
+                    </div>
+
+                    {/* Stage Presets */}
+                    <div style={{ backgroundColor: '#FFFFFF', padding: '12px', borderRadius: '12px', border: '1px solid #E5E7EB' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', marginBottom: '6px' }}>Crop Stage Presets:</div>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        {stagePresets.map(st => (
+                          <button
+                            key={st.label}
+                            onClick={() => handleStageSelect(st)}
+                            style={{
+                              flex: 1,
+                              padding: '5px 2px',
+                              borderRadius: '6px',
+                              fontSize: '10.5px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              border: selectedStage === st.label ? '1px solid #76b82a' : '1px solid #E5E7EB',
+                              backgroundColor: selectedStage === st.label ? '#F0FDF4' : '#F9FAFB',
+                              color: selectedStage === st.label ? '#15803D' : '#4B5563',
+                            }}
+                          >
+                            {st.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Dosing Mode Selector */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FFFFFF', padding: '8px 12px', borderRadius: '10px', border: '1px solid #E5E7EB' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280' }}>Dosing Mode:</span>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        {(['Auto', 'Manual', 'Off'] as const).map(mode => (
+                          <button
+                            key={mode}
+                            onClick={() => setDosingMode(mode)}
+                            style={{
+                              padding: '3px 8px',
+                              borderRadius: '4px',
+                              fontSize: '10.5px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              backgroundColor: dosingMode === mode ? '#111827' : '#F3F4F6',
+                              color: dosingMode === mode ? '#FFFFFF' : '#4B5563',
+                            }}
+                          >
+                            {mode}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Interactive Dosing Button */}
+                    <button
+                      onClick={triggerManualDose}
+                      disabled={isDosingPulsing}
+                      style={{
+                        padding: '12px',
+                        borderRadius: '12px',
+                        backgroundColor: isDosingPulsing ? '#15803D' : '#111827',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        fontWeight: 700,
+                        fontSize: '13px',
+                        cursor: isDosingPulsing ? 'default' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px',
+                        transition: 'background-color 0.2s',
+                      }}
+                    >
+                      <Droplet size={14} style={{ color: '#76b82a' }} />
+                      {isDosingPulsing ? 'Injecting 20ml Pulse...' : 'Pulse Dose 20ml Once'}
+                    </button>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: '#9CA3AF' }}>
+                      Last automated injection: {lastDosedText}
+                    </div>
+                  </div>
+                )}
+
+                {/* ================= SCREEN 3: DEVICE PAIRING FLOW ================= */}
+                {activeScreen === 'pairing' && (
+                  <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <button
+                        onClick={() => setActiveScreen('farms')}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          fontSize: '12px',
+                          color: '#15803D',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        ← Cancel
+                      </button>
+                      <span style={{ fontSize: '11px', color: '#6B7280', fontWeight: 600 }}>Step 2 of 3</span>
+                    </div>
+
+                    <div>
+                      <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '0 0 4px 0' }}>
+                        Pair Autogrow Device
+                      </h3>
+                      <p style={{ fontSize: '12px', color: '#6B7280', margin: 0 }}>
+                        Provisioning greenhouse Wi-Fi credentials to controller.
+                      </p>
+                    </div>
+
+                    {/* Found Controller Card */}
+                    <div style={{ backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #76b82a', padding: '14px', boxShadow: '0 2px 8px rgba(118,184,42,0.1)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#15803D' }}>
+                          <CheckCircle2 size={18} />
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '13px', fontWeight: 800, color: '#111827' }}>
+                            MultiGrow MGC-Pro Found
+                          </div>
+                          <div style={{ fontSize: '10.5px', color: '#6B7280', fontFamily: 'monospace' }}>
+                            BLE: AG-8841-NZ · Signal: -48 dBm
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Wi-Fi Configuration Box */}
+                    <div style={{ backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E5E7EB', padding: '14px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', marginBottom: '10px' }}>
+                        Facility Network Selected:
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', backgroundColor: '#F9FAFB', borderRadius: '8px', border: '1px solid #E5E7EB', marginBottom: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', fontWeight: 600, color: '#111827' }}>
+                          <Wifi size={14} style={{ color: '#15803D' }} />
+                          Greenhouse_5G_Commercial
+                        </div>
+                        <span style={{ fontSize: '10px', color: '#15803D', fontWeight: 700 }}>STRONG</span>
+                      </div>
+
+                      <button
+                        onClick={() => setActiveScreen('tank')}
+                        style={{
+                          width: '100%',
+                          padding: '12px',
+                          borderRadius: '10px',
+                          backgroundColor: '#76b82a',
+                          color: '#FFFFFF',
+                          border: 'none',
+                          fontWeight: 700,
+                          fontSize: '13px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Complete Setup & Launch Tank
+                      </button>
+                    </div>
+
+                    <div style={{ padding: '12px', borderRadius: '10px', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11.5px', color: '#15803D' }}>
+                      <ShieldCheck size={16} />
+                      Encrypted TLS 1.3 token exchanged with Autogrow Cloud.
+                    </div>
+                  </div>
+                )}
 
               </div>
+
+              {/* Bottom Phone App Tab Bar */}
+              <div 
+                style={{
+                  height: '52px',
+                  backgroundColor: '#FFFFFF',
+                  borderTop: '1px solid #E5E7EB',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                  padding: '0 12px',
+                  fontSize: '10px',
+                  color: '#6B7280',
+                }}
+              >
+                <div 
+                  onClick={() => setActiveScreen('farms')}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', cursor: 'pointer', color: activeScreen === 'farms' ? '#15803D' : '#6B7280', fontWeight: activeScreen === 'farms' ? 700 : 500 }}
+                >
+                  <Layers size={16} />
+                  <span>Farms</span>
+                </div>
+
+                <div 
+                  onClick={() => setActiveScreen('tank')}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', cursor: 'pointer', color: activeScreen === 'tank' ? '#15803D' : '#6B7280', fontWeight: activeScreen === 'tank' ? 700 : 500 }}
+                >
+                  <Activity size={16} />
+                  <span>Telemetry</span>
+                </div>
+
+                <div 
+                  onClick={() => setActiveScreen('pairing')}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', cursor: 'pointer', color: activeScreen === 'pairing' ? '#15803D' : '#6B7280', fontWeight: activeScreen === 'pairing' ? 700 : 500 }}
+                >
+                  <Sliders size={16} />
+                  <span>Pair</span>
+                </div>
+              </div>
+
+              {/* Home Indicator Bar */}
+              <div style={{ height: '18px', backgroundColor: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '110px', height: '4px', borderRadius: '999px', backgroundColor: '#1F2937' }} />
+              </div>
+
             </div>
           </div>
 

@@ -102,7 +102,7 @@ export interface StoreProduct {
   id: string;
   modelCode: string;
   name: string;
-  category: 'probes' | 'parts' | 'sensors' | 'calibration';
+  category: 'controllers' | 'hardware' | 'parts';
   price: number;
   inStock: boolean;
   image: string;

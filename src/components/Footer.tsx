@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, ArrowRight, MessageSquare } from 'lucide-react';
+import { ArrowRight, MessageSquare } from 'lucide-react';
 
 interface FooterProps {
   onNavigateToSection: (sectionId: string) => void;
@@ -49,19 +49,11 @@ export const Footer: React.FC<FooterProps> = ({
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-            <button
-              onClick={() => onNavigateToPage('store')}
-              className="btn btn-secondary"
-              style={{ padding: '14px 28px', fontSize: '14.5px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-            >
-              <ShoppingBag size={16} style={{ color: '#76b82a' }} />
-              Shop Online Store
-            </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
             <button
               onClick={() => onNavigateToSection('where-to-buy')}
               className="btn btn-primary"
-              style={{ padding: '14px 28px', fontSize: '14.5px' }}
+              style={{ padding: '14px 34px', fontSize: '15px' }}
             >
               Find a Distributor
               <ArrowRight size={14} />
@@ -131,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({
           <div>
             <p style={{ fontWeight: 700, color: '#111827', fontSize: '15px', marginBottom: '16px' }}>Discover</p>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px' }}>
-              <li><span onClick={() => onNavigateToPage('blog')} style={{ cursor: 'pointer', transition: 'color 0.15s', color: '#76b82a', fontWeight: 700 }}>Grower Blog & Guides</span></li>
+              <li><span onClick={() => onNavigateToPage('blog')} style={{ cursor: 'pointer', transition: 'color 0.15s', color: '#76b82a', fontWeight: 700 }}>Blog</span></li>
               <li><span onClick={() => onNavigateToPage('about')} style={{ cursor: 'pointer', transition: 'color 0.15s' }}>Our Story Since 1994</span></li>
               <li><span onClick={() => onNavigateToSection('stories')} style={{ cursor: 'pointer', transition: 'color 0.15s' }}>North Canterbury Tomatoes</span></li>
               <li><span onClick={() => onNavigateToSection('stories')} style={{ cursor: 'pointer', transition: 'color 0.15s' }}>Baja Desert Greenhouse</span></li>

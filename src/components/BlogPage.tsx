@@ -19,7 +19,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
 
   return (
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', paddingTop: '40px', paddingBottom: '96px' }}>
-      
+
       {/* Top Breadcrumb Header */}
       <div className="container" style={{ marginBottom: '36px' }}>
         <button
@@ -47,7 +47,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
       {/* Hero Header */}
       <div className="container" style={{ marginBottom: '48px' }}>
         <div style={{ maxWidth: '800px' }}>
-          <div 
+          <div
             style={{
               display: 'inline-block',
               backgroundColor: '#F0FDF4',
@@ -65,7 +65,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
             Autogrow Commercial Agronomy & Field Engineering
           </div>
 
-          <h1 
+          <h1
             style={{
               fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)',
               fontWeight: 900,
@@ -75,7 +75,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
               marginBottom: '18px',
             }}
           >
-            Grower Education, Technical Guides & Field Insights
+            Blog
           </h1>
 
           <p style={{ fontSize: '17px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
@@ -111,7 +111,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
 
       {/* Blog Cards Grid */}
       <div className="container">
-        <div 
+        <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
@@ -144,8 +144,8 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
             >
               {/* Image */}
               <div style={{ position: 'relative', height: '220px', overflow: 'hidden' }}>
-                <img 
-                  src={post.image} 
+                <img
+                  src={post.image}
                   alt={post.title}
                   style={{
                     width: '100%',
@@ -153,7 +153,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
                     objectFit: 'cover',
                   }}
                 />
-                <div 
+                <div
                   style={{
                     position: 'absolute',
                     top: '14px',
@@ -204,7 +204,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
 
       {/* Article Reader Modal */}
       {activeArticle && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             inset: 0,
@@ -218,7 +218,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
           }}
           onClick={() => setActiveArticle(null)}
         >
-          <div 
+          <div
             style={{
               backgroundColor: '#FFFFFF',
               borderRadius: '16px',
@@ -233,8 +233,8 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
           >
             {/* Header Image */}
             <div style={{ position: 'relative', height: '280px', overflow: 'hidden' }}>
-              <img 
-                src={activeArticle.image} 
+              <img
+                src={activeArticle.image}
                 alt={activeArticle.title}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
@@ -308,3 +308,4 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
     </div>
   );
 };
+

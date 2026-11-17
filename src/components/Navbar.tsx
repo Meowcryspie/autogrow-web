@@ -6,13 +6,9 @@ import {
   Search, 
   ArrowRight,
   Cpu,
-  Droplet,
-  Sun,
   Layers,
   ShoppingBag,
-  MessageSquare,
-  BookOpen,
-  Info
+  MessageSquare
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -54,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         transition: 'all 0.25s ease',
       }}
     >
-      {/* Top Bar - Exact TrolMaster Layout */}
+      {/* Top Black Bar - Keeps About Us, Blog, Support Desk */}
       <div 
         style={{
           backgroundColor: '#1E2421',
@@ -92,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
           </div>
 
-          {/* Right Utility Menu */}
+          {/* Right Utility Menu: About Us kept here at black header */}
           <div className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <span 
               onClick={() => onNavigateToPage('about')}
@@ -105,7 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
               onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'about' ? '#76b82a' : '#D1D5DB')}
             >
-              About Us (1994)
+              About Us
             </span>
             <span 
               onClick={() => onNavigateToPage('blog')}
@@ -118,7 +114,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
               onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'blog' ? '#76b82a' : '#D1D5DB')}
             >
-              Grower Blog
+              Blog
             </span>
             <span 
               onClick={onOpenSupportChat}
@@ -147,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Primary Header Middle */}
       <div style={{ padding: '12px 0' }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
           
           {/* TrolMaster-Style Brand Logo */}
           <div 
@@ -181,13 +177,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Desktop Navigation Links & Mega Menus */}
-          <nav className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
+          {/* Desktop Navigation Links */}
+          <nav className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '26px' }}>
             
-            {/* Nav Item: Controller Systems */}
+            {/* 1. Unified HARDWARE Dropdown (Combines Controller Systems + Hardware Lineup) */}
             <div 
               style={{ position: 'relative' }}
-              onMouseEnter={() => setActiveMegaMenu('controllers')}
+              onMouseEnter={() => setActiveMegaMenu('hardware')}
               onMouseLeave={() => setActiveMegaMenu(null)}
             >
               <button 
@@ -195,9 +191,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: activeMegaMenu === 'controllers' ? '#76b82a' : '#1F2937',
+                  color: activeMegaMenu === 'hardware' ? '#76b82a' : '#1F2937',
                   fontWeight: 600,
-                  fontSize: '14px',
+                  fontSize: '14.5px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
@@ -205,104 +201,138 @@ export const Navbar: React.FC<NavbarProps> = ({
                   padding: '8px 0',
                 }}
               >
-                Controller Systems
-                <ChevronDown size={14} style={{ transform: activeMegaMenu === 'controllers' ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                Hardware
+                <ChevronDown size={14} style={{ transform: activeMegaMenu === 'hardware' ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
               </button>
 
-              {/* Mega Menu Dropdown */}
-              {activeMegaMenu === 'controllers' && (
+              {/* Mega Menu Dropdown with Controller Systems & Hardware Lineup sections */}
+              {activeMegaMenu === 'hardware' && (
                 <div 
                   style={{
                     position: 'absolute',
                     top: '100%',
                     left: '-20px',
-                    width: '640px',
+                    width: '680px',
                     backgroundColor: '#FFFFFF',
                     borderRadius: '12px',
                     boxShadow: '0 20px 40px -10px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.06)',
                     padding: '24px',
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
-                    gap: '20px',
+                    gap: '24px',
                     zIndex: 1100,
                   }}
                 >
-                  <div 
-                    onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
-                    style={{ padding: '12px', borderRadius: '8px', cursor: 'pointer', transition: 'background 0.15s' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#76b82a', fontWeight: 700, fontSize: '13px', marginBottom: '4px' }}>
-                      <Cpu size={16} />
-                      MultiGrow Pro Series
+                  {/* Column A: Controller Systems */}
+                  <div>
+                    <div 
+                      onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                      style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: '#76b82a', letterSpacing: '0.08em', marginBottom: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <Cpu size={14} />
+                      Controller Systems
                     </div>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827', marginBottom: '3px' }}>
-                      Indoor & Climate Management
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>MultiGrow Pro Series</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>Indoor & multi-compartment climate management</div>
+                      </div>
+
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>SatuGrow FertiX Skid</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>10-100 m³/hr inline proportional fertigation</div>
+                      </div>
+
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>IntelliDose 8-Channel</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>Precision peristaltic nutrient & pH dosing</div>
+                      </div>
+
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>IntelliClimate CEA</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>Ridge vents, shading, fogging & heating</div>
+                      </div>
                     </div>
-                    <p style={{ fontSize: '12px', color: '#6B7280', margin: 0 }}>
-                      Integrated temperature, humidity, VPD, and CO2 enrichment for 32 compartments.
-                    </p>
                   </div>
 
-                  <div 
-                    onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
-                    style={{ padding: '12px', borderRadius: '8px', cursor: 'pointer', transition: 'background 0.15s' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0284C7', fontWeight: 700, fontSize: '13px', marginBottom: '4px' }}>
-                      <Droplet size={16} />
-                      SatuGrow FertiX Series
+                  {/* Column B: Hardware Lineup */}
+                  <div>
+                    <div 
+                      onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                      style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: '#0284C7', letterSpacing: '0.08em', marginBottom: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <Layers size={14} />
+                      Hardware Lineup
                     </div>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827', marginBottom: '3px' }}>
-                      Precision Fertigation Skids
-                    </div>
-                    <p style={{ fontSize: '12px', color: '#6B7280', margin: 0 }}>
-                      Closed-loop proportional injection up to 100 m³/hr with drain fraction reuse.
-                    </p>
-                  </div>
 
-                  <div 
-                    onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
-                    style={{ padding: '12px', borderRadius: '8px', cursor: 'pointer', transition: 'background 0.15s' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#D97706', fontWeight: 700, fontSize: '13px', marginBottom: '4px' }}>
-                      <Sun size={16} />
-                      IntelliClimate CEA
-                    </div>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827', marginBottom: '3px' }}>
-                      Greenhouse Automation
-                    </div>
-                    <p style={{ fontSize: '12px', color: '#6B7280', margin: 0 }}>
-                      Ridge vents, fogging, shading screens, and supplemental lighting automation.
-                    </p>
-                  </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>EnviroSensor Canopy Pod</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>Fan-forced aspirated VPD & CO2 sensing</div>
+                      </div>
 
-                  <div 
-                    onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
-                    style={{ padding: '12px', borderRadius: '8px', cursor: 'pointer', transition: 'background 0.15s' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#7C3AED', fontWeight: 700, fontSize: '13px', marginBottom: '4px' }}>
-                      <Layers size={16} />
-                      IntelliDose 8-Channel
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>WCS Rootzone TDR Probe</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>Substrate volumetric water content & pore EC</div>
+                      </div>
+
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>Digital Turbine Flow Meters</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>1 pulse/Litre real-time volume logging</div>
+                      </div>
+
+                      <div 
+                        onClick={() => { onNavigateToSection('suite'); setActiveMegaMenu(null); }}
+                        style={{ padding: '8px 10px', borderRadius: '6px', cursor: 'pointer', transition: 'background 0.15s' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F9FAFB')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      >
+                        <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827' }}>Meteorological Pyranometer</div>
+                        <div style={{ fontSize: '11.5px', color: '#6B7280' }}>Outdoor solar accumulation & wind mast</div>
+                      </div>
                     </div>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827', marginBottom: '3px' }}>
-                      Dosing & Micro-Injection
-                    </div>
-                    <p style={{ fontSize: '12px', color: '#6B7280', margin: 0 }}>
-                      Compact automated peristaltic dosing for craft research and NFT channels.
-                    </p>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Nav Item: Solutions */}
+            {/* 2. Solutions (Kept) */}
             <button 
               onClick={() => onNavigateToSection('showcase')}
               style={{
@@ -310,7 +340,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 border: 'none',
                 color: '#1F2937',
                 fontWeight: 600,
-                fontSize: '14px',
+                fontSize: '14.5px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -321,26 +351,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               Solutions
             </button>
 
-            {/* Nav Item: Hardware Lineup */}
-            <button 
-              onClick={() => onNavigateToSection('suite')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#1F2937',
-                fontWeight: 600,
-                fontSize: '14px',
-                cursor: 'pointer',
-                padding: '8px 0',
-                transition: 'color 0.15s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#1F2937')}
-            >
-              Hardware Lineup
-            </button>
-
-            {/* Nav Item: App */}
+            {/* 3. Autogrow App (Our actual app) */}
             <button 
               onClick={() => onNavigateToSection('app')}
               style={{
@@ -348,7 +359,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 border: 'none',
                 color: '#1F2937',
                 fontWeight: 600,
-                fontSize: '14px',
+                fontSize: '14.5px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -356,10 +367,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
               onMouseLeave={(e) => (e.currentTarget.style.color = '#1F2937')}
             >
-              IntelliGrow™ App
+              Autogrow App
             </button>
 
-            {/* Nav Item: Online Store (Direct Autogrow Commercial Spares) */}
+            {/* 4. Online Store (DIRECT) */}
             <button 
               onClick={() => onNavigateToPage('store')}
               style={{
@@ -367,7 +378,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 border: 'none',
                 color: currentPage === 'store' ? '#15803D' : '#1F2937',
                 fontWeight: currentPage === 'store' ? 700 : 600,
-                fontSize: '14px',
+                fontSize: '14.5px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 display: 'inline-flex',
@@ -385,7 +396,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </button>
 
-            {/* Nav Item: Grower Blog */}
+            {/* 5. Blog (Simplified name) */}
             <button 
               onClick={() => onNavigateToPage('blog')}
               style={{
@@ -393,7 +404,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 border: 'none',
                 color: currentPage === 'blog' ? '#76b82a' : '#1F2937',
                 fontWeight: currentPage === 'blog' ? 700 : 600,
-                fontSize: '14px',
+                fontSize: '14.5px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -401,29 +412,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
               onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'blog' ? '#76b82a' : '#1F2937')}
             >
-              Grower Blog
+              Blog
             </button>
 
-            {/* Nav Item: About Us */}
-            <button 
-              onClick={() => onNavigateToPage('about')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: currentPage === 'about' ? '#76b82a' : '#1F2937',
-                fontWeight: currentPage === 'about' ? 700 : 600,
-                fontSize: '14px',
-                cursor: 'pointer',
-                padding: '8px 0',
-                transition: 'color 0.15s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'about' ? '#76b82a' : '#1F2937')}
-            >
-              About Us
-            </button>
-
-            {/* Nav Item: Where to Buy */}
+            {/* 6. Where to Buy */}
             <button 
               onClick={() => onNavigateToSection('where-to-buy')}
               style={{
@@ -431,7 +423,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 border: 'none',
                 color: '#1F2937',
                 fontWeight: 600,
-                fontSize: '14px',
+                fontSize: '14.5px',
                 cursor: 'pointer',
                 padding: '8px 0',
                 transition: 'color 0.15s',
@@ -443,8 +435,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </nav>
 
-          {/* Right Header Controls: Search + DUAL ACTION BUTTONS (Store + Where to Buy) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Right Header Controls: Search + SINGLE GREEN "Where to Buy" Button (Other removed) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {/* Search Button */}
             <button
               onClick={onSearchClick}
@@ -465,24 +457,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#E5E7EB')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F3F4F6')}
             >
-              <Search size={17} />
+              <Search size={18} />
             </button>
 
-            {/* DUAL BUTTON 1: Shop Online Store (Requested by user) */}
-            <button
-              onClick={() => onNavigateToPage('store')}
-              className="btn btn-secondary d-none-mobile"
-              style={{ padding: '9px 18px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-            >
-              <ShoppingBag size={14} style={{ color: '#76b82a' }} />
-              Parts Store
-            </button>
-
-            {/* DUAL BUTTON 2: Where to Buy (Dealers & Commercial Integration) */}
+            {/* Single Green Where to Buy Button (Exact TrolMaster Style) */}
             <button
               onClick={() => onNavigateToSection('where-to-buy')}
               className="btn btn-primary d-none-mobile"
-              style={{ padding: '9px 20px', fontSize: '13px' }}
+              style={{ padding: '10px 22px', fontSize: '13.5px' }}
             >
               Where to Buy
               <ArrowRight size={14} />
@@ -532,40 +514,38 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => { onNavigateToSection('suite'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
-            Controller Systems (MultiGrow & SatuGrow)
+            Hardware (Controllers & Lineup)
           </div>
           <div 
             onClick={() => { onNavigateToSection('showcase'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
-            Protected Cropping Solutions
+            Solutions
           </div>
           <div 
             onClick={() => { onNavigateToSection('app'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
-            IntelliGrow™ Mobile App
+            Autogrow App
           </div>
           <div 
             onClick={() => { onNavigateToPage('store'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#15803D', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
           >
             <ShoppingBag size={16} />
-            Direct Online Store (Probes & Spares)
+            Online Store (Controllers, Hardware & Spares)
           </div>
           <div 
             onClick={() => { onNavigateToPage('blog'); setMobileMenuOpen(false); }}
-            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
-            <BookOpen size={16} />
-            Grower Blog & Technical Guides
+            Blog
           </div>
           <div 
             onClick={() => { onNavigateToPage('about'); setMobileMenuOpen(false); }}
-            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
-            <Info size={16} />
-            About Us (1994 Heritage)
+            About Us
           </div>
           <div 
             onClick={() => { onOpenSupportChat(); setMobileMenuOpen(false); }}

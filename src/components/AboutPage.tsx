@@ -9,7 +9,7 @@ interface AboutPageProps {
 export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateToSection }) => {
   return (
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', paddingTop: '40px', paddingBottom: '96px' }}>
-      
+
       {/* Top Breadcrumb Header */}
       <div className="container" style={{ marginBottom: '36px' }}>
         <button
@@ -37,7 +37,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
       {/* Hero Banner */}
       <div className="container" style={{ marginBottom: '64px' }}>
         <div style={{ maxWidth: '840px' }}>
-          <div 
+          <div
             style={{
               display: 'inline-block',
               backgroundColor: '#F0FDF4',
@@ -55,7 +55,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
             Pioneering AgTech Since 1994 · Auckland, New Zealand
           </div>
 
-          <h1 
+          <h1
             style={{
               fontSize: 'clamp(2.5rem, 4.5vw, 3.8rem)',
               fontWeight: 900,
@@ -70,7 +70,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
           </h1>
 
           <p style={{ fontSize: '18px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
-            Autogrow started in a small workshop in Auckland, New Zealand with a simple, unwavering goal: 
+            Autogrow started in a small workshop in Auckland, New Zealand with a simple, unwavering goal:
             help commercial growers get better, more consistent crops with less waste, less manual labor, and zero guesswork.
           </p>
         </div>
@@ -79,7 +79,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
       {/* 4 Pillars Grid */}
       <div className="container" style={{ marginBottom: '80px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
-          
+
           <div style={{ padding: '28px', borderRadius: '16px', backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
             <Award size={28} style={{ color: '#76b82a', marginBottom: '16px' }} />
             <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#111827', marginBottom: '8px' }}>
@@ -126,13 +126,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
       {/* Historical Milestones Timeline */}
       <div className="container" style={{ marginBottom: '80px' }}>
         <div style={{ maxWidth: '840px', margin: '0 auto' }}>
-          
+
           <h2 style={{ fontSize: '28px', fontWeight: 800, color: '#111827', marginBottom: '32px', textAlign: 'center' }}>
             Our Heritage & Journey
           </h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', borderLeft: '3px solid #E5E7EB', paddingLeft: '32px', marginLeft: '16px' }}>
-            
+
             {/* 1994 */}
             <div style={{ position: 'relative' }}>
               <div style={{ position: 'absolute', left: '-42px', top: '4px', width: '18px', height: '18px', borderRadius: '50%', backgroundColor: '#76b82a', border: '4px solid #FFFFFF', boxShadow: '0 0 0 2px #76b82a' }} />
@@ -141,7 +141,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
                 Jeff Broad Founds Autogrow
               </h3>
               <p style={{ fontSize: '14.5px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
-                Jeff Broad began Autogrow while serving as a senior lecturer at the Manukau Institute of Technology (MIT) in Auckland, New Zealand. 
+                Jeff Broad began Autogrow while serving as a senior lecturer at the Manukau Institute of Technology (MIT) in Auckland, New Zealand.
                 Under his leadership, Autogrow developed its pioneering microprocessor-driven fertigation and environmental controllers, growing from a regional New Zealand innovator into an international supplier of protected cropping automation.
               </p>
             </div>
@@ -178,7 +178,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
                 Global Commercial Expansion & Next-Gen SatuGrow
               </h3>
               <p style={{ fontSize: '14.5px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
-                In 2024, the commercial enterprise division serving small-to-medium and commercial greenhouse operations was acquired in partnership with longtime Malaysian distributor Excel Seeds. 
+                In 2024, the commercial enterprise division serving small-to-medium and commercial greenhouse operations was acquired in partnership with longtime Malaysian distributor Excel Seeds.
                 Today, our core R&D and firmware engineering team remains firmly anchored in Auckland, New Zealand, supported by dedicated commercial and support staff in the USA and Southeast Asia.
               </p>
             </div>
@@ -241,3 +241,4 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onBackToHome, onNavigateTo
     </div>
   );
 };
+
