@@ -1,118 +1,73 @@
 # AUTOGROW INDUSTRIAL CEA · DESIGN RULEBOOK
-## Anti-Generic / Anti-AI Design System Manifesto & Technical Specification
+## Anti-AI Cliche Manifesto & Actionable Implementation Guide
 
-> **Mission**: To permanently eliminate the "AI-generated template" aesthetic and enforce authentic, human-crafted, high-end industrial engineering design across all Autogrow digital experiences.
-
----
-
-## 1. THE FORBIDDEN BLACKLIST (NEVER DO THIS)
-
-Every design implementation must strictly avoid these classic AI hallmarks:
-
-| Forbidden AI Trope | Why It Fails | What To Do Instead |
-| :--- | :--- | :--- |
-| **Neon Cyber Glow** | Glowing green/purple borders (`0 0 20px #00ff88`) and ambient radial blur blobs look like a cheap crypto landing page or gamer gear. | **Matte industrial surfaces.** Use machined hairline dividers (`rgba(255,255,255,0.08)`), subtle 1px surface bevels, and matte dark slate/titanium palettes. |
-| **The 3-Card Icon Grid** | Three identical rectangular cards with a centered icon in a colored rounded box. It is the #1 tell of an automated template. | **Asymmetric editorial layouts.** Split screens, technical schematics, multi-tier data tables, exploded product diagrams, and offset modular panels. |
-| **Icon-in-a-Box Fetish** | Trapping every icon in a 48×48px pastel/neon rounded square. | **Functional instrumentation symbols.** Treat icons as technical indicators or silkscreen badges directly adjacent to text, or replace with actual hardware schematics. |
-| **Marketing Buzzword Soup** | *"Unlock next-gen intelligent seamless agricultural synergy."* | **Concrete engineering facts.** State tolerances, pinouts, voltages, flow rates, and biological metrics (e.g., *"±0.05 EC closed-loop dosing"*, *"2.5 kV galvanic isolation"*). |
-| **Centered Everything** | Centered hero headline, centered subhead, centered cards, centered footer. | **Left-aligned architectural structure.** Ground the eye with strong left-aligned margins, asymmetrical focal points, and deliberate vertical pacing. |
-| **Uniform Padding & Scale** | Every card and section having identical 20px padding and 16px font sizes. | **Extreme scale tension.** Pair massive 80px industrial display type with ultra-refined 10px monospaced technical metadata. Balance dense telemetry with spacious photographic breathing room. |
-| **Toy / Cartoon Mockups** | Generic CSS pill-shaped boxes pretending to be phones or controllers. | **Photorealistic tangible hardware.** Highlight physical DIN-rail clips, RJ12 ports, tactile silicone bumpers, screw terminals, and real industrial enclosures. |
+> **Core Philosophy:** Treat the website like a multi-million-dollar physical industrial machine console engineered in New Zealand. Every pixel must reflect precision manufacturing, data density, and operational reliability—not generic web templates.
 
 ---
 
-## 2. CORE VISUAL DNA: INDUSTRIAL TACTILITY
+## 1. THE COMPLETE "AVOID vs. DO" SPECIFICATION MATRIX
 
-The Autogrow aesthetic is inspired by the intersection of **TrolMaster**, **Teenage Engineering**, **Siemens Industrial Automation**, and **Swiss Editorial Design**.
-
-```
-[ Precision Engineered in New Zealand · Harsh CEA Operating Environments · IP66 / NEMA 4X ]
-```
-
-### A. Surface Palette & Materiality
-* **Primary Void (`#070B08`):** Deep, non-reflective obsidian carbon. Not pure pitch `#000000`, but a rich, warm graphite that absorbs glare.
-* **Surface Tier 1 (`#0E1410`):** Anodized chassis dark green-gray. Used for main chassis panels and structural containers.
-* **Surface Tier 2 (`#151D18`):** Machined metal slate. Used for elevated interactive modules and sensor bays.
-* **Hairline Rule (`rgba(255, 255, 255, 0.08)`):** 1px mechanical partition lines. Clean, discrete, zero blur.
-* **Bevel Highlight (`rgba(255, 255, 255, 0.12)`):** Top border highlight simulating a 45° CNC chamfer edge.
-
-### B. Functional Telemetry Accents (The 60-30-10 Rule)
-* **60% Carbon Void:** Keeps the eye rested and eliminates visual clutter.
-* **30% Structural Slate:** Establishes hierarchy and container boundaries.
-* **10% Purposeful Signal Color:** Accents are reserved **strictly** for functional system states:
-  * **Phosphor Green (`#00E575`):** Normal running status, optimal VPD bandwidth, live MQTT socket link.
-  * **Cyan Telemetry (`#00C8FF`):** Sensor probes, bus communications, firmware diagnostics.
-  * **Amber Caution (`#FFB703`):** High-temperature alarm threshold, nutrient reservoir low-level warning.
-  * **Signal Red (`#FF3B30`):** Emergency watchdog trip, pump lock-out, pH critical limit.
-  * **NEVER** use these colors as ambient decorative gradients or fuzzy card backdrops.
+| Category | ❌ What to AVOID (The AI Cliche) | ✅ What to DO INSTEAD (Studio Industrial Craft) | Exact Specification / Actionable Token |
+| :--- | :--- | :--- | :--- |
+| **Color & Lighting** | **Neon Glows & Ambient Orbs:**<br>• Glowing borders (`box-shadow: 0 0 20px #00ff88`)<br>• Blurry radial color blobs floating in backgrounds<br>• Purple/indigo/cyan neon gradients (`from-purple-500 to-indigo-600`) | **Matte Non-Reflective Materials:**<br>• Matte obsidian carbon & anodized titanium<br>• 1px mechanical hairline rules<br>• Top chamfer bevel highlights simulating CNC-milled 45° edges<br>• Accents used *strictly* for active system state (10% rule) | • Background: `#070B08`<br>• Panel Surface: `#0E1410`<br>• Elevated Bay: `#161F19`<br>• Hairline Rule: `1px solid rgba(255,255,255,0.08)`<br>• Chamfer Bevel: `border-top: 1px solid rgba(255,255,255,0.16)`<br>• Signal Green: `#00E575` (active relay only) |
+| **Layout & Structure** | **The Symmetrical Card Grid:**<br>• Centered hero with 3 identical rectangular cards below<br>• Equal 20px padding on every container<br>• Floating cards with heavy drop-shadows | **Editorial Asymmetry & Machine Blueprint:**<br>• Split consoles (60/40 or 70/30 ratios)<br>• Left-aligned anchor headers with offset viewports<br>• Edge-to-edge full-bleed split panels<br>• High-density spec tables alternating with spacious photographic breathing room | • Hero: 55% editorial narrative + 45% live interactive machine console<br>• Section Spacing: `96px` to `128px` vertical breathing room<br>• Layout Grid: 12-column asymmetric with hairline dividing rules |
+| **Typography** | **Default Fonts & Weak Hierarchy:**<br>• Standard fonts (Inter, Roboto, Arial)<br>• Uniform font sizes without tension<br>• Centered headlines and subheads | **The Tri-Font Industrial Architecture:**<br>• Machine Display font for model codes and headers<br>• Humanist editorial sans for reading comfort<br>• Monospaced font with tabular numbers for all data | • Display: `'Rajdhani'` / `'Chakra Petch'`, 700/800 Bold, uppercase, `letter-spacing: 0.04em`<br>• Body: `'Plus Jakarta Sans'` / `'DM Sans'`, 400 Regular, `line-height: 1.65`, max `64ch`<br>• Data: `'IBM Plex Mono'`, uppercase, `10px–12px`, with `font-variant-numeric: tabular-nums` |
+| **Data & Telemetry** | **Vague Gimmick Numbers:**<br>• "Smart Score: 99%"<br>• "10x Productivity Boost"<br>• Jittering numbers that shift card widths on update | **Verified Horticultural Telemetry:**<br>• Canopy Vapor Pressure Deficit (VPD in kPa)<br>• Electrical Conductivity (EC in mS/cm)<br>• Solution pH with temperature compensation<br>• Substrate Volumetric Water Content (VWC%) | • `VPD: 1.18 kPa`<br>• `EC: 2.24 mS/cm (±0.03 mS/cm)`<br>• `pH: 5.82 (±0.05 pH)`<br>• `Flow: Up to 100 m³/hr`<br>• `Dryback: -12.0% daily generative` |
+| **Media & Assets** | **Generic Stock & Icon Boxes:**<br>• 48×48px Lucide/Heroicon icons trapped in colorful pastel/neon rounded boxes<br>• Cheesy 3D clay illustrations<br>• Generic stock business people | **Physical Hardware & Schematics:**<br>• Real terminal block legends (`TB1`, `TB2`, `TB3`)<br>• Actual connector breakouts (`RJ12 CAN-BUS`, `24VAC SOLENOIDS`)<br>• DIN-rail mounting specs and IP66 enclosure ratings<br>• Authentic greenhouse vine crop & hydroponic photography | • Laser-etched zinc silkscreen decals (`.decal-badge`)<br>• Interactive CAD terminal breakouts<br>• High-resolution photography filtered with high contrast (`contrast(1.15) brightness(0.8)`) |
+| **Interactions** | **Floaty Spring Physics:**<br>• Bouncy card hover zooms (`scale-105` with spring ease)<br>• Floating continuous hover bobbing<br>• Slow sluggish transitions | **Mechanical Relay Snappiness:**<br>• Physical button depression (`translateY(1px)`)<br>• Instant hairline border highlight on click<br>• Crisp deceleration with zero overshoot | • Duration: `120ms` to `160ms`<br>• Easing: `cubic-bezier(0.16, 1, 0.3, 1)` (crisp industrial snap)<br>• Active state: `transform: translateY(1px); border-color: var(--color-green)` |
+| **Copywriting** | **AI Marketing Slop:**<br>• "Unlock the power of seamless synergy"<br>• "Next-gen intelligent future"<br>• "Revolutionize your agricultural journey" | **Unvarnished Engineering Reality:**<br>• Direct, factual, verifiable engineering specs<br>• Stated tolerances, voltages, bus distances, and hardware fail-safes | • *"30+ years of New Zealand agricultural engineering. Autonomous multi-compartment environmental control and closed-loop proportional fertigation deployed across 45+ countries."* |
 
 ---
 
-## 3. TYPOGRAPHY SYSTEM
+## 2. COMPONENT-BY-COMPONENT BLUEPRINT
 
-Real engineering interfaces prioritize data legibility and hierarchy over novelty fonts.
+### A. The Hero Section
+* ❌ **DO NOT:** Center the title, subtitle, and buttons over an ambient green blur with 3 cards underneath.
+* ✅ **DO:** Build an asymmetric split-screen console:
+  * **Left (55%):** Left-aligned display headline (`AUTOGROW MGC-PRO`), NZ engineering decal badge, factual summary, and mechanical action buttons.
+  * **Right (45%):** An interactive **Machine Diagnostic Console** showing real-time multi-bay telemetry, active relay states (`RIDGE VENT 1: 45% OPEN`, `BOILER: CLOSED`, `FERTIX: INJECTING`), and live compartment switching.
+  * **Bottom:** A continuous 4-column hairline data strip with tabular numbers (`32 ZONES`, `100 m³/hr`, `±0.03 EC`, `IP66 DIE-CAST`).
 
-### The Tri-Font Architecture
-1. **The Display Headline (`Rajdhani` or `Chakra Petch`):**
-   * Weight: 700 / 800 Bold
-   * Transform: Uppercase, tracking `+0.04em` to `+0.08em`
-   * Purpose: Authoritative industrial headers, equipment model names, section titles.
-2. **The Editorial Body (`Inter` or `Geist Sans`):**
-   * Weight: 400 Regular / 500 Medium
-   * Line-height: 1.6 to 1.7
-   * Color: `#A2B3A7` (Muted high-contrast zinc; never pure white to prevent eye strain).
-3. **The Machine Monospace (`IBM Plex Mono` or `JetBrains Mono`):**
-   * Feature: `font-variant-numeric: tabular-nums` (numbers always align vertically across rows).
-   * Transform: Uppercase for labels (`STATUS: ACTIVE`, `BUS: RS485-CH02`).
-   * Size: 10px – 12px for technical micro-metadata.
+### B. Hardware & Dosing Product Panels
+* ❌ **DO NOT:** Use rounded-2xl cards with colorful icons, drop shadows, and fluffy bullet points.
+* ✅ **DO:** Style each item as an industrial chassis panel (`.panel-chassis`):
+  * Crisp 3px–4px radius corners with top surface chamfer (`border-top: 1px solid rgba(255,255,255,0.16)`).
+  * Laser-etched silkscreen model tags in monospace (`[MGC-Pro]`, `[SGF-100]`, `[IDC-4]`).
+  * High-density 2x2 specification matrix with tabular figures.
+  * Direct action link: "WIRING & PINOUTS" that opens authentic terminal block schematics (`TB1 RS-485`, `TB2 Analog`, `TB3 Relays`).
 
----
+### C. The Phone Scaling Studio (`IntelliGrow™ Mobile`)
+* ❌ **DO NOT:** Drop a generic screenshot inside a flat rounded box.
+* ✅ **DO:** Create a true device laboratory mimicking TrolMaster's showcase:
+  * **Top Toolbar:** Viewport presets (Compact 340px, Standard 380px, Pro Max 420px) + dynamic scale slider ($75\% - 115\%$) + instant reset.
+  * **Titanium Chassis:** Precision bezel with speaker slit, Dynamic Island status indicator, and home bar.
+  * **Interactive App Simulation:** Functional tabs (Sensors, Dosing, Substrate, Alarms) with an **interactive pulse dosing button** that recalculates live reservoir EC/pH in real time.
 
-## 4. LAYOUT RHYTHM & PACING RULES
+### D. Plant-Centric Crop Steering Section
+* ❌ **DO NOT:** Display generic icons for "plants".
+* ✅ **DO:** Provide an interactive agronomic steering matrix:
+  * Tabs for High-Wire Vine Crops, Tabletop Berries, Leafy Greens NFT, and Indoor Vertical CEA.
+  * Display crop-specific biological targets: VPD bandwidth (kPa), target EC, solution pH, and daily generative/vegetative dryback percentages.
+  * Direct clickable hardware badges that open the recommended controller or skid.
 
-### Rule 1: The Asymmetry Mandate
-* No section may be composed solely of three equal cards.
-* Use **Split Hero Layouts**: 55% editorial narrative / 45% interactive physical hardware view.
-* Use **Data-Density Shifts**: Follow an expansive, cinematic photographic section with an ultra-dense, monospaced specification table.
-
-### Rule 2: Hardware Physicality
-* When displaying controllers (MultiGrow, IntelliClimate, IntelliDose), always represent their physical reality:
-  * Show actual port labels: `RJ12 CAN-BUS`, `24VAC SOLENOID BANK`, `PT100 RTD INPUT`.
-  * Display authentic technical pinouts and wiring schematics alongside product imagery.
-  * Show real commercial mounting: Wall bracket, DIN-rail 35mm, or stainless steel rack enclosures.
-
-### Rule 3: Authentic Plant-Centric Telemetry
-* Do not invent generic stats like "Smart Score: 98%".
-* Use verified commercial horticultural measurements:
-  * **Vapor Pressure Deficit (VPD):** `1.15 kPa`
-  * **Electrical Conductivity (EC):** `2.24 mS/cm (24°C temp compensated)`
-  * **Acidity / Alkalinity (pH):** `5.82 pH`
-  * **Photosynthetic Photon Flux Density (PPFD):** `850 µmol/m²/s`
-  * **Substrate Volumetric Water Content (VWC):** `62.4%`
-  * **Daily Generative Dryback Target:** `-12.0%`
+### E. Commercial Economic Model (ROI Calculator)
+* ❌ **DO NOT:** Write "Save money with our smart solution".
+* ✅ **DO:** Provide an interactive calculator with real input sliders:
+  * Facility scale (Hectares / m²).
+  * Annual fertilizer expenditure ($).
+  * Annual water supply cost ($).
+  * Real-time calculation of fertilizer recapture (~22%), water conserved (~26%), and cumulative 5-year commercial ROI with hardware amortization timeline.
 
 ---
 
-## 5. MICRO-INTERACTION & PHYSICS STANDARDS
+## 3. PRE-FLIGHT VERIFICATION AUDIT CHECKLIST
 
-* **No Bouncy Springs:** Do not use elastic, playful UI animations (`cubic-bezier(0.68, -0.55, 0.27, 1.55)`). They feel like social media apps.
-* **Mechanical Snappiness:** Transitions should mimic physical relays and optical switches:
-  * Duration: `120ms` to `180ms`.
-  * Easing: `cubic-bezier(0.16, 1, 0.3, 1)` (crisp deceleration with zero overshoot).
-* **Tactile State Confirmation:** Buttons must visibly depress (`transform: translateY(1px)`) and change border tone instantly upon click.
-* **Tabular Figure Stability:** When numbers update (e.g., live telemetry), the container must never jitter or resize horizontally.
+Before approving any front-end code or component, run this strict 7-point audit:
 
----
-
-## 6. PRE-FLIGHT VERIFICATION CHECKLIST
-
-Before any page or component is committed or deployed, audit against this checklist:
-
-- [ ] **Are there glowing ambient neon borders?** *If yes, remove them and replace with 1px hairline rules.*
-- [ ] **Is there a 3-column card row with icons in colored boxes?** *If yes, redesign as an asymmetric layout or interactive spec table.*
-- [ ] **Are headlines filled with marketing fluff?** *If yes, rewrite with concrete technical specifications and engineering metrics.*
-- [ ] **Is everything centered?** *If yes, ground the layout with deliberate left-alignment and asymmetric tension.*
-- [ ] **Does the hardware look real and tangible?** *If no, add mechanical details, port labels, silkscreen typography, and enclosure specs.*
-- [ ] **Do numerical readouts use monospace tabular numbers?** *If no, apply tabular formatting to prevent layout shifts.*
-- [ ] **Is negative space generous and confident?** *If no, let key elements breathe and eliminate cramped clutter.*
-
+- [ ] **1. Glow Check:** Are there any glowing borders or blurry radial ambient blobs? *Must be replaced with 1px hairline rules and chamfer bevels.*
+- [ ] **2. Card Trap Check:** Is the layout just repetitive 3-column boxes with icons? *Must be redesigned as an asymmetric split panel or data table.*
+- [ ] **3. Icon Check:** Are icons trapped in colorful rounded boxes? *Must be converted into silkscreen decal badges or instrument labels.*
+- [ ] **4. Copywriting Check:** Are there buzzwords like "seamless", "elevate", or "smart"? *Must be rewritten with concrete engineering metrics and tolerances.*
+- [ ] **5. Typography Check:** Are numbers jumping/jittering when updated? *Must use monospace font with `font-variant-numeric: tabular-nums`.*
+- [ ] **6. Hardware Reality Check:** Are terminal blocks, pinouts, DIN-rail mounting, or enclosure ratings shown? *Ensure tangible physical details are visible.*
+- [ ] **7. Interaction Check:** Do buttons and toggles feel snappy and mechanical? *Ensure 120ms–160ms ease-out transitions with active depression.*
