@@ -8,7 +8,10 @@ import {
   Cpu,
   Layers,
   ShoppingBag,
-  MessageSquare
+  MessageSquare,
+  Phone,
+  Mail,
+  CheckCircle2
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -29,6 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
+  const [isSupportBarOpen, setIsSupportBarOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,46 +54,30 @@ export const Navbar: React.FC<NavbarProps> = ({
         transition: 'all 0.25s ease',
       }}
     >
-      {/* Top Black Bar - Keeps About Us, Blog, Support Desk */}
+      {/* Top Black Bar - FarmRoad AI, SatuGrow FertiX & Blog REMOVED as requested */}
       <div 
         style={{
           backgroundColor: '#1E2421',
           color: '#E5E7EB',
           fontSize: '12.5px',
-          padding: '6px 0',
+          padding: '7px 0',
           borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Brand Ecosystem Switcher */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Left: Brand Identity Only (FarmRoad & SatuGrow removed) */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <span 
               onClick={() => onNavigateToPage('home')}
-              style={{ fontWeight: 700, color: '#76b82a', display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}
+              style={{ fontWeight: 700, color: '#76b82a', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
             >
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#76b82a' }} />
-              Autogrow
-            </span>
-            <span 
-              onClick={() => onNavigateToSection('suite')}
-              style={{ color: '#9CA3AF', cursor: 'pointer', transition: 'color 0.15s' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9CA3AF')}
-            >
-              FarmRoad AI
-            </span>
-            <span 
-              onClick={() => onNavigateToSection('suite')}
-              style={{ color: '#9CA3AF', cursor: 'pointer', transition: 'color 0.15s' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9CA3AF')}
-            >
-              SatuGrow FertiX
+              Autogrow Systems
             </span>
           </div>
 
-          {/* Right Utility Menu: About Us kept here at black header */}
-          <div className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Right Utility Menu: About Us, Technical Support Desk (Blog removed from black header) */}
+          <div className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
             <span 
               onClick={() => onNavigateToPage('about')}
               style={{ 
@@ -103,37 +91,32 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               About Us
             </span>
+
+            {/* Technical Support Desk Button - Toggles Support Bar */}
             <span 
-              onClick={() => onNavigateToPage('blog')}
+              onClick={() => setIsSupportBarOpen(!isSupportBarOpen)}
               style={{ 
                 cursor: 'pointer', 
-                color: currentPage === 'blog' ? '#76b82a' : '#D1D5DB', 
-                fontWeight: currentPage === 'blog' ? 700 : 500,
-                transition: 'color 0.15s' 
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'blog' ? '#76b82a' : '#D1D5DB')}
-            >
-              Blog
-            </span>
-            <span 
-              onClick={onOpenSupportChat}
-              style={{ 
-                cursor: 'pointer', 
-                color: '#86EFAC', 
+                color: isSupportBarOpen ? '#76b82a' : '#86EFAC', 
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '5px',
                 fontWeight: 600,
-                transition: 'color 0.15s' 
+                backgroundColor: isSupportBarOpen ? 'rgba(118, 184, 42, 0.15)' : 'transparent',
+                padding: '2px 8px',
+                borderRadius: '4px',
+                transition: 'all 0.15s' 
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#86EFAC')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = isSupportBarOpen ? '#76b82a' : '#86EFAC')}
             >
               <MessageSquare size={13} />
               Technical Support Desk
+              <ChevronDown size={12} style={{ transform: isSupportBarOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
             </span>
+
             <span style={{ color: '#9CA3AF', fontSize: '11px' }}>|</span>
+
             <span style={{ color: '#76b82a', fontWeight: 600 }}>
               Global Support: +1 (800) 852-3088
             </span>
@@ -141,11 +124,174 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Primary Header Middle */}
+      {/* EXPANDABLE TECHNICAL SUPPORT DESK BAR WITH X BUTTON (Content from Autogrow Support) */}
+      {isSupportBarOpen && (
+        <div 
+          style={{
+            backgroundColor: '#161B18',
+            color: '#FFFFFF',
+            borderBottom: '2px solid #76b82a',
+            boxShadow: '0 12px 30px rgba(0,0,0,0.35)',
+            position: 'relative',
+            zIndex: 1200,
+            animation: 'fadeIn 0.2s ease',
+          }}
+        >
+          <div className="container" style={{ padding: '24px 20px' }}>
+            
+            {/* Top Bar inside Support Desk */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '14px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#76b82a', boxShadow: '0 0 8px #76b82a' }} />
+                <h3 style={{ fontSize: '15px', fontWeight: 800, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#FFFFFF', margin: 0 }}>
+                  Autogrow Technical Support Desk · Auckland HQ & Field Integration
+                </h3>
+              </div>
+
+              {/* Close 'X' Button */}
+              <button
+                onClick={() => setIsSupportBarOpen(false)}
+                aria-label="Close Technical Support Desk"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  borderRadius: '6px',
+                  color: '#D1D5DB',
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)';
+                  e.currentTarget.style.color = '#FFFFFF';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)';
+                  e.currentTarget.style.color = '#D1D5DB';
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* 3-Column Genuine Autogrow Support Content */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+              
+              {/* Column 1: Direct Phone Hotlines */}
+              <div style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '16px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#76b82a', fontWeight: 700, fontSize: '13px', marginBottom: '10px' }}>
+                  <Phone size={16} />
+                  Telephone Hotlines (Mon–Fri 11am–5pm NZST)
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#9CA3AF' }}>🇳🇿 New Zealand & Global:</span>
+                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>+64 9 415 2380</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#9CA3AF' }}>🇺🇸 Americas Toll-Free:</span>
+                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>+1 (800) 852-3088</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#9CA3AF' }}>🇲🇾 Southeast Asia Hub:</span>
+                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>+60 3-8023 2388</strong>
+                  </div>
+                </div>
+                <div style={{ fontSize: '11px', color: '#86EFAC', marginTop: '10px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <CheckCircle2 size={12} />
+                  24/7 harvest critical escalation for enterprise skid clients.
+                </div>
+              </div>
+
+              {/* Column 2: Email Helpdesks */}
+              <div style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '16px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0284C7', fontWeight: 700, fontSize: '13px', marginBottom: '10px' }}>
+                  <Mail size={16} />
+                  Email Helpdesks & Ticket Support
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#9CA3AF' }}>General Technical Help:</span>
+                    <a href="mailto:help@autogrow.com" style={{ color: '#38BDF8', textDecoration: 'none' }}>help@autogrow.com</a>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#9CA3AF' }}>Skids & Wiring Support:</span>
+                    <a href="mailto:engineering@autogrow.com" style={{ color: '#38BDF8', textDecoration: 'none' }}>engineering@autogrow.com</a>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#9CA3AF' }}>Agronomy & Recipe Steering:</span>
+                    <a href="mailto:agronomy@autogrow.com" style={{ color: '#38BDF8', textDecoration: 'none' }}>agronomy@autogrow.com</a>
+                  </div>
+                </div>
+                <div style={{ fontSize: '11px', color: '#9CA3AF', marginTop: '10px' }}>
+                  Guaranteed 1-hour ticket acknowledgment for commercial sites.
+                </div>
+              </div>
+
+              {/* Column 3: Instant Diagnostics & Online Resources */}
+              <div style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '16px', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#D97706', fontWeight: 700, fontSize: '13px', marginBottom: '10px' }}>
+                    <MessageSquare size={16} />
+                    Instant Diagnostics & Replacement Parts
+                  </div>
+                  <p style={{ fontSize: '12px', color: '#D1D5DB', margin: '0 0 12px 0' }}>
+                    Troubleshoot MultiGrow 24VAC alarms, probe calibration, or order replacement parts:
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button
+                    onClick={() => {
+                      setIsSupportBarOpen(false);
+                      onOpenSupportChat();
+                    }}
+                    className="btn btn-primary"
+                    style={{ padding: '8px 16px', fontSize: '12px' }}
+                  >
+                    <MessageSquare size={13} />
+                    Launch Live Support Chat
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsSupportBarOpen(false);
+                      onNavigateToPage('store');
+                    }}
+                    style={{
+                      padding: '8px 14px',
+                      fontSize: '12px',
+                      borderRadius: '9999px',
+                      backgroundColor: 'rgba(255,255,255,0.1)',
+                      color: '#FFFFFF',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                    }}
+                  >
+                    <ShoppingBag size={12} />
+                    Online Parts Store
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* Primary White Header */}
       <div style={{ padding: '12px 0' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
           
-          {/* TrolMaster-Style Brand Logo */}
+          {/* Brand Logo */}
           <div 
             onClick={() => onNavigateToPage('home')}
             style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
@@ -177,10 +323,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <nav className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '26px' }}>
+          {/* Desktop Navigation Links (Where to Buy beside Blog REMOVED) */}
+          <nav className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
             
-            {/* 1. Unified HARDWARE Dropdown (Combines Controller Systems + Hardware Lineup) */}
+            {/* 1. Unified HARDWARE Dropdown */}
             <div 
               style={{ position: 'relative' }}
               onMouseEnter={() => setActiveMegaMenu('hardware')}
@@ -205,7 +351,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <ChevronDown size={14} style={{ transform: activeMegaMenu === 'hardware' ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
               </button>
 
-              {/* Mega Menu Dropdown with Controller Systems & Hardware Lineup sections */}
+              {/* Mega Menu Dropdown */}
               {activeMegaMenu === 'hardware' && (
                 <div 
                   style={{
@@ -332,7 +478,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            {/* 2. Solutions (Kept) */}
+            {/* 2. Solutions */}
             <button 
               onClick={() => onNavigateToSection('showcase')}
               style={{
@@ -351,7 +497,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               Solutions
             </button>
 
-            {/* 3. Autogrow App (Our actual app) */}
+            {/* 3. Autogrow App */}
             <button 
               onClick={() => onNavigateToSection('app')}
               style={{
@@ -370,7 +516,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               Autogrow App
             </button>
 
-            {/* 4. Online Store (DIRECT) */}
+            {/* 4. Online Store */}
             <button 
               onClick={() => onNavigateToPage('store')}
               style={{
@@ -396,7 +542,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </button>
 
-            {/* 5. Blog (Simplified name) */}
+            {/* 5. Blog */}
             <button 
               onClick={() => onNavigateToPage('blog')}
               style={{
@@ -415,27 +561,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               Blog
             </button>
 
-            {/* 6. Where to Buy */}
-            <button 
-              onClick={() => onNavigateToSection('where-to-buy')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#1F2937',
-                fontWeight: 600,
-                fontSize: '14.5px',
-                cursor: 'pointer',
-                padding: '8px 0',
-                transition: 'color 0.15s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#1F2937')}
-            >
-              Where to Buy
-            </button>
+            {/* Note: "Where to Buy" text link has been removed from beside Blog as directed */}
           </nav>
 
-          {/* Right Header Controls: Search + SINGLE GREEN "Where to Buy" Button (Other removed) */}
+          {/* Right Controls: Search + SINGLE GREEN "Where to Buy" Button Kept */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {/* Search Button */}
             <button
@@ -460,7 +589,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Search size={18} />
             </button>
 
-            {/* Single Green Where to Buy Button (Exact TrolMaster Style) */}
+            {/* Single Green Where to Buy Button (Kept green as requested) */}
             <button
               onClick={() => onNavigateToSection('where-to-buy')}
               className="btn btn-primary d-none-mobile"
@@ -548,11 +677,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             About Us
           </div>
           <div 
-            onClick={() => { onOpenSupportChat(); setMobileMenuOpen(false); }}
+            onClick={() => { 
+              setMobileMenuOpen(false);
+              setIsSupportBarOpen(true); 
+            }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#0284C7', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
           >
             <MessageSquare size={16} />
-            Technical Support Desk (Live Chat)
+            Technical Support Desk (Info & Contacts)
           </div>
           <div 
             onClick={() => { onNavigateToSection('where-to-buy'); setMobileMenuOpen(false); }}

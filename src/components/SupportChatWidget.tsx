@@ -102,7 +102,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
   return (
     <>
       {/* Floating Trigger Button */}
-      <div 
+      <div
         style={{
           position: 'fixed',
           bottom: '24px',
@@ -148,7 +148,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
 
       {/* Chat Dialog Window */}
       {isOpen && (
-        <div 
+        <div
           style={{
             position: 'fixed',
             bottom: '24px',
@@ -167,7 +167,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
           }}
         >
           {/* Header */}
-          <div 
+          <div
             style={{
               backgroundColor: '#111827',
               color: '#FFFFFF',
@@ -179,7 +179,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div 
+              <div
                 style={{
                   width: '34px',
                   height: '34px',
@@ -221,7 +221,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
           </div>
 
           {/* Messages Body */}
-          <div 
+          <div
             style={{
               flex: 1,
               padding: '16px',
@@ -233,7 +233,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
             }}
           >
             {messages.map((msg) => (
-              <div 
+              <div
                 key={msg.id}
                 style={{
                   display: 'flex',
@@ -241,7 +241,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
                   alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start',
                 }}
               >
-                <div 
+                <div
                   style={{
                     maxWidth: '88%',
                     padding: '12px 16px',
@@ -328,7 +328,7 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
           </div>
 
           {/* Input Bar */}
-          <div 
+          <div
             style={{
               padding: '12px 16px',
               backgroundColor: '#FFFFFF',
@@ -338,8 +338,8 @@ export const SupportChatWidget: React.FC<SupportChatWidgetProps> = ({
               gap: '10px',
             }}
           >
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Ask an engineer or type alarm code..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}

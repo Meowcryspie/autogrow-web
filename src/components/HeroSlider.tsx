@@ -162,7 +162,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
           <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
             <button
               onClick={() => onNavigateToSection(active.targetSection)}
-              className="btn btn-white"
+              className="btn btn-primary"
               style={{ padding: '14px 32px', fontSize: '15px' }}
             >
               {active.buttonText}

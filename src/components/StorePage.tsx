@@ -338,7 +338,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
           </div>
           <button
             onClick={() => onNavigateToSection?.('suite')}
-            className="btn btn-secondary"
+            className="btn btn-primary"
             style={{ padding: '8px 20px', fontSize: '13px' }}
           >
             Explore Hardware Lineup

@@ -127,7 +127,7 @@ export const CategoryShowcase: React.FC<CategoryShowcaseProps> = ({ onNavigateTo
               <div>
                 <button
                   onClick={() => onNavigateToSection(sec.targetSection)}
-                  className="btn btn-outline-white"
+                  className="btn btn-primary"
                   style={{ padding: '12px 28px' }}
                 >
                   {sec.buttonText}
