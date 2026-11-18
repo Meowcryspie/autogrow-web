@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Clock, Calendar, ArrowRight, X } from 'lucide-react';
-import { BLOG_POSTS } from '../data/mockProducts';
+import { useContent } from '../context/ContentContext';
 import type { BlogPost } from '../types';
 
 interface BlogPageProps {
@@ -8,14 +8,17 @@ interface BlogPageProps {
 }
 
 export const BlogPage: React.FC<BlogPageProps> = ({ onBackToHome }) => {
+  const { activeContent } = useContent();
+  const posts = activeContent.blogPosts;
+
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
 
   const categories = ['All', 'Agronomic Strategy', 'Systems Engineering', 'Tropical Agriculture', 'Climate Control', 'Regional AgTech'];
 
   const filteredPosts = selectedCategory === 'All'
-    ? BLOG_POSTS
-    : BLOG_POSTS.filter(p => p.category === selectedCategory);
+    ? posts
+    : posts.filter(p => p.category === selectedCategory);
 
   return (
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh', paddingTop: '40px', paddingBottom: '96px' }}>

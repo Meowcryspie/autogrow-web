@@ -109,3 +109,43 @@ export interface StoreProduct {
   description: string;
   specs: string;
 }
+
+export interface HeroSlideItem {
+  id: string;
+  tag: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  buttonText: string;
+  targetSection: string;
+}
+
+export interface ShowcaseSectionItem {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  buttonText: string;
+  targetSection: string;
+}
+
+export interface SupportContacts {
+  phoneNz: string;
+  phoneUs: string;
+  phoneSea: string;
+  supportHours: string;
+  emailHelp: string;
+  emailEngineering: string;
+  emailAgronomy: string;
+}
+
+export interface SiteContentData {
+  heroSlides: HeroSlideItem[];
+  showcaseSections: ShowcaseSectionItem[];
+  storeProducts: StoreProduct[];
+  blogPosts: BlogPost[];
+  distributors: DistributorLocation[];
+  supportContacts: SupportContacts;
+  lastUpdated?: string;
+}
+

@@ -8,7 +8,7 @@ interface SearchModalProps {
   onClose: () => void;
   onSelectProduct: (product: ProductItem) => void;
   onNavigateToSection: (sectionId: string) => void;
-  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store') => void;
+  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store' | 'admin') => void;
 }
 
 export const SearchModal: React.FC<SearchModalProps> = ({ 

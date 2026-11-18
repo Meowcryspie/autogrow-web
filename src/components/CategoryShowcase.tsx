@@ -1,54 +1,14 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { useContent } from '../context/ContentContext';
 
 interface CategoryShowcaseProps {
   onNavigateToSection: (sectionId: string) => void;
 }
 
-interface FeatureSection {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  buttonText: string;
-  targetSection: string;
-}
-
 export const CategoryShowcase: React.FC<CategoryShowcaseProps> = ({ onNavigateToSection }) => {
-  const sections: FeatureSection[] = [
-    {
-      id: 'indoor-elevated',
-      title: 'Commercial Environmental Control Elevated',
-      description: 'Achieve precision indoor growing with MultiGrow controls, IntelliClimate, and EnviroSensors working in harmony. Automate every detail from ventilation to VPD for healthier plants, higher yields, and unmatched consistency.',
-      image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=2000&q=80',
-      buttonText: 'Learn more',
-      targetSection: 'suite',
-    },
-    {
-      id: 'greenhouse-smarter',
-      title: 'Greenhouse Growing Smarter, Stronger',
-      description: 'Unlock the full potential of your commercial greenhouse with complete multi-compartment automation. From ridge vents and thermal screens to CO2 enrichment and supplemental lighting, everything works together for higher yields, lower costs, and peace of mind.',
-      image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=2000&q=80',
-      buttonText: 'Learn more',
-      targetSection: 'suite',
-    },
-    {
-      id: 'irrigation-smarter',
-      title: 'The Fertigation is Smarter with Absolute Ease',
-      description: 'Say goodbye to guesswork and complex timers. Our "feed-on-demand" proportional injection measures return drain EC and substrate moisture to deliver precise, automated irrigation with absolute ease.',
-      image: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=2000&q=80',
-      buttonText: 'Learn more',
-      targetSection: 'suite',
-    },
-    {
-      id: 'safe-compliant',
-      title: 'Safe, Compliant & Fail-Safe Protection',
-      description: 'Autogrow gives large-scale commercial facilities peace of mind. Galvanic isolation, industrial IP66 die-cast enclosures, and instant alert relays ensure your facility stays protected 24/7.',
-      image: 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?auto=format&fit=crop&w=2000&q=80',
-      buttonText: 'Learn more',
-      targetSection: 'where-to-buy',
-    },
-  ];
+  const { activeContent } = useContent();
+  const sections = activeContent.showcaseSections;
 
   return (
     <div id="showcase" style={{ display: 'flex', flexDirection: 'column' }}>

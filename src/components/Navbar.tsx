@@ -11,14 +11,16 @@ import {
   MessageSquare,
   Phone,
   Mail,
-  CheckCircle2
+  CheckCircle2,
+  Sliders
 } from 'lucide-react';
+import { useContent } from '../context/ContentContext';
 
 interface NavbarProps {
   onSearchClick: () => void;
   onNavigateToSection: (sectionId: string) => void;
-  currentPage: 'home' | 'about' | 'blog' | 'store';
-  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store') => void;
+  currentPage: 'home' | 'about' | 'blog' | 'store' | 'admin';
+  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store' | 'admin') => void;
   onOpenSupportChat: () => void;
 }
 
@@ -29,6 +31,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateToPage,
   onOpenSupportChat
 }) => {
+  const { activeContent } = useContent();
+  const contacts = activeContent.supportContacts;
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
@@ -118,7 +123,33 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span style={{ color: '#9CA3AF', fontSize: '11px' }}>|</span>
 
             <span style={{ color: '#76b82a', fontWeight: 600 }}>
-              Global Support: +1 (800) 852-3088
+              Global Support: {contacts.phoneUs}
+            </span>
+
+            <span style={{ color: '#9CA3AF', fontSize: '11px' }}>|</span>
+
+            <span 
+              onClick={() => onNavigateToPage('admin')}
+              style={{ 
+                cursor: 'pointer', 
+                color: currentPage === 'admin' ? '#76b82a' : '#D1D5DB', 
+                fontWeight: currentPage === 'admin' ? 700 : 600,
+                fontSize: '11.5px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                backgroundColor: currentPage === 'admin' ? 'rgba(118, 184, 42, 0.2)' : 'rgba(255,255,255,0.08)',
+                padding: '2px 8px',
+                borderRadius: '4px',
+                border: '1px solid rgba(255,255,255,0.15)',
+                transition: 'all 0.15s' 
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'admin' ? '#76b82a' : '#D1D5DB')}
+              title="Open Autogrow CMS Admin Console"
+            >
+              <Sliders size={12} style={{ color: '#76b82a' }} />
+              CMS Admin
             </span>
           </div>
         </div>
@@ -185,20 +216,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '16px', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#76b82a', fontWeight: 700, fontSize: '13px', marginBottom: '10px' }}>
                   <Phone size={16} />
-                  Telephone Hotlines (Mon–Fri 11am–5pm NZST)
+                  Telephone Hotlines ({contacts.supportHours})
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#9CA3AF' }}>🇳🇿 New Zealand & Global:</span>
-                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>+64 9 415 2380</strong>
+                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>{contacts.phoneNz}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#9CA3AF' }}>🇺🇸 Americas Toll-Free:</span>
-                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>+1 (800) 852-3088</strong>
+                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>{contacts.phoneUs}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#9CA3AF' }}>🇲🇾 Southeast Asia Hub:</span>
-                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>+60 3-8023 2388</strong>
+                    <strong style={{ color: '#FFFFFF', fontFamily: 'monospace' }}>{contacts.phoneSea}</strong>
                   </div>
                 </div>
                 <div style={{ fontSize: '11px', color: '#86EFAC', marginTop: '10px', display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -216,15 +247,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#9CA3AF' }}>General Technical Help:</span>
-                    <a href="mailto:help@autogrow.com" style={{ color: '#38BDF8', textDecoration: 'none' }}>help@autogrow.com</a>
+                    <a href={`mailto:${contacts.emailHelp}`} style={{ color: '#38BDF8', textDecoration: 'none' }}>{contacts.emailHelp}</a>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#9CA3AF' }}>Skids & Wiring Support:</span>
-                    <a href="mailto:engineering@autogrow.com" style={{ color: '#38BDF8', textDecoration: 'none' }}>engineering@autogrow.com</a>
+                    <a href={`mailto:${contacts.emailEngineering}`} style={{ color: '#38BDF8', textDecoration: 'none' }}>{contacts.emailEngineering}</a>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ color: '#9CA3AF' }}>Agronomy & Recipe Steering:</span>
-                    <a href="mailto:agronomy@autogrow.com" style={{ color: '#38BDF8', textDecoration: 'none' }}>agronomy@autogrow.com</a>
+                    <a href={`mailto:${contacts.emailAgronomy}`} style={{ color: '#38BDF8', textDecoration: 'none' }}>{contacts.emailAgronomy}</a>
                   </div>
                 </div>
                 <div style={{ fontSize: '11px', color: '#9CA3AF', marginTop: '10px' }}>

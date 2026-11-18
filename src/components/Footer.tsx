@@ -3,7 +3,7 @@ import { ArrowRight, MessageSquare } from 'lucide-react';
 
 interface FooterProps {
   onNavigateToSection: (sectionId: string) => void;
-  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store') => void;
+  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store' | 'admin') => void;
   onOpenSupportChat: () => void;
 }
 
@@ -200,6 +200,7 @@ export const Footer: React.FC<FooterProps> = ({
             <span style={{ cursor: 'pointer' }} onClick={() => onNavigateToPage('store')}>Online Store</span>
             <span style={{ cursor: 'pointer' }} onClick={() => onNavigateToSection('where-to-buy')}>Distributor Portal</span>
             <span style={{ cursor: 'pointer' }} onClick={onOpenSupportChat}>Technical Helpdesk</span>
+            <span style={{ cursor: 'pointer', color: '#15803D', fontWeight: 600 }} onClick={() => onNavigateToPage('admin')}>CMS Admin</span>
           </div>
         </div>
       </div>

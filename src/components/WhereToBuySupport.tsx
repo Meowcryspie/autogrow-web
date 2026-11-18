@@ -12,7 +12,8 @@ import {
   MapPin,
   MessageSquare
 } from 'lucide-react';
-import { DOWNLOADS_DATA, DISTRIBUTORS_DATA } from '../data/mockProducts';
+import { DOWNLOADS_DATA } from '../data/mockProducts';
+import { useContent } from '../context/ContentContext';
 import type { DownloadItem, DistributorLocation } from '../types';
 
 interface WhereToBuySupportProps {
@@ -22,6 +23,10 @@ interface WhereToBuySupportProps {
 export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({ 
   onOpenSupportChat 
 }) => {
+  const { activeContent } = useContent();
+  const distributors = activeContent.distributors;
+  const contacts = activeContent.supportContacts;
+
   const [activeTab, setActiveTab] = useState<'distributors' | 'downloads' | 'roi' | 'helpdesk'>('distributors');
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
   const [downloadToast, setDownloadToast] = useState<string | null>(null);
@@ -36,8 +41,8 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
   const regions = ['All', 'Australasia (Global HQ)', 'North America', 'Europe', 'Latin America', 'Asia-Pacific'];
 
   const filteredDistributors = selectedRegion === 'All'
-    ? DISTRIBUTORS_DATA
-    : DISTRIBUTORS_DATA.filter((d: DistributorLocation) => d.region.includes(selectedRegion) || selectedRegion.includes(d.region));
+    ? distributors
+    : distributors.filter((d: DistributorLocation) => d.region.includes(selectedRegion) || selectedRegion.includes(d.region));
 
   const handleDownload = (item: DownloadItem) => {
     setDownloadToast(`Downloading ${item.title} (${item.fileSize})...`);
@@ -330,9 +335,9 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
                   Reach our engineering team during business hours (NZST & EST):
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', fontWeight: 600 }}>
-                  <div style={{ color: '#111827' }}>🇳🇿 New Zealand: <span style={{ color: '#15803D' }}>+64 9 415 2380</span></div>
-                  <div style={{ color: '#111827' }}>🇺🇸 Americas Toll-Free: <span style={{ color: '#15803D' }}>+1 (800) 852-3088</span></div>
-                  <div style={{ color: '#111827' }}>🇲🇾 SE Asia Desk: <span style={{ color: '#15803D' }}>+60 3-8023 2388</span></div>
+                  <div style={{ color: '#111827' }}>🇳🇿 New Zealand: <span style={{ color: '#15803D' }}>{contacts.phoneNz}</span></div>
+                  <div style={{ color: '#111827' }}>🇺🇸 Americas Toll-Free: <span style={{ color: '#15803D' }}>{contacts.phoneUs}</span></div>
+                  <div style={{ color: '#111827' }}>🇲🇾 SE Asia Desk: <span style={{ color: '#15803D' }}>{contacts.phoneSea}</span></div>
                 </div>
               </div>
 
@@ -345,9 +350,9 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
                   Submit wiring schematics, photos of crop symptoms, or log files:
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
-                  <div><strong>General Support:</strong> <a href="mailto:help@autogrow.com" style={{ color: '#0284C7' }}>help@autogrow.com</a></div>
-                  <div><strong>Commercial Skids:</strong> <a href="mailto:engineering@autogrow.com" style={{ color: '#0284C7' }}>engineering@autogrow.com</a></div>
-                  <div><strong>Operating Hours:</strong> Mon–Fri 11am–5pm NZST</div>
+                  <div><strong>General Support:</strong> <a href={`mailto:${contacts.emailHelp}`} style={{ color: '#0284C7' }}>{contacts.emailHelp}</a></div>
+                  <div><strong>Commercial Skids:</strong> <a href={`mailto:${contacts.emailEngineering}`} style={{ color: '#0284C7' }}>{contacts.emailEngineering}</a></div>
+                  <div><strong>Operating Hours:</strong> {contacts.supportHours}</div>
                 </div>
               </div>
 

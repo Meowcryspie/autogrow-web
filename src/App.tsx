@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSlider } from './components/HeroSlider';
 import { IntroColumns } from './components/IntroColumns';
@@ -14,23 +14,51 @@ import { AboutPage } from './components/AboutPage';
 import { BlogPage } from './components/BlogPage';
 import { StorePage } from './components/StorePage';
 import { SupportChatWidget } from './components/SupportChatWidget';
+import { AdminConsole } from './components/admin/AdminConsole';
+import { PreviewBanner } from './components/admin/PreviewBanner';
+import { ContentProvider, useContent } from './context/ContentContext';
 import type { ProductItem } from './types';
 import './index.css';
 
-export const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'blog' | 'store'>('home');
+type AppPage = 'home' | 'about' | 'blog' | 'store' | 'admin';
+
+const MainApp: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<AppPage>('home');
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const handleNavigateToPage = (page: 'home' | 'about' | 'blog' | 'store') => {
+  const { setPreviewMode } = useContent();
+
+  // Sync with URL hash for direct links (e.g., #admin, #blog, #store)
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'admin') {
+        setCurrentPage('admin');
+      } else if (hash === 'about') {
+        setCurrentPage('about');
+      } else if (hash === 'blog') {
+        setCurrentPage('blog');
+      } else if (hash === 'store') {
+        setCurrentPage('store');
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  const handleNavigateToPage = (page: AppPage) => {
     setCurrentPage(page);
+    window.location.hash = page === 'home' ? '' : page;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleNavigateToSection = (sectionId: string) => {
     if (currentPage !== 'home') {
       setCurrentPage('home');
+      window.location.hash = '';
       setTimeout(() => {
         scrollToSection(sectionId);
       }, 100);
@@ -62,9 +90,25 @@ export const App: React.FC = () => {
     setSelectedProduct(product);
   };
 
+  // Dedicated Admin Console view
+  if (currentPage === 'admin') {
+    return (
+      <AdminConsole 
+        onExitToSite={() => handleNavigateToPage('home')}
+        onPreview={() => {
+          setPreviewMode(true);
+          handleNavigateToPage('home');
+        }}
+      />
+    );
+  }
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#FFFFFF' }}>
       
+      {/* Live Preview Mode Sticky Banner */}
+      <PreviewBanner onReturnToAdmin={() => handleNavigateToPage('admin')} />
+
       {/* 1. TrolMaster Top Bar & Sticky Header with Mega-Menu + Page Switcher */}
       <Navbar 
         onSearchClick={() => setIsSearchOpen(true)}
@@ -157,6 +201,14 @@ export const App: React.FC = () => {
       />
 
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <ContentProvider>
+      <MainApp />
+    </ContentProvider>
   );
 };
 

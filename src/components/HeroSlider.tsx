@@ -1,62 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { useContent } from '../context/ContentContext';
 
 interface HeroSliderProps {
   onNavigateToSection: (sectionId: string) => void;
 }
 
-interface SlideItem {
-  id: string;
-  title: string;
-  subtitle: string;
-  tag: string;
-  image: string;
-  buttonText: string;
-  targetSection: string;
-}
-
 export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) => {
-  const slides: SlideItem[] = [
-    {
-      id: 'multigrow',
-      tag: 'MultiGrow Pro',
-      title: 'MultiGrow™ Pro Master',
-      subtitle: 'Empowering commercial growers with Reliable & Precision Automation for over 30 years.',
-      image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=2000&q=80',
-      buttonText: 'Explore MultiGrow System',
-      targetSection: 'suite',
-    },
-    {
-      id: 'fertix',
-      tag: 'SatuGrow FertiX',
-      title: 'SatuGrow™ FertiX Skid',
-      subtitle: 'High-Volume Inline Fertigation up to 100 m³/hr with Closed-Loop Proportional EC/pH Dosing.',
-      image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=2000&q=80',
-      buttonText: 'Explore Fertigation Skids',
-      targetSection: 'suite',
-    },
-    {
-      id: 'farmroad',
-      tag: 'FarmRoad AI',
-      title: 'FarmRoad™ Agronomy AI',
-      subtitle: 'Autonomous Yield Forecasting, Plant Microclimate Analysis & 24/7 Crop Steering.',
-      image: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=2000&q=80',
-      buttonText: 'Explore Agronomy Cloud',
-      targetSection: 'suite',
-    },
-  ];
+  const { activeContent } = useContent();
+  const slides = activeContent.heroSlides;
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Keep slide index in bounds
+  useEffect(() => {
+    if (currentSlide >= slides.length) {
+      setCurrentSlide(0);
+    }
+  }, [slides.length, currentSlide]);
+
   // Auto advance slides every 6 seconds
   useEffect(() => {
+    if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % slides.length);
     }, 6000);
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const active = slides[currentSlide];
+  const active = slides[currentSlide] || slides[0];
+  if (!active) return null;
 
   return (
     <section 

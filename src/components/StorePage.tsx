@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ShoppingCart, CheckCircle2, Search, Cpu, Wrench, Layers } from 'lucide-react';
-import { STORE_PRODUCTS } from '../data/mockProducts';
+import { useContent } from '../context/ContentContext';
 import type { StoreProduct } from '../types';
 
 interface StorePageProps {
@@ -9,6 +9,9 @@ interface StorePageProps {
 }
 
 export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateToSection }) => {
+  const { activeContent } = useContent();
+  const products = activeContent.storeProducts;
+
   const [selectedCat, setSelectedCat] = useState<'all' | 'controllers' | 'hardware' | 'parts'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [cartItems, setCartItems] = useState<{ product: StoreProduct; quantity: number }[]>([]);
@@ -22,7 +25,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
     { id: 'parts', label: 'Spare Parts', icon: Wrench },
   ];
 
-  const filteredProducts = STORE_PRODUCTS.filter(p => {
+  const filteredProducts = products.filter(p => {
     const matchesCat = selectedCat === 'all' || p.category === selectedCat;
     const matchesQuery = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          p.modelCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -168,8 +171,8 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
             {categories.map(cat => {
               const Icon = cat.icon;
               const count = cat.id === 'all' 
-                ? STORE_PRODUCTS.length 
-                : STORE_PRODUCTS.filter(p => p.category === cat.id).length;
+                ? products.length 
+                : products.filter((p: StoreProduct) => p.category === cat.id).length;
 
               return (
                 <button
