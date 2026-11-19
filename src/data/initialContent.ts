@@ -5,8 +5,19 @@ import type {
   SupportContacts 
 } from '../types';
 import { STORE_PRODUCTS, BLOG_POSTS, DISTRIBUTORS_DATA } from './mockProducts';
+import bannerImg from '../assets/autogrow-hero-banner.jpg';
 
 export const DEFAULT_HERO_SLIDES: HeroSlideItem[] = [
+  {
+    id: 'autogrow-banner',
+    tag: 'Growing Automation',
+    title: 'Growing Automation Tailored to Your Needs',
+    subtitle: 'Over 30 years of precision commercial greenhouse automation across 27+ countries with 5 billion crop data points.',
+    image: bannerImg,
+    buttonText: 'Explore Controller Systems',
+    targetSection: 'suite',
+    isBannerOnly: true,
+  },
   {
     id: 'multigrow',
     tag: 'MultiGrow Pro',

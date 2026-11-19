@@ -118,6 +118,7 @@ export interface HeroSlideItem {
   image: string;
   buttonText: string;
   targetSection: string;
+  isBannerOnly?: boolean;
 }
 
 export interface ShowcaseSectionItem {

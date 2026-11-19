@@ -36,8 +36,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
       id="hero"
       style={{
         position: 'relative',
-        height: '760px',
-        maxHeight: '85vh',
+        height: 'clamp(540px, 46vw, 720px)',
         width: '100%',
         backgroundColor: '#111827',
         color: '#FFFFFF',
@@ -66,92 +65,146 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              transform: idx === currentSlide ? 'scale(1.03)' : 'scale(1.0)',
+              objectPosition: s.id === 'autogrow-banner' ? '25% center' : 'center',
+              transform: idx === currentSlide ? 'scale(1.01)' : 'scale(1.0)',
               transition: 'transform 7s ease',
             }}
           />
-          {/* TrolMaster Dark Radial & Linear Overlay */}
+          {/* Subtle overlay */}
           <div 
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(90deg, rgba(14, 20, 16, 0.85) 0%, rgba(14, 20, 16, 0.55) 50%, rgba(14, 20, 16, 0.3) 100%)',
+              background: s.isBannerOnly
+                ? 'linear-gradient(to bottom, rgba(10, 14, 12, 0.2) 0%, rgba(10, 14, 12, 0.0) 40%, rgba(10, 14, 12, 0.5) 100%)'
+                : 'linear-gradient(90deg, rgba(14, 20, 16, 0.85) 0%, rgba(14, 20, 16, 0.55) 50%, rgba(14, 20, 16, 0.3) 100%)',
             }}
           />
         </div>
       ))}
 
       {/* Hero Content Container */}
-      <div className="container" style={{ position: 'relative', zIndex: 10 }}>
-        <div style={{ maxWidth: '780px' }}>
-          
-          <div 
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              backgroundColor: 'rgba(255, 255, 255, 0.12)',
-              backdropFilter: 'blur(8px)',
-              padding: '6px 14px',
-              borderRadius: '9999px',
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              color: '#A3E635',
-              marginBottom: '18px',
-            }}
-          >
-            AUTOGROW FLAGSHIP SYSTEMS · NZ ENGINEERED
-          </div>
-
-          <h1 
-            style={{
-              fontSize: 'clamp(2.5rem, 5.5vw, 4.2rem)',
-              fontWeight: 800,
-              lineHeight: 1.08,
-              letterSpacing: '-0.02em',
-              margin: '0 0 16px 0',
-              color: '#FFFFFF',
-              textShadow: '0 2px 20px rgba(0,0,0,0.5)',
-            }}
-          >
-            {active.title}
-          </h1>
-
-          <p 
-            style={{
-              fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
-              color: '#E5E7EB',
-              lineHeight: 1.5,
-              margin: '0 0 32px 0',
-              maxWidth: '680px',
-              fontWeight: 400,
-            }}
-          >
-            {active.subtitle}
-          </p>
-
-          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => onNavigateToSection(active.targetSection)}
-              className="btn btn-primary"
-              style={{ padding: '14px 32px', fontSize: '15px' }}
+      <div className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: '70px' }}>
+        {active.isBannerOnly ? (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', minHeight: '360px' }}>
+            <div 
+              style={{ 
+                maxWidth: '300px', 
+                backgroundColor: 'rgba(15, 23, 42, 0.72)', 
+                backdropFilter: 'blur(12px)', 
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                borderRadius: '14px',
+                padding: '16px 18px',
+                boxShadow: '0 16px 36px rgba(0,0,0,0.45)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}
             >
-              {active.buttonText}
-              <ArrowRight size={16} />
-            </button>
+              <div 
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: '#86EFAC',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Commercial CEA Systems
+              </div>
 
-            <button
-              onClick={() => onNavigateToSection('where-to-buy')}
-              className="btn btn-outline-white"
-              style={{ padding: '14px 28px', fontSize: '15px' }}
-            >
-              Where to Buy
-            </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={() => onNavigateToSection('suite')}
+                  className="btn btn-primary"
+                  style={{ flex: 1, padding: '10px 14px', fontSize: '13px', justifyContent: 'center' }}
+                >
+                  Explore
+                  <ArrowRight size={14} />
+                </button>
+
+                <button
+                  onClick={() => onNavigateToSection('where-to-buy')}
+                  className="btn btn-outline-white"
+                  style={{ flex: 1, padding: '10px 12px', fontSize: '13px', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.08)' }}
+                >
+                  Dealers
+                </button>
+              </div>
+            </div>
           </div>
+        ) : (
+          <div style={{ maxWidth: '780px' }}>
+            <div 
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                backdropFilter: 'blur(8px)',
+                padding: '6px 14px',
+                borderRadius: '9999px',
+                fontSize: '12px',
+                fontWeight: 700,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                color: '#A3E635',
+                marginBottom: '18px',
+              }}
+            >
+              AUTOGROW FLAGSHIP SYSTEMS · NZ ENGINEERED
+            </div>
 
-        </div>
+            <h1 
+              style={{
+                fontSize: 'clamp(2.5rem, 5.5vw, 4.2rem)',
+                fontWeight: 800,
+                lineHeight: 1.08,
+                letterSpacing: '-0.02em',
+                margin: '0 0 16px 0',
+                color: '#FFFFFF',
+                textShadow: '0 2px 20px rgba(0,0,0,0.5)',
+              }}
+            >
+              {active.title}
+            </h1>
+
+            <p 
+              style={{
+                fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
+                color: '#E5E7EB',
+                lineHeight: 1.5,
+                margin: '0 0 32px 0',
+                maxWidth: '680px',
+                fontWeight: 400,
+              }}
+            >
+              {active.subtitle}
+            </p>
+
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => onNavigateToSection(active.targetSection)}
+                className="btn btn-primary"
+                style={{ padding: '14px 32px', fontSize: '15px' }}
+              >
+                {active.buttonText}
+                <ArrowRight size={16} />
+              </button>
+
+              <button
+                onClick={() => onNavigateToSection('where-to-buy')}
+                className="btn btn-outline-white"
+                style={{ padding: '14px 28px', fontSize: '15px' }}
+              >
+                Where to Buy
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Arrow Controls */}

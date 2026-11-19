@@ -10,7 +10,7 @@ import type {
 } from '../types';
 import { DEFAULT_SITE_CONTENT } from '../data/initialContent';
 
-const STORAGE_KEY = 'autogrow_cms_content_v1';
+const STORAGE_KEY = 'autogrow_cms_content_v2';
 
 interface ContentContextType {
   // Published / Saved content
@@ -47,7 +47,10 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.heroSlides && parsed.heroSlides[0]?.id === 'autogrow-banner') {
+          return parsed;
+        }
       }
     } catch (e) {
       console.warn('Failed to parse saved CMS content from localStorage:', e);
