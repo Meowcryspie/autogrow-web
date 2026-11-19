@@ -180,24 +180,21 @@ const MainApp: React.FC = () => {
           />
         )}
 
-        {/* Dedicated Orders Management Page (Same visual as Autogrow web, Admin protected) */}
+        {/* Dedicated Orders Management Page (Admin shows all orders, normal grower shows personal orders) */}
         {currentPage === 'orders' && (
-          <AdminAuthGuard onExitToSite={() => handleNavigateToPage('home')}>
-            <OrdersManagementPage 
-              onBackToHome={() => handleNavigateToPage('home')}
-              onNavigateToSection={handleNavigateToSection}
-            />
-          </AdminAuthGuard>
+          <OrdersManagementPage 
+            onBackToHome={() => handleNavigateToPage('home')}
+            onNavigateToSection={handleNavigateToSection}
+            onNavigateToStore={() => handleNavigateToPage('store')}
+          />
         )}
 
-        {/* Dedicated Feedback Management Page (Same visual as Autogrow web, Admin protected) */}
+        {/* Dedicated Feedback Management Page (Admin reviews all inquiries, normal grower submits feedback) */}
         {currentPage === 'feedback' && (
-          <AdminAuthGuard onExitToSite={() => handleNavigateToPage('home')}>
-            <FeedbackManagementPage 
-              onBackToHome={() => handleNavigateToPage('home')}
-              onNavigateToSection={handleNavigateToSection}
-            />
-          </AdminAuthGuard>
+          <FeedbackManagementPage 
+            onBackToHome={() => handleNavigateToPage('home')}
+            onNavigateToSection={handleNavigateToSection}
+          />
         )}
       </main>
 

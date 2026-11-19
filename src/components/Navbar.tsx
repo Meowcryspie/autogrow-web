@@ -15,7 +15,6 @@ import {
   CheckCircle2,
   Sliders,
   User,
-  LogIn,
   LogOut
 } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
@@ -90,19 +89,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          {/* Left: Brand Identity Only (FarmRoad & SatuGrow removed) */}
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span 
-              onClick={() => onNavigateToPage('home')}
-              style={{ fontWeight: 700, color: '#76b82a', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
-            >
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#76b82a' }} />
-              Autogrow Systems
-            </span>
-          </div>
-
-          {/* Right Utility Menu: About Us, Technical Support Desk (Blog removed from black header) */}
+        <div className="container" style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          {/* Right Utility Menu: About Us, Technical Support Desk, Global Hotline */}
           <div className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
             <span 
               onClick={() => onNavigateToPage('about')}
@@ -146,98 +134,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span style={{ color: '#76b82a', fontWeight: 600 }}>
               Global Support: {contacts.phoneUs}
             </span>
-
-            <span style={{ color: '#9CA3AF', fontSize: '11px' }}>|</span>
-
-            {/* User Auth / Admin Status */}
-            {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '12px', color: '#A7F3D0', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                  <User size={12} />
-                  {profile?.full_name || user.email?.split('@')[0]}
-                  {isAdmin && <span style={{ backgroundColor: '#76b82a', color: '#FFFFFF', padding: '1px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 800 }}>ADMIN</span>}
-                </span>
-
-                <span 
-                  onClick={() => onNavigateToPage('admin')}
-                  style={{ 
-                    cursor: 'pointer', 
-                    color: currentPage === 'admin' ? '#76b82a' : '#D1D5DB', 
-                    fontWeight: currentPage === 'admin' ? 700 : 600,
-                    fontSize: '11.5px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    backgroundColor: currentPage === 'admin' ? 'rgba(118, 184, 42, 0.2)' : 'rgba(255,255,255,0.08)',
-                    padding: '2px 8px',
-                    borderRadius: '4px',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    transition: 'all 0.15s' 
-                  }}
-                  title="Open Autogrow Operations Admin Portal"
-                >
-                  <Sliders size={12} style={{ color: '#76b82a' }} />
-                  Admin Console
-                </span>
-
-                <button
-                  onClick={signOut}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#9CA3AF',
-                    fontSize: '11.5px',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    padding: 0
-                  }}
-                  title="Sign out of account"
-                >
-                  <LogOut size={12} />
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <button
-                  onClick={() => setIsAuthOpen(true)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#E5E7EB',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    padding: '2px 8px',
-                    borderRadius: '4px'
-                  }}
-                >
-                  <LogIn size={13} style={{ color: '#76b82a' }} />
-                  Grower Sign In
-                </button>
-
-                <span 
-                  onClick={() => onNavigateToPage('admin')}
-                  style={{ 
-                    cursor: 'pointer', 
-                    color: '#9CA3AF', 
-                    fontSize: '11px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}
-                  title="Authorized Operations Staff Only"
-                >
-                  <Sliders size={11} />
-                  Staff Portal
-                </span>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -675,7 +571,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Note: "Where to Buy" text link has been removed from beside Blog as directed */}
           </nav>
 
-          {/* Right Controls: Search + Mini Profile (Dropdown) + Where to Buy Button */}
+          {/* Right Controls: Search + Where to Buy Button + (Sign In OR Profile Circle Dropdown) */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {/* Search Button */}
             <button
@@ -700,77 +596,51 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Search size={18} />
             </button>
 
-            {/* Mini Profile Dropdown Button (Left of Where to Buy) */}
+            {/* Single Green Where to Buy Button (Kept green as requested) */}
+            <button
+              onClick={() => onNavigateToSection('where-to-buy')}
+              className="btn btn-primary d-none-mobile"
+              style={{ padding: '10px 22px', fontSize: '13.5px' }}
+            >
+              Where to Buy
+              <ArrowRight size={14} />
+            </button>
+
+            {/* Right Side of Where to Buy: Sign In (if guest) OR Circular Profile Dropdown (if signed in) */}
             {user ? (
               <div ref={profileDropdownRef} style={{ position: 'relative' }}>
                 <button
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                   data-testid="mini-profile-button"
+                  aria-label="User Account Menu"
                   style={{
-                    display: 'inline-flex',
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '50%',
+                    backgroundColor: isAdmin ? '#1E2421' : '#F3F4F6',
+                    color: isAdmin ? '#86EFAC' : '#1F2937',
+                    border: isAdmin ? '1.5px solid rgba(118, 184, 42, 0.5)' : '1.5px solid #D1D5DB',
+                    display: 'flex',
                     alignItems: 'center',
-                    gap: '8px',
-                    padding: '5px 12px 5px 6px',
-                    backgroundColor: isProfileDropdownOpen ? '#F3F4F6' : '#FAFAFA',
-                    border: '1px solid #E5E7EB',
-                    borderRadius: '9999px',
+                    justifyContent: 'center',
+                    fontWeight: 700,
+                    fontSize: '14px',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
-                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+                    padding: 0
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#D1D5DB';
-                    e.currentTarget.style.backgroundColor = '#F3F4F6';
+                    e.currentTarget.style.borderColor = '#76b82a';
+                    e.currentTarget.style.transform = 'scale(1.05)';
                   }}
                   onMouseLeave={(e) => {
-                    if (!isProfileDropdownOpen) {
-                      e.currentTarget.style.borderColor = '#E5E7EB';
-                      e.currentTarget.style.backgroundColor = '#FAFAFA';
-                    }
+                    e.currentTarget.style.borderColor = isAdmin ? 'rgba(118, 184, 42, 0.5)' : '#D1D5DB';
+                    e.currentTarget.style.transform = 'scale(1)';
                   }}
-                  title="Profile & Management Menu"
+                  title={`${profile?.full_name || user.email} · Account Profile`}
                 >
-                  {/* User Avatar Circle */}
-                  <div
-                    style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      backgroundColor: isAdmin ? '#1E2421' : '#E0E7FF',
-                      color: isAdmin ? '#86EFAC' : '#3730A3',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: 700,
-                      fontSize: '12px',
-                      border: isAdmin ? '1px solid rgba(118, 184, 42, 0.4)' : '1px solid #C7D2FE',
-                    }}
-                  >
-                    {profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : <User size={14} />}
-                  </div>
-
-                  <span
-                    style={{
-                      fontSize: '13px',
-                      fontWeight: 600,
-                      color: '#1F2937',
-                      maxWidth: '120px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {profile?.full_name || user.email?.split('@')[0]}
-                  </span>
-
-                  <ChevronDown
-                    size={13}
-                    style={{
-                      color: '#6B7280',
-                      transform: isProfileDropdownOpen ? 'rotate(180deg)' : 'none',
-                      transition: 'transform 0.2s',
-                    }}
-                  />
+                  {profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : <User size={18} />}
                 </button>
 
                 {/* Dropdown Menu */}
@@ -790,24 +660,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                       animation: 'fadeIn 0.15s ease',
                     }}
                   >
-                    {/* User Profile Header */}
+                    {/* User Profile Header (Name & Email in Dropdown) */}
                     <div style={{ padding: '8px 12px 10px', borderBottom: '1px solid #F3F4F6' }}>
                       <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {profile?.full_name || 'Autogrow User'}
+                          {profile?.full_name || (isAdmin ? 'Chief Operations Admin' : 'Grower Client')}
                         </span>
-                        {isAdmin && (
-                          <span style={{ backgroundColor: '#DCFCE7', color: '#15803D', fontSize: '9px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px' }}>
-                            ADMIN
-                          </span>
-                        )}
+                        <span style={{ 
+                          backgroundColor: isAdmin ? '#DCFCE7' : '#EFF6FF', 
+                          color: isAdmin ? '#15803D' : '#1D4ED8', 
+                          fontSize: '9px', 
+                          fontWeight: 800, 
+                          padding: '1px 5px', 
+                          borderRadius: '4px' 
+                        }}>
+                          {isAdmin ? 'ADMIN' : 'GROWER'}
+                        </span>
                       </div>
                       <div style={{ fontSize: '11px', color: '#6B7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: '2px' }}>
                         {user.email}
                       </div>
                     </div>
 
-                    {/* Dropdown Items: Orders, Feedback, Manage Site */}
+                    {/* Dropdown Items: Orders, Feedback, and Manage Site (Admin Only) */}
                     <div style={{ padding: '6px 0', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                       <button
                         onClick={() => {
@@ -873,37 +748,40 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <span>Feedback</span>
                       </button>
 
-                      <button
-                        onClick={() => {
-                          onNavigateToPage('admin');
-                          setIsProfileDropdownOpen(false);
-                        }}
-                        style={{
-                          width: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                          padding: '9px 12px',
-                          background: currentPage === 'admin' ? '#F3F4F6' : 'transparent',
-                          border: 'none',
-                          borderRadius: '8px',
-                          cursor: 'pointer',
-                          color: currentPage === 'admin' ? '#111827' : '#374151',
-                          fontSize: '13px',
-                          fontWeight: currentPage === 'admin' ? 700 : 500,
-                          textAlign: 'left',
-                          transition: 'background 0.12s',
-                        }}
-                        onMouseEnter={(e) => {
-                          if (currentPage !== 'admin') e.currentTarget.style.backgroundColor = '#F9FAFB';
-                        }}
-                        onMouseLeave={(e) => {
-                          if (currentPage !== 'admin') e.currentTarget.style.backgroundColor = 'transparent';
-                        }}
-                      >
-                        <Sliders size={16} style={{ color: '#76b82a' }} />
-                        <span>Manage Site</span>
-                      </button>
+                      {/* Manage Site (Only for Admin users) */}
+                      {isAdmin && (
+                        <button
+                          onClick={() => {
+                            onNavigateToPage('admin');
+                            setIsProfileDropdownOpen(false);
+                          }}
+                          style={{
+                            width: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            padding: '9px 12px',
+                            background: currentPage === 'admin' ? '#F3F4F6' : 'transparent',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            color: currentPage === 'admin' ? '#111827' : '#374151',
+                            fontSize: '13px',
+                            fontWeight: currentPage === 'admin' ? 700 : 500,
+                            textAlign: 'left',
+                            transition: 'background 0.12s',
+                          }}
+                          onMouseEnter={(e) => {
+                            if (currentPage !== 'admin') e.currentTarget.style.backgroundColor = '#F9FAFB';
+                          }}
+                          onMouseLeave={(e) => {
+                            if (currentPage !== 'admin') e.currentTarget.style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          <Sliders size={16} style={{ color: '#76b82a' }} />
+                          <span>Manage Site</span>
+                        </button>
+                      )}
                     </div>
 
                     {/* Divider */}
@@ -941,47 +819,40 @@ export const Navbar: React.FC<NavbarProps> = ({
                 )}
               </div>
             ) : (
+              /* When not signed in, show Sign In button to the RIGHT of Where to Buy */
               <button
                 onClick={() => setIsAuthOpen(true)}
+                data-testid="navbar-sign-in-btn"
                 className="d-none-mobile"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '8px 16px',
-                  backgroundColor: '#F9FAFB',
-                  border: '1px solid #E5E7EB',
+                  padding: '9px 18px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #D1D5DB',
                   borderRadius: '9999px',
-                  fontSize: '13px',
+                  fontSize: '13.5px',
                   fontWeight: 600,
-                  color: '#374151',
+                  color: '#1F2937',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#F3F4F6';
-                  e.currentTarget.style.borderColor = '#D1D5DB';
+                  e.currentTarget.style.backgroundColor = '#F9FAFB';
+                  e.currentTarget.style.borderColor = '#9CA3AF';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#F9FAFB';
-                  e.currentTarget.style.borderColor = '#E5E7EB';
+                  e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  e.currentTarget.style.borderColor = '#D1D5DB';
                 }}
-                title="Sign in to your account"
+                title="Sign in or register your grower account"
               >
-                <User size={14} style={{ color: '#76b82a' }} />
-                Sign In
+                <User size={15} style={{ color: '#76b82a' }} />
+                <span>Sign In</span>
               </button>
             )}
-
-            {/* Single Green Where to Buy Button (Kept green as requested) */}
-            <button
-              onClick={() => onNavigateToSection('where-to-buy')}
-              className="btn btn-primary d-none-mobile"
-              style={{ padding: '10px 22px', fontSize: '13.5px' }}
-            >
-              Where to Buy
-              <ArrowRight size={14} />
-            </button>
 
             {/* Mobile Menu Toggle Button */}
             <button
