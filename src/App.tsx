@@ -141,11 +141,11 @@ const MainApp: React.FC = () => {
             {/* 4. TrolMaster Full-Bleed Background Image Sections (tekst-met-achtergrond) */}
             <CategoryShowcase onNavigateToSection={handleNavigateToSection} />
 
-            {/* 5. TrolMaster Specialized Suite (post-slider) */}
-            <SpecializedSuite onSelectProduct={handleSelectProduct} />
-
-            {/* 6. TrolMaster Grower Success Stories (Case Studies) */}
+            {/* 5. TrolMaster Grower Success Stories (Case Studies) */}
             <GrowerSuccessStories />
+
+            {/* 6. TrolMaster Specialized Suite (Moved below Case Studies as requested) */}
+            <SpecializedSuite onSelectProduct={handleSelectProduct} />
 
             {/* 7. TrolMaster "Grow in your POCKET!" App Section + 1:1 Responsive Phone Scaler */}
             <AppDownloadSection />

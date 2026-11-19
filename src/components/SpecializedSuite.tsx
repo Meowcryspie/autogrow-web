@@ -21,7 +21,7 @@ export const SpecializedSuite: React.FC<SpecializedSuiteProps> = ({ onSelectProd
       tag: 'SATUGROW FERTIX SERIES',
       category: 'PRECISION IRRIGATION',
       description: 'Closed-loop proportional injection up to 100 m³/hr with drain fraction recapture.',
-      image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80',
       actionText: 'Master Your Root Zone →',
     },
     {

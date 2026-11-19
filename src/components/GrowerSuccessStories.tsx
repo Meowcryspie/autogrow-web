@@ -9,7 +9,7 @@ export const GrowerSuccessStories: React.FC = () => {
       subtitle: 'A Commercial Acreage Facility Built on Solar Accumulator Steering',
       location: 'North Canterbury, New Zealand',
       excerpt: 'In the heart of Canterbury, this 12-hectare tomato glasshouse deployed MultiGrow Pro and SatuGrow FertiX to achieve 15% higher yields and 22% recurrent fertilizer recapture.',
-      image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80',
     },
     {
       id: 'story-2',

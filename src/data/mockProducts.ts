@@ -46,7 +46,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     tagline: 'Multi-Zone Inline Precision Fertigation on Heavy-Duty Skid',
     description:
       'Engineered for large-scale protected cropping requiring real-time inline proportional nutrient injection without mixing delay. Features multi-channel venturi or peristaltic dosing assemblies, automated dual EC/pH sensors, and booster pump integration capable of handling up to 100 cubic meters per hour.',
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80',
     specs: [
       { label: 'Flow Rate Range', value: '10 m³/hr to 100 m³/hr (Expandable)' },
       { label: 'Dosing Channels', value: 'Up to 6 Nutrient Parts + 2 Acid/Base' },
@@ -174,7 +174,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     tagline: 'Direct-Insertion TDR Rootzone Telemetry for Crop Steering',
     description:
       'Time-Domain Reflectometry (TDR) sensor engineered for continuous rootzone steering in rockwool slabs, coco coir slabs, and peat substrate mixes. Measures pore-water electrical conductivity, volumetric water content percentage (VWC%), and root temperature simultaneously.',
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80',
     specs: [
       { label: 'VWC Range', value: '0.0% to 100.0% Volumetric Water Content' },
       { label: 'VWC Precision', value: '±1.0% in rockwool and mineral substrates' },
@@ -268,7 +268,7 @@ export const CROP_SOLUTIONS_DATA: CropSolution[] = [
     recommendedHardware: ['MultiGrow Master (MGC-Pro)', 'SatuGrow FertiX Skid', 'WCS Substrate Pod'],
     description:
       'High-wire crops require precise vegetative versus generative balance. MultiGrow modulates slab moisture through light-integral accumulator pulses, avoiding blossom-end rot and maximizing Brix levels.',
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80',
   },
   {
     id: 'berries-tabletop',
@@ -359,7 +359,7 @@ export const SOLUTIONS_DATA: SolutionItem[] = [
     subtitle: 'Inline Dosing Up to 100 m³/hr & 8-Part Batch Reservoirs',
     description:
       'Eliminate human mixing errors and salinity spikes. SatuGrow FertiX and IntelliDose continuously meter liquid fertilizers and acids to provide rootzones with stable, biologically accessible nutrition.',
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80',
     metrics: [
       { label: 'Fertilizer Savings', value: 'Up to 24%' },
       { label: 'EC Repeatability', value: '±0.03 mS' },
@@ -559,7 +559,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: 'Systems Engineering',
     excerpt: 'Automation delivers consistency. But consistency requires a closed loop: sense the right variables, and give the controller authority over the hardware that makes the change.',
     author: 'Jeff Broad Memorial Tech Series',
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=1200&q=80',
     content: [
       'Growers often invest in sophisticated controllers like MultiGrow or SatuGrow FertiX, yet hesitate to grant the controller direct authority to modulate vent positions or chemical injection stroke times.',
       'When you restrict an automation controller to rigid on/off timers rather than proportional feedback loops, you introduce lag. A 5-minute timer cannot adapt to sudden cloud cover or a gust of cold mountain wind.',
@@ -636,7 +636,7 @@ export const STORE_PRODUCTS: StoreProduct[] = [
     category: 'controllers',
     price: 8900,
     inStock: true,
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=600&q=80',
     description: 'High-volume skid-mounted fertigation system delivering 10 to 100 m³/hr inline proportional dosing with dual redundant EC/pH closed-loop control.',
     specs: '10-100 m³/hr · 8 Dosing Channels · Schedule 80 PVC / 316L SS · 400V 3-Phase Booster',
   },
@@ -682,7 +682,7 @@ export const STORE_PRODUCTS: StoreProduct[] = [
     category: 'hardware',
     price: 420,
     inStock: true,
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=600&q=80',
     description: 'TDR rootzone probe with triple 316L stainless steel needles for measuring volumetric water content (VWC%), pore-water EC, and temperature in rockwool and coco slabs.',
     specs: '0-100% VWC · 0-15 mS/cm pore EC · 5m waterproof polyurethane cable · RS-485 Modbus',
   },
@@ -728,7 +728,7 @@ export const STORE_PRODUCTS: StoreProduct[] = [
     category: 'parts',
     price: 340,
     inStock: true,
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=600&q=80',
     description: 'Non-fouling toroidal electrodeless conductivity sensor that virtually eliminates maintenance and coating errors in dirty reservoir and runoff recycling applications.',
     specs: '0.00 to 10.00 mS/cm · ±0.02 mS accuracy · 3/4" NPT threaded inline pipe mounting',
   },

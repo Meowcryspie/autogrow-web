@@ -340,7 +340,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Links (Where to Buy beside Blog REMOVED) */}
           <nav className="d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
             
-            {/* 1. Unified HARDWARE Dropdown */}
+            {/* 1. Solutions */}
+            <button 
+              onClick={() => onNavigateToSection('showcase')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#1F2937',
+                fontWeight: 600,
+                fontSize: '14.5px',
+                cursor: 'pointer',
+                padding: '8px 0',
+                transition: 'color 0.15s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#1F2937')}
+            >
+              Solutions
+            </button>
+
+            {/* 2. Unified HARDWARE Dropdown */}
             <div 
               style={{ position: 'relative' }}
               onMouseEnter={() => setActiveMegaMenu('hardware')}
@@ -491,25 +510,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </div>
               )}
             </div>
-
-            {/* 2. Solutions */}
-            <button 
-              onClick={() => onNavigateToSection('showcase')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#1F2937',
-                fontWeight: 600,
-                fontSize: '14.5px',
-                cursor: 'pointer',
-                padding: '8px 0',
-                transition: 'color 0.15s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#1F2937')}
-            >
-              Solutions
-            </button>
 
             {/* 3. Autogrow App */}
             <button 
@@ -895,16 +895,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             Home Overview
           </div>
           <div 
-            onClick={() => { onNavigateToSection('suite'); setMobileMenuOpen(false); }}
-            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
-          >
-            Hardware (Controllers & Lineup)
-          </div>
-          <div 
             onClick={() => { onNavigateToSection('showcase'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
           >
             Solutions
+          </div>
+          <div 
+            onClick={() => { onNavigateToSection('suite'); setMobileMenuOpen(false); }}
+            style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
+          >
+            Hardware (Controllers & Lineup)
           </div>
           <div 
             onClick={() => { onNavigateToSection('app'); setMobileMenuOpen(false); }}
