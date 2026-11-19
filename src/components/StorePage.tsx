@@ -360,7 +360,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 3500,
+            zIndex: 5000,
             backgroundColor: 'rgba(17, 24, 39, 0.7)',
             backdropFilter: 'blur(4px)',
             display: 'flex',
