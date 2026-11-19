@@ -13,6 +13,8 @@ import { SearchModal } from './components/SearchModal';
 import { AboutPage } from './components/AboutPage';
 import { BlogPage } from './components/BlogPage';
 import { StorePage } from './components/StorePage';
+import { OrdersManagementPage } from './components/OrdersManagementPage';
+import { FeedbackManagementPage } from './components/FeedbackManagementPage';
 import { SupportChatWidget } from './components/SupportChatWidget';
 import { AdminConsole } from './components/admin/AdminConsole';
 import { AdminAuthGuard } from './components/admin/AdminAuthGuard';
@@ -22,7 +24,7 @@ import { AuthProvider } from './context/AuthContext';
 import type { ProductItem } from './types';
 import './index.css';
 
-type AppPage = 'home' | 'about' | 'blog' | 'store' | 'admin';
+type AppPage = 'home' | 'about' | 'blog' | 'store' | 'admin' | 'orders' | 'feedback';
 
 const MainApp: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<AppPage>('home');
@@ -32,12 +34,16 @@ const MainApp: React.FC = () => {
 
   const { setPreviewMode } = useContent();
 
-  // Sync with URL hash for direct links (e.g., #admin, #blog, #store)
+  // Sync with URL hash for direct links (e.g., #admin, #orders, #feedback, #blog, #store)
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace('#', '');
       if (hash === 'admin') {
         setCurrentPage('admin');
+      } else if (hash === 'orders') {
+        setCurrentPage('orders');
+      } else if (hash === 'feedback') {
+        setCurrentPage('feedback');
       } else if (hash === 'about') {
         setCurrentPage('about');
       } else if (hash === 'blog') {
@@ -172,6 +178,26 @@ const MainApp: React.FC = () => {
             onBackToHome={() => handleNavigateToPage('home')}
             onNavigateToSection={handleNavigateToSection}
           />
+        )}
+
+        {/* Dedicated Orders Management Page (Same visual as Autogrow web, Admin protected) */}
+        {currentPage === 'orders' && (
+          <AdminAuthGuard onExitToSite={() => handleNavigateToPage('home')}>
+            <OrdersManagementPage 
+              onBackToHome={() => handleNavigateToPage('home')}
+              onNavigateToSection={handleNavigateToSection}
+            />
+          </AdminAuthGuard>
+        )}
+
+        {/* Dedicated Feedback Management Page (Same visual as Autogrow web, Admin protected) */}
+        {currentPage === 'feedback' && (
+          <AdminAuthGuard onExitToSite={() => handleNavigateToPage('home')}>
+            <FeedbackManagementPage 
+              onBackToHome={() => handleNavigateToPage('home')}
+              onNavigateToSection={handleNavigateToSection}
+            />
+          </AdminAuthGuard>
         )}
       </main>
 

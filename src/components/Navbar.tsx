@@ -8,6 +8,7 @@ import {
   Cpu,
   Layers,
   ShoppingBag,
+  ShoppingCart,
   MessageSquare,
   Phone,
   Mail,
@@ -24,8 +25,8 @@ import { AuthModal } from './auth/AuthModal';
 interface NavbarProps {
   onSearchClick: () => void;
   onNavigateToSection: (sectionId: string) => void;
-  currentPage: 'home' | 'about' | 'blog' | 'store' | 'admin';
-  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store' | 'admin') => void;
+  currentPage: 'home' | 'about' | 'blog' | 'store' | 'admin' | 'orders' | 'feedback';
+  onNavigateToPage: (page: 'home' | 'about' | 'blog' | 'store' | 'admin' | 'orders' | 'feedback') => void;
   onOpenSupportChat: () => void;
 }
 
@@ -666,11 +667,98 @@ export const Navbar: React.FC<NavbarProps> = ({
               Blog
             </button>
 
+            {/* Admin-only Links on White Navigation Header */}
+            {user && isAdmin && (
+              <>
+                <div style={{ width: '1px', height: '18px', backgroundColor: '#E5E7EB', margin: '0 4px' }} />
+
+                <button 
+                  onClick={() => onNavigateToPage('orders')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: currentPage === 'orders' ? '#15803D' : '#1F2937',
+                    fontWeight: currentPage === 'orders' ? 700 : 600,
+                    fontSize: '14.5px',
+                    cursor: 'pointer',
+                    padding: '8px 0',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    transition: 'color 0.15s',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'orders' ? '#15803D' : '#1F2937')}
+                >
+                  <ShoppingCart size={15} style={{ color: '#76b82a' }} />
+                  Orders
+                  <span style={{ backgroundColor: '#FEF3C7', color: '#D97706', fontSize: '10px', fontWeight: 800, padding: '1px 6px', borderRadius: '4px' }}>
+                    ADMIN
+                  </span>
+                </button>
+
+                <button 
+                  onClick={() => onNavigateToPage('feedback')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: currentPage === 'feedback' ? '#15803D' : '#1F2937',
+                    fontWeight: currentPage === 'feedback' ? 700 : 600,
+                    fontSize: '14.5px',
+                    cursor: 'pointer',
+                    padding: '8px 0',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    transition: 'color 0.15s',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'feedback' ? '#15803D' : '#1F2937')}
+                >
+                  <MessageSquare size={15} style={{ color: '#76b82a' }} />
+                  Feedback
+                </button>
+              </>
+            )}
+
             {/* Note: "Where to Buy" text link has been removed from beside Blog as directed */}
           </nav>
 
-          {/* Right Controls: Search + SINGLE GREEN "Where to Buy" Button Kept */}
+          {/* Right Controls: Manage Site (Admin) + Search + Where to Buy Button */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Dedicated "Manage Site" Button on White Header when Admin Logged In */}
+            {user && isAdmin && (
+              <button
+                onClick={() => onNavigateToPage('admin')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  backgroundColor: '#1E2421',
+                  color: '#86EFAC',
+                  border: '1px solid rgba(118, 184, 42, 0.4)',
+                  borderRadius: '9999px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#111827';
+                  e.currentTarget.style.borderColor = '#76b82a';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#1E2421';
+                  e.currentTarget.style.borderColor = 'rgba(118, 184, 42, 0.4)';
+                }}
+                title="Manage Hero Slides, Store Products, Blogs & Site Content"
+              >
+                <Sliders size={14} style={{ color: '#76b82a' }} />
+                Manage Site
+              </button>
+            )}
+
             {/* Search Button */}
             <button
               onClick={onSearchClick}
@@ -775,6 +863,33 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Blog
           </div>
+
+          {user && isAdmin && (
+            <>
+              <div 
+                onClick={() => { onNavigateToPage('orders'); setMobileMenuOpen(false); }}
+                style={{ fontWeight: 700, fontSize: '16px', color: '#15803D', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#F0FDF4', padding: '10px 12px', borderRadius: '8px' }}
+              >
+                <ShoppingCart size={16} />
+                Orders Management
+              </div>
+              <div 
+                onClick={() => { onNavigateToPage('feedback'); setMobileMenuOpen(false); }}
+                style={{ fontWeight: 700, fontSize: '16px', color: '#2563EB', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#EFF6FF', padding: '10px 12px', borderRadius: '8px' }}
+              >
+                <MessageSquare size={16} />
+                Feedback Management
+              </div>
+              <div 
+                onClick={() => { onNavigateToPage('admin'); setMobileMenuOpen(false); }}
+                style={{ fontWeight: 700, fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#1E2421', color: '#86EFAC', padding: '10px 12px', borderRadius: '8px' }}
+              >
+                <Sliders size={16} />
+                Manage Site (CMS)
+              </div>
+            </>
+          )}
+
           <div 
             onClick={() => { onNavigateToPage('about'); setMobileMenuOpen(false); }}
             style={{ fontWeight: 700, fontSize: '16px', color: '#111827', cursor: 'pointer' }}
