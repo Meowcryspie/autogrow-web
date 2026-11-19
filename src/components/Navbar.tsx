@@ -12,9 +12,14 @@ import {
   Phone,
   Mail,
   CheckCircle2,
-  Sliders
+  Sliders,
+  User,
+  LogIn,
+  LogOut
 } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
+import { useAuth } from '../context/AuthContext';
+import { AuthModal } from './auth/AuthModal';
 
 interface NavbarProps {
   onSearchClick: () => void;
@@ -38,6 +43,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [isSupportBarOpen, setIsSupportBarOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  const { user, profile, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,29 +136,95 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <span style={{ color: '#9CA3AF', fontSize: '11px' }}>|</span>
 
-            <span 
-              onClick={() => onNavigateToPage('admin')}
-              style={{ 
-                cursor: 'pointer', 
-                color: currentPage === 'admin' ? '#76b82a' : '#D1D5DB', 
-                fontWeight: currentPage === 'admin' ? 700 : 600,
-                fontSize: '11.5px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                backgroundColor: currentPage === 'admin' ? 'rgba(118, 184, 42, 0.2)' : 'rgba(255,255,255,0.08)',
-                padding: '2px 8px',
-                borderRadius: '4px',
-                border: '1px solid rgba(255,255,255,0.15)',
-                transition: 'all 0.15s' 
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'admin' ? '#76b82a' : '#D1D5DB')}
-              title="Open Autogrow CMS Admin Console"
-            >
-              <Sliders size={12} style={{ color: '#76b82a' }} />
-              CMS Admin
-            </span>
+            {/* User Auth / Admin Status */}
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '12px', color: '#A7F3D0', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                  <User size={12} />
+                  {profile?.full_name || user.email?.split('@')[0]}
+                  {isAdmin && <span style={{ backgroundColor: '#76b82a', color: '#FFFFFF', padding: '1px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 800 }}>ADMIN</span>}
+                </span>
+
+                <span 
+                  onClick={() => onNavigateToPage('admin')}
+                  style={{ 
+                    cursor: 'pointer', 
+                    color: currentPage === 'admin' ? '#76b82a' : '#D1D5DB', 
+                    fontWeight: currentPage === 'admin' ? 700 : 600,
+                    fontSize: '11.5px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    backgroundColor: currentPage === 'admin' ? 'rgba(118, 184, 42, 0.2)' : 'rgba(255,255,255,0.08)',
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    transition: 'all 0.15s' 
+                  }}
+                  title="Open Autogrow Operations Admin Portal"
+                >
+                  <Sliders size={12} style={{ color: '#76b82a' }} />
+                  Admin Console
+                </span>
+
+                <button
+                  onClick={signOut}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#9CA3AF',
+                    fontSize: '11.5px',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: 0
+                  }}
+                  title="Sign out of account"
+                >
+                  <LogOut size={12} />
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <button
+                  onClick={() => setIsAuthOpen(true)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#E5E7EB',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    padding: '2px 8px',
+                    borderRadius: '4px'
+                  }}
+                >
+                  <LogIn size={13} style={{ color: '#76b82a' }} />
+                  Grower Sign In
+                </button>
+
+                <span 
+                  onClick={() => onNavigateToPage('admin')}
+                  style={{ 
+                    cursor: 'pointer', 
+                    color: '#9CA3AF', 
+                    fontSize: '11px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
+                  title="Authorized Operations Staff Only"
+                >
+                  <Sliders size={11} />
+                  Staff Portal
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -723,8 +797,36 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Where to Buy (Distributor Network)
           </div>
+
+          <div style={{ paddingTop: '16px', borderTop: '1px solid #E5E7EB', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {user ? (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '13px', color: '#374151', fontWeight: 600 }}>
+                  {profile?.full_name || user.email}
+                </span>
+                <button
+                  onClick={() => { signOut(); setMobileMenuOpen(false); }}
+                  style={{ background: 'none', border: 'none', color: '#DC2626', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => { setIsAuthOpen(true); setMobileMenuOpen(false); }}
+                style={{ padding: '10px', backgroundColor: '#111827', color: '#FFFFFF', borderRadius: '8px', border: 'none', fontWeight: 700, fontSize: '14px', cursor: 'pointer', textAlign: 'center' }}
+              >
+                Grower Sign In / Register
+              </button>
+            )}
+          </div>
         </div>
       )}
+
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+      />
     </header>
   );
 };

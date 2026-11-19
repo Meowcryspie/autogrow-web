@@ -15,8 +15,10 @@ import { BlogPage } from './components/BlogPage';
 import { StorePage } from './components/StorePage';
 import { SupportChatWidget } from './components/SupportChatWidget';
 import { AdminConsole } from './components/admin/AdminConsole';
+import { AdminAuthGuard } from './components/admin/AdminAuthGuard';
 import { PreviewBanner } from './components/admin/PreviewBanner';
 import { ContentProvider, useContent } from './context/ContentContext';
+import { AuthProvider } from './context/AuthContext';
 import type { ProductItem } from './types';
 import './index.css';
 
@@ -90,16 +92,18 @@ const MainApp: React.FC = () => {
     setSelectedProduct(product);
   };
 
-  // Dedicated Admin Console view
+  // Dedicated Admin Console view with Supabase / RBAC Protected Guard
   if (currentPage === 'admin') {
     return (
-      <AdminConsole 
-        onExitToSite={() => handleNavigateToPage('home')}
-        onPreview={() => {
-          setPreviewMode(true);
-          handleNavigateToPage('home');
-        }}
-      />
+      <AdminAuthGuard onExitToSite={() => handleNavigateToPage('home')}>
+        <AdminConsole 
+          onExitToSite={() => handleNavigateToPage('home')}
+          onPreview={() => {
+            setPreviewMode(true);
+            handleNavigateToPage('home');
+          }}
+        />
+      </AdminAuthGuard>
     );
   }
 
@@ -206,9 +210,11 @@ const MainApp: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <ContentProvider>
-      <MainApp />
-    </ContentProvider>
+    <AuthProvider>
+      <ContentProvider>
+        <MainApp />
+      </ContentProvider>
+    </AuthProvider>
   );
 };
 

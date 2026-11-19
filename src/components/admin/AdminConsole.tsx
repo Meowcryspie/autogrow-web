@@ -16,10 +16,14 @@ import {
   Layers, 
   PhoneCall, 
   FileCode, 
-  AlertTriangle
+  AlertTriangle,
+  ShoppingCart,
+  Inbox
 } from 'lucide-react';
 import { useContent } from '../../context/ContentContext';
 import { ImageUploader } from './ImageUploader';
+import { AdminOrdersTab } from './AdminOrdersTab';
+import { AdminInquiriesTab } from './AdminInquiriesTab';
 import type { HeroSlideItem, ShowcaseSectionItem, StoreProduct, BlogPost, DistributorLocation } from '../../types';
 
 interface AdminConsoleProps {
@@ -27,7 +31,7 @@ interface AdminConsoleProps {
   onPreview: () => void;
 }
 
-type AdminTab = 'hero' | 'store' | 'blog' | 'showcase' | 'support' | 'json';
+type AdminTab = 'orders' | 'inquiries' | 'hero' | 'store' | 'blog' | 'showcase' | 'support' | 'json';
 
 export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPreview }) => {
   const { 
@@ -46,7 +50,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
     importJson 
   } = useContent();
 
-  const [activeTab, setActiveTab] = useState<AdminTab>('hero');
+  const [activeTab, setActiveTab] = useState<AdminTab>('orders');
   const [storeFilter, setStoreFilter] = useState<'all' | 'controllers' | 'hardware' | 'parts'>('all');
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [importJsonText, setImportJsonText] = useState('');
@@ -446,7 +450,58 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
           }}
         >
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', padding: '0 12px 8px', letterSpacing: '0.05em' }}>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#76b82a', textTransform: 'uppercase', padding: '0 12px 6px', letterSpacing: '0.05em' }}>
+              Operations & Orders
+            </div>
+
+            <button
+              onClick={() => setActiveTab('orders')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '6px',
+                fontSize: '13.5px',
+                fontWeight: activeTab === 'orders' ? 700 : 500,
+                backgroundColor: activeTab === 'orders' ? '#1E2421' : 'transparent',
+                color: activeTab === 'orders' ? '#86EFAC' : '#D1D5DB',
+                border: activeTab === 'orders' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.15s',
+              }}
+            >
+              <ShoppingCart size={16} style={{ color: activeTab === 'orders' ? '#76b82a' : '#9CA3AF' }} />
+              Customer Orders
+            </button>
+
+            <button
+              onClick={() => setActiveTab('inquiries')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '6px',
+                fontSize: '13.5px',
+                fontWeight: activeTab === 'inquiries' ? 700 : 500,
+                backgroundColor: activeTab === 'inquiries' ? '#1E2421' : 'transparent',
+                color: activeTab === 'inquiries' ? '#86EFAC' : '#D1D5DB',
+                border: activeTab === 'inquiries' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.15s',
+                marginBottom: '10px'
+              }}
+            >
+              <Inbox size={16} style={{ color: activeTab === 'inquiries' ? '#76b82a' : '#9CA3AF' }} />
+              Inquiries & Feedback
+            </button>
+
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', padding: '0 12px 6px', letterSpacing: '0.05em' }}>
               Content Sections
             </div>
 
@@ -627,6 +682,20 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
         {/* Editor Main Content Area */}
         <main style={{ flex: 1, padding: '32px 40px', overflowY: 'auto', maxWidth: '1200px' }}>
           
+          {/* TAB: CUSTOMER ORDERS */}
+          {activeTab === 'orders' && (
+            <div style={{ backgroundColor: '#FFFFFF', padding: '28px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+              <AdminOrdersTab />
+            </div>
+          )}
+
+          {/* TAB: INQUIRIES & FEEDBACK */}
+          {activeTab === 'inquiries' && (
+            <div style={{ backgroundColor: '#FFFFFF', padding: '28px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
+              <AdminInquiriesTab />
+            </div>
+          )}
+
           {/* TAB 1: HERO SLIDES */}
           {activeTab === 'hero' && (
             <div>

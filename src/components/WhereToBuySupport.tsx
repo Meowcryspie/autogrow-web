@@ -10,10 +10,13 @@ import {
   Box,
   ArrowRight,
   MapPin,
-  MessageSquare
+  MessageSquare,
+  Send,
+  AlertCircle
 } from 'lucide-react';
 import { DOWNLOADS_DATA } from '../data/mockProducts';
 import { useContent } from '../context/ContentContext';
+import { submitInquiry } from '../services/orderService';
 import type { DownloadItem, DistributorLocation } from '../types';
 
 interface WhereToBuySupportProps {
@@ -27,9 +30,19 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
   const distributors = activeContent.distributors;
   const contacts = activeContent.supportContacts;
 
-  const [activeTab, setActiveTab] = useState<'distributors' | 'downloads' | 'roi' | 'helpdesk'>('distributors');
+  const [activeTab, setActiveTab] = useState<'distributors' | 'downloads' | 'roi' | 'helpdesk' | 'contact'>('distributors');
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
   const [downloadToast, setDownloadToast] = useState<string | null>(null);
+
+  // Contact / Feedback Form States
+  const [inquiryName, setInquiryName] = useState('');
+  const [inquiryEmail, setInquiryEmail] = useState('');
+  const [inquiryCategory, setInquiryCategory] = useState<'technical_support' | 'quote_inquiry' | 'feedback' | 'general'>('technical_support');
+  const [inquirySubject, setInquirySubject] = useState('');
+  const [inquiryMessage, setInquiryMessage] = useState('');
+  const [inquirySubmitting, setInquirySubmitting] = useState(false);
+  const [inquirySuccess, setInquirySuccess] = useState<string | null>(null);
+  const [inquiryError, setInquiryError] = useState<string | null>(null);
 
   // ROI Calculator states
   const [hectares, setHectares] = useState<number>(2.5);
@@ -173,6 +186,24 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
               }}
             >
               Commercial ROI Calculator
+            </button>
+
+            <button
+              onClick={() => setActiveTab('contact')}
+              style={{
+                padding: '10px 22px',
+                borderRadius: '9999px',
+                fontSize: '13.5px',
+                fontWeight: 700,
+                border: 'none',
+                cursor: 'pointer',
+                backgroundColor: activeTab === 'contact' ? '#76b82a' : 'transparent',
+                color: activeTab === 'contact' ? '#FFFFFF' : '#6B7280',
+                boxShadow: activeTab === 'contact' ? '0 2px 6px rgba(118, 184, 42, 0.25)' : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              Contact & Grower Feedback
             </button>
           </div>
         </div>
@@ -449,6 +480,166 @@ export const WhereToBuySupport: React.FC<WhereToBuySupportProps> = ({
                 </button>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Tab 5: Contact & Grower Feedback Form */}
+        {activeTab === 'contact' && (
+          <div style={{ maxWidth: '780px', margin: '0 auto', backgroundColor: '#FFFFFF', borderRadius: '16px', border: '1px solid #E5E7EB', padding: '36px', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
+            <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+              <div style={{ display: 'inline-block', backgroundColor: '#F0FDF4', color: '#15803D', fontSize: '11px', fontWeight: 800, padding: '3px 10px', borderRadius: '999px', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Direct Engineering Desk & Grower Inquiries
+              </div>
+              <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>
+                Contact Autogrow Operations Desk
+              </h3>
+              <p style={{ fontSize: '14px', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
+                Submit technical questions, request commercial quote schedules, or provide feedback directly to our Auckland headquarters.
+              </p>
+            </div>
+
+            {inquirySuccess && (
+              <div style={{ marginBottom: '20px', padding: '14px 18px', backgroundColor: '#DCFCE7', border: '1px solid #86EFAC', borderRadius: '10px', color: '#15803D', fontSize: '13.5px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CheckCircle2 size={18} />
+                <span>{inquirySuccess}</span>
+              </div>
+            )}
+
+            {inquiryError && (
+              <div style={{ marginBottom: '20px', padding: '14px 18px', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '10px', color: '#B91C1C', fontSize: '13.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <AlertCircle size={18} />
+                <span>{inquiryError}</span>
+              </div>
+            )}
+
+            <form 
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setInquiryError(null);
+                if (!inquiryName.trim() || !inquiryEmail.trim() || !inquiryMessage.trim()) {
+                  setInquiryError('Please complete all required fields.');
+                  return;
+                }
+                setInquirySubmitting(true);
+                try {
+                  await submitInquiry({
+                    name: inquiryName.trim(),
+                    email: inquiryEmail.trim(),
+                    category: inquiryCategory,
+                    subject: inquirySubject.trim() || `${inquiryCategory.replace('_', ' ').toUpperCase()} from ${inquiryName}`,
+                    message: inquiryMessage.trim()
+                  });
+                  setInquirySubmitting(false);
+                  setInquirySuccess('Inquiry received! Our Auckland engineering desk will review and contact you shortly.');
+                  setInquiryName('');
+                  setInquiryEmail('');
+                  setInquirySubject('');
+                  setInquiryMessage('');
+                  setTimeout(() => setInquirySuccess(null), 6000);
+                } catch (err: any) {
+                  setInquirySubmitting(false);
+                  setInquiryError(err?.message || 'Failed to submit inquiry.');
+                }
+              }} 
+              style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+            >
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#374151', marginBottom: '6px' }}>
+                    Your Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={inquiryName}
+                    onChange={(e) => setInquiryName(e.target.value)}
+                    placeholder="e.g. David Chen"
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13.5px', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#374151', marginBottom: '6px' }}>
+                    Facility Work Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={inquiryEmail}
+                    onChange={(e) => setInquiryEmail(e.target.value)}
+                    placeholder="david@greenhouse.com"
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13.5px', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#374151', marginBottom: '6px' }}>
+                    Inquiry Category
+                  </label>
+                  <select
+                    value={inquiryCategory}
+                    onChange={(e) => setInquiryCategory(e.target.value as any)}
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13.5px', boxSizing: 'border-box' }}
+                  >
+                    <option value="technical_support">Technical Support & Sensor Calibration</option>
+                    <option value="quote_inquiry">Commercial Quote & Bulk Hardware</option>
+                    <option value="feedback">Grower Product Feedback</option>
+                    <option value="general">General Corporate Inquiry</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#374151', marginBottom: '6px' }}>
+                    Subject Line
+                  </label>
+                  <input
+                    type="text"
+                    value={inquirySubject}
+                    onChange={(e) => setInquirySubject(e.target.value)}
+                    placeholder="e.g. MultiGrow 24VAC Wiring Question"
+                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13.5px', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '12.5px', fontWeight: 700, color: '#374151', marginBottom: '6px' }}>
+                  Detailed Message / Facility Specifications *
+                </label>
+                <textarea
+                  required
+                  rows={4}
+                  value={inquiryMessage}
+                  onChange={(e) => setInquiryMessage(e.target.value)}
+                  placeholder="Describe your hydroponic controller setup, sensor requirements, or feedback..."
+                  style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13.5px', boxSizing: 'border-box' }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={inquirySubmitting}
+                style={{
+                  padding: '13px',
+                  backgroundColor: '#76b82a',
+                  color: '#FFFFFF',
+                  fontWeight: 800,
+                  fontSize: '14px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: inquirySubmitting ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                <Send size={16} />
+                {inquirySubmitting ? 'Transmitting Message...' : 'Submit Message to Operations Desk'}
+              </button>
+            </form>
           </div>
         )}
 

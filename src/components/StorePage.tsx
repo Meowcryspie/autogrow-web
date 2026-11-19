@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ShoppingCart, CheckCircle2, Search, Cpu, Wrench, Layers } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, CheckCircle2, Search, Cpu, Wrench, Layers, ShieldCheck } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
+import { CheckoutModal } from './cart/CheckoutModal';
+import { AuthModal } from './auth/AuthModal';
 import type { StoreProduct } from '../types';
 
 interface StorePageProps {
@@ -17,6 +19,9 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
   const [cartItems, setCartItems] = useState<{ product: StoreProduct; quantity: number }[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [confirmedOrderNumber, setConfirmedOrderNumber] = useState<string | null>(null);
 
   const categories: { id: 'all' | 'controllers' | 'hardware' | 'parts'; label: string; icon: any }[] = [
     { id: 'all', label: 'All Products', icon: Layers },
@@ -422,17 +427,97 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
                 </div>
                 <button
                   onClick={() => {
-                    alert('Order inquiry dispatched! An Autogrow technical specialist will verify your facility voltage and shipping schedule within 1 business hour.');
-                    setCartItems([]);
                     setIsCartOpen(false);
+                    setIsCheckoutOpen(true);
                   }}
                   className="btn btn-primary"
-                  style={{ width: '100%', padding: '14px', fontSize: '14px' }}
+                  style={{ width: '100%', padding: '14px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                 >
-                  Submit Commercial Order Inquiry
+                  <ShieldCheck size={16} />
+                  Proceed to Commercial Checkout
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        cartItems={cartItems}
+        totalValue={totalCartValue}
+        onRequireAuth={() => setIsAuthModalOpen(true)}
+        onOrderSuccess={(orderNum) => {
+          setConfirmedOrderNumber(orderNum);
+          setCartItems([]);
+        }}
+      />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        defaultMode="signin"
+        onSuccess={() => setIsCheckoutOpen(true)}
+      />
+
+      {/* Confirmed Order Modal */}
+      {confirmedOrderNumber && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.75)',
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px'
+          }}
+          onClick={() => setConfirmedOrderNumber(null)}
+        >
+          <div 
+            style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: '16px',
+              maxWidth: '460px',
+              width: '100%',
+              padding: '36px',
+              textAlign: 'center',
+              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <CheckCircle2 size={32} color="#15803D" />
+            </div>
+            <div style={{ fontSize: '11px', textTransform: 'uppercase', color: '#15803D', fontWeight: 800, letterSpacing: '0.05em', marginBottom: '6px' }}>
+              Order Received by Operations Desk
+            </div>
+            <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: '0 0 10px' }}>
+              Order Reference #{confirmedOrderNumber}
+            </h3>
+            <p style={{ fontSize: '14px', color: '#4B5563', lineHeight: 1.6, margin: '0 0 24px' }}>
+              Thank you! Your commercial order has been recorded into our system. An Autogrow technical specialist will review your voltage requirements and contact you within 1 business hour.
+            </p>
+            <button
+              onClick={() => setConfirmedOrderNumber(null)}
+              style={{
+                width: '100%',
+                padding: '12px',
+                backgroundColor: '#111827',
+                color: '#FFFFFF',
+                borderRadius: '8px',
+                fontWeight: 700,
+                fontSize: '14px',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              Done & Return to Store
+            </button>
           </div>
         </div>
       )}
