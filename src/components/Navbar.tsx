@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Menu, 
   X, 
@@ -45,6 +45,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [isSupportBarOpen, setIsSupportBarOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
 
   const { user, profile, isAdmin, signOut } = useAuth();
 
@@ -54,6 +56,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -628,24 +640,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               style={{
                 background: 'none',
                 border: 'none',
-                color: currentPage === 'store' ? '#15803D' : '#1F2937',
+                color: currentPage === 'store' ? '#76b82a' : '#1F2937',
                 fontWeight: currentPage === 'store' ? 700 : 600,
                 fontSize: '14.5px',
                 cursor: 'pointer',
                 padding: '8px 0',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
                 transition: 'color 0.15s',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'store' ? '#15803D' : '#1F2937')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'store' ? '#76b82a' : '#1F2937')}
             >
-              <ShoppingBag size={15} style={{ color: '#76b82a' }} />
               Online Store
-              <span style={{ backgroundColor: '#DCFCE7', color: '#15803D', fontSize: '10px', fontWeight: 700, padding: '1px 6px', borderRadius: '4px' }}>
-                DIRECT
-              </span>
             </button>
 
             {/* 5. Blog */}
@@ -667,98 +672,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               Blog
             </button>
 
-            {/* Admin-only Links on White Navigation Header */}
-            {user && isAdmin && (
-              <>
-                <div style={{ width: '1px', height: '18px', backgroundColor: '#E5E7EB', margin: '0 4px' }} />
-
-                <button 
-                  onClick={() => onNavigateToPage('orders')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: currentPage === 'orders' ? '#15803D' : '#1F2937',
-                    fontWeight: currentPage === 'orders' ? 700 : 600,
-                    fontSize: '14.5px',
-                    cursor: 'pointer',
-                    padding: '8px 0',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'color 0.15s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'orders' ? '#15803D' : '#1F2937')}
-                >
-                  <ShoppingCart size={15} style={{ color: '#76b82a' }} />
-                  Orders
-                  <span style={{ backgroundColor: '#FEF3C7', color: '#D97706', fontSize: '10px', fontWeight: 800, padding: '1px 6px', borderRadius: '4px' }}>
-                    ADMIN
-                  </span>
-                </button>
-
-                <button 
-                  onClick={() => onNavigateToPage('feedback')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: currentPage === 'feedback' ? '#15803D' : '#1F2937',
-                    fontWeight: currentPage === 'feedback' ? 700 : 600,
-                    fontSize: '14.5px',
-                    cursor: 'pointer',
-                    padding: '8px 0',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'color 0.15s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'feedback' ? '#15803D' : '#1F2937')}
-                >
-                  <MessageSquare size={15} style={{ color: '#76b82a' }} />
-                  Feedback
-                </button>
-              </>
-            )}
-
             {/* Note: "Where to Buy" text link has been removed from beside Blog as directed */}
           </nav>
 
-          {/* Right Controls: Manage Site (Admin) + Search + Where to Buy Button */}
+          {/* Right Controls: Search + Mini Profile (Dropdown) + Where to Buy Button */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {/* Dedicated "Manage Site" Button on White Header when Admin Logged In */}
-            {user && isAdmin && (
-              <button
-                onClick={() => onNavigateToPage('admin')}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '8px 16px',
-                  backgroundColor: '#1E2421',
-                  color: '#86EFAC',
-                  border: '1px solid rgba(118, 184, 42, 0.4)',
-                  borderRadius: '9999px',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#111827';
-                  e.currentTarget.style.borderColor = '#76b82a';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#1E2421';
-                  e.currentTarget.style.borderColor = 'rgba(118, 184, 42, 0.4)';
-                }}
-                title="Manage Hero Slides, Store Products, Blogs & Site Content"
-              >
-                <Sliders size={14} style={{ color: '#76b82a' }} />
-                Manage Site
-              </button>
-            )}
-
             {/* Search Button */}
             <button
               onClick={onSearchClick}
@@ -781,6 +699,279 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Search size={18} />
             </button>
+
+            {/* Mini Profile Dropdown Button (Left of Where to Buy) */}
+            {user ? (
+              <div ref={profileDropdownRef} style={{ position: 'relative' }}>
+                <button
+                  onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                  data-testid="mini-profile-button"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '5px 12px 5px 6px',
+                    backgroundColor: isProfileDropdownOpen ? '#F3F4F6' : '#FAFAFA',
+                    border: '1px solid #E5E7EB',
+                    borderRadius: '9999px',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#D1D5DB';
+                    e.currentTarget.style.backgroundColor = '#F3F4F6';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isProfileDropdownOpen) {
+                      e.currentTarget.style.borderColor = '#E5E7EB';
+                      e.currentTarget.style.backgroundColor = '#FAFAFA';
+                    }
+                  }}
+                  title="Profile & Management Menu"
+                >
+                  {/* User Avatar Circle */}
+                  <div
+                    style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      backgroundColor: isAdmin ? '#1E2421' : '#E0E7FF',
+                      color: isAdmin ? '#86EFAC' : '#3730A3',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 700,
+                      fontSize: '12px',
+                      border: isAdmin ? '1px solid rgba(118, 184, 42, 0.4)' : '1px solid #C7D2FE',
+                    }}
+                  >
+                    {profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : <User size={14} />}
+                  </div>
+
+                  <span
+                    style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: '#1F2937',
+                      maxWidth: '120px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {profile?.full_name || user.email?.split('@')[0]}
+                  </span>
+
+                  <ChevronDown
+                    size={13}
+                    style={{
+                      color: '#6B7280',
+                      transform: isProfileDropdownOpen ? 'rotate(180deg)' : 'none',
+                      transition: 'transform 0.2s',
+                    }}
+                  />
+                </button>
+
+                {/* Dropdown Menu */}
+                {isProfileDropdownOpen && (
+                  <div
+                    data-testid="mini-profile-dropdown"
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 8px)',
+                      right: 0,
+                      width: '240px',
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '12px',
+                      boxShadow: '0 16px 36px -4px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.06)',
+                      padding: '8px',
+                      zIndex: 1500,
+                      animation: 'fadeIn 0.15s ease',
+                    }}
+                  >
+                    {/* User Profile Header */}
+                    <div style={{ padding: '8px 12px 10px', borderBottom: '1px solid #F3F4F6' }}>
+                      <div style={{ fontSize: '13px', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {profile?.full_name || 'Autogrow User'}
+                        </span>
+                        {isAdmin && (
+                          <span style={{ backgroundColor: '#DCFCE7', color: '#15803D', fontSize: '9px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px' }}>
+                            ADMIN
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#6B7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: '2px' }}>
+                        {user.email}
+                      </div>
+                    </div>
+
+                    {/* Dropdown Items: Orders, Feedback, Manage Site */}
+                    <div style={{ padding: '6px 0', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      <button
+                        onClick={() => {
+                          onNavigateToPage('orders');
+                          setIsProfileDropdownOpen(false);
+                        }}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          padding: '9px 12px',
+                          background: currentPage === 'orders' ? '#F0FDF4' : 'transparent',
+                          border: 'none',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          color: currentPage === 'orders' ? '#15803D' : '#374151',
+                          fontSize: '13px',
+                          fontWeight: currentPage === 'orders' ? 700 : 500,
+                          textAlign: 'left',
+                          transition: 'background 0.12s',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (currentPage !== 'orders') e.currentTarget.style.backgroundColor = '#F9FAFB';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (currentPage !== 'orders') e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
+                      >
+                        <ShoppingCart size={16} style={{ color: '#76b82a' }} />
+                        <span>Orders</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          onNavigateToPage('feedback');
+                          setIsProfileDropdownOpen(false);
+                        }}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          padding: '9px 12px',
+                          background: currentPage === 'feedback' ? '#EFF6FF' : 'transparent',
+                          border: 'none',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          color: currentPage === 'feedback' ? '#1D4ED8' : '#374151',
+                          fontSize: '13px',
+                          fontWeight: currentPage === 'feedback' ? 700 : 500,
+                          textAlign: 'left',
+                          transition: 'background 0.12s',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (currentPage !== 'feedback') e.currentTarget.style.backgroundColor = '#F9FAFB';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (currentPage !== 'feedback') e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
+                      >
+                        <MessageSquare size={16} style={{ color: '#0284C7' }} />
+                        <span>Feedback</span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          onNavigateToPage('admin');
+                          setIsProfileDropdownOpen(false);
+                        }}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          padding: '9px 12px',
+                          background: currentPage === 'admin' ? '#F3F4F6' : 'transparent',
+                          border: 'none',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          color: currentPage === 'admin' ? '#111827' : '#374151',
+                          fontSize: '13px',
+                          fontWeight: currentPage === 'admin' ? 700 : 500,
+                          textAlign: 'left',
+                          transition: 'background 0.12s',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (currentPage !== 'admin') e.currentTarget.style.backgroundColor = '#F9FAFB';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (currentPage !== 'admin') e.currentTarget.style.backgroundColor = 'transparent';
+                        }}
+                      >
+                        <Sliders size={16} style={{ color: '#76b82a' }} />
+                        <span>Manage Site</span>
+                      </button>
+                    </div>
+
+                    {/* Divider */}
+                    <div style={{ height: '1px', backgroundColor: '#F3F4F6', margin: '4px 0' }} />
+
+                    {/* Sign Out */}
+                    <button
+                      onClick={() => {
+                        signOut();
+                        setIsProfileDropdownOpen(false);
+                      }}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '8px 12px',
+                        background: 'none',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        color: '#DC2626',
+                        fontSize: '12.5px',
+                        fontWeight: 600,
+                        textAlign: 'left',
+                        transition: 'background 0.12s',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#FEF2F2')}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                    >
+                      <LogOut size={14} />
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="d-none-mobile"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  backgroundColor: '#F9FAFB',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: '9999px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  color: '#374151',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#F3F4F6';
+                  e.currentTarget.style.borderColor = '#D1D5DB';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#F9FAFB';
+                  e.currentTarget.style.borderColor = '#E5E7EB';
+                }}
+                title="Sign in to your account"
+              >
+                <User size={14} style={{ color: '#76b82a' }} />
+                Sign In
+              </button>
+            )}
 
             {/* Single Green Where to Buy Button (Kept green as requested) */}
             <button
