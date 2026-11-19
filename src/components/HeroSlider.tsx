@@ -36,7 +36,8 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
       id="hero"
       style={{
         position: 'relative',
-        height: 'clamp(540px, 46vw, 720px)',
+        height: 'clamp(600px, 52vw, 780px)',
+        minHeight: '600px',
         width: '100%',
         backgroundColor: '#111827',
         color: '#FFFFFF',
@@ -65,8 +66,8 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: s.id === 'autogrow-banner' ? '25% center' : 'center',
-              transform: idx === currentSlide ? 'scale(1.01)' : 'scale(1.0)',
+              objectPosition: 'center',
+              transform: idx === currentSlide ? 'scale(1.02)' : 'scale(1.0)',
               transition: 'transform 7s ease',
             }}
           />
@@ -76,7 +77,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
               position: 'absolute',
               inset: 0,
               background: s.isBannerOnly
-                ? 'linear-gradient(to bottom, rgba(10, 14, 12, 0.2) 0%, rgba(10, 14, 12, 0.0) 40%, rgba(10, 14, 12, 0.5) 100%)'
+                ? 'linear-gradient(90deg, rgba(14, 20, 16, 0.88) 0%, rgba(14, 20, 16, 0.6) 45%, rgba(14, 20, 16, 0.25) 100%), linear-gradient(to top, rgba(14, 20, 16, 0.75) 0%, transparent 40%)'
                 : 'linear-gradient(90deg, rgba(14, 20, 16, 0.85) 0%, rgba(14, 20, 16, 0.55) 50%, rgba(14, 20, 16, 0.3) 100%)',
             }}
           />
@@ -84,55 +85,74 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
       ))}
 
       {/* Hero Content Container */}
-      <div className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: '70px' }}>
+      <div className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: '90px' }}>
         {active.isBannerOnly ? (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', minHeight: '360px' }}>
-            <div 
-              style={{ 
-                maxWidth: '300px', 
-                backgroundColor: 'rgba(15, 23, 42, 0.72)', 
-                backdropFilter: 'blur(12px)', 
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: '14px',
-                padding: '16px 18px',
-                boxShadow: '0 16px 36px rgba(0,0,0,0.45)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px'
+          <div style={{ maxWidth: '920px', padding: '20px 0' }}>
+            {/* 3-line Autogrow Bold Uppercase Headline */}
+            <h1
+              style={{
+                fontSize: 'clamp(2.4rem, 5vw, 4.4rem)',
+                fontWeight: 900,
+                lineHeight: 1.05,
+                letterSpacing: '-0.02em',
+                margin: '0 0 38px 0',
+                color: '#FFFFFF',
+                textTransform: 'uppercase',
+                textShadow: '0 4px 24px rgba(0,0,0,0.6)',
               }}
             >
-              <div 
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  color: '#86EFAC',
-                  fontSize: '11px',
-                  fontWeight: 800,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Commercial CEA Systems
+              Growing Automation<br />
+              Tailored to<br />
+              Your Needs
+            </h1>
+
+            {/* 4 Commercial Operational Metrics with Green Hairline Bars */}
+            <div 
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 'clamp(16px, 3vw, 40px)',
+                maxWidth: '780px',
+              }}
+            >
+              <div style={{ minWidth: '110px', flex: '1 1 0' }}>
+                <div style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.8rem)', fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>
+                  31
+                </div>
+                <div style={{ fontSize: 'clamp(10px, 1vw, 12px)', fontWeight: 700, letterSpacing: '0.06em', color: '#D1D5DB', textTransform: 'uppercase', marginTop: '6px', whiteSpace: 'nowrap' }}>
+                  Years in Business
+                </div>
+                <div style={{ height: '2px', backgroundColor: '#76b82a', width: '100%', marginTop: '8px' }} />
               </div>
 
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button
-                  onClick={() => onNavigateToSection('suite')}
-                  className="btn btn-primary"
-                  style={{ flex: 1, padding: '10px 14px', fontSize: '13px', justifyContent: 'center' }}
-                >
-                  Explore
-                  <ArrowRight size={14} />
-                </button>
+              <div style={{ minWidth: '110px', flex: '1 1 0' }}>
+                <div style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.8rem)', fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>
+                  27
+                </div>
+                <div style={{ fontSize: 'clamp(10px, 1vw, 12px)', fontWeight: 700, letterSpacing: '0.06em', color: '#D1D5DB', textTransform: 'uppercase', marginTop: '6px', whiteSpace: 'nowrap' }}>
+                  Countries
+                </div>
+                <div style={{ height: '2px', backgroundColor: '#76b82a', width: '100%', marginTop: '8px' }} />
+              </div>
 
-                <button
-                  onClick={() => onNavigateToSection('where-to-buy')}
-                  className="btn btn-outline-white"
-                  style={{ flex: 1, padding: '10px 12px', fontSize: '13px', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.08)' }}
-                >
-                  Dealers
-                </button>
+              <div style={{ minWidth: '120px', flex: '1 1 0' }}>
+                <div style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.8rem)', fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>
+                  75
+                </div>
+                <div style={{ fontSize: 'clamp(10px, 1vw, 12px)', fontWeight: 700, letterSpacing: '0.06em', color: '#D1D5DB', textTransform: 'uppercase', marginTop: '6px', whiteSpace: 'nowrap' }}>
+                  KM of Comms Cable
+                </div>
+                <div style={{ height: '2px', backgroundColor: '#76b82a', width: '100%', marginTop: '8px' }} />
+              </div>
+
+              <div style={{ minWidth: '110px', flex: '1 1 0' }}>
+                <div style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.8rem)', fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>
+                  5B
+                </div>
+                <div style={{ fontSize: 'clamp(10px, 1vw, 12px)', fontWeight: 700, letterSpacing: '0.06em', color: '#D1D5DB', textTransform: 'uppercase', marginTop: '6px', whiteSpace: 'nowrap' }}>
+                  Data Points
+                </div>
+                <div style={{ height: '2px', backgroundColor: '#76b82a', width: '100%', marginTop: '8px' }} />
               </div>
             </div>
           </div>
@@ -211,6 +231,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
       <button
         onClick={() => setCurrentSlide(prev => (prev - 1 + slides.length) % slides.length)}
         aria-label="Previous Slide"
+        className="d-none-mobile"
         style={{
           position: 'absolute',
           left: '20px',
@@ -239,6 +260,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
       <button
         onClick={() => setCurrentSlide(prev => (prev + 1) % slides.length)}
         aria-label="Next Slide"
+        className="d-none-mobile"
         style={{
           position: 'absolute',
           right: '20px',

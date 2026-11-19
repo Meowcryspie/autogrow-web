@@ -5,7 +5,7 @@ import type {
   SupportContacts 
 } from '../types';
 import { STORE_PRODUCTS, BLOG_POSTS, DISTRIBUTORS_DATA } from './mockProducts';
-import bannerImg from '../assets/autogrow-hero-banner.jpg';
+import heroGreenhouseImg from '../assets/hero-commercial-greenhouse.jpg';
 
 export const DEFAULT_HERO_SLIDES: HeroSlideItem[] = [
   {
@@ -13,8 +13,8 @@ export const DEFAULT_HERO_SLIDES: HeroSlideItem[] = [
     tag: 'Growing Automation',
     title: 'Growing Automation Tailored to Your Needs',
     subtitle: 'Over 30 years of precision commercial greenhouse automation across 27+ countries with 5 billion crop data points.',
-    image: bannerImg,
-    buttonText: 'Explore Controller Systems',
+    image: heroGreenhouseImg,
+    buttonText: '',
     targetSection: 'suite',
     isBannerOnly: true,
   },
@@ -32,7 +32,7 @@ export const DEFAULT_HERO_SLIDES: HeroSlideItem[] = [
     tag: 'SatuGrow FertiX',
     title: 'SatuGrow™ FertiX Skid',
     subtitle: 'High-Volume Inline Fertigation up to 100 m³/hr with Closed-Loop Proportional EC/pH Dosing.',
-    image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=2000&q=80',
+    image: 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?auto=format&fit=crop&w=2000&q=80',
     buttonText: 'Explore Fertigation Skids',
     targetSection: 'suite',
   },

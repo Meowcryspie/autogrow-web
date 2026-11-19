@@ -10,7 +10,7 @@ import type {
 } from '../types';
 import { DEFAULT_SITE_CONTENT } from '../data/initialContent';
 
-const STORAGE_KEY = 'autogrow_cms_content_v2';
+const STORAGE_KEY = 'autogrow_cms_content_v3';
 
 interface ContentContextType {
   // Published / Saved content
