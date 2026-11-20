@@ -14,10 +14,10 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({ children, onExit
 
   if (isLoading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0B0F17', color: '#94A3B8' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F8FAFC', color: '#64748B' }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ width: '40px', height: '40px', border: '3px solid #1E293B', borderTopColor: '#76b82a', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px auto' }} />
-          <p style={{ fontSize: '14px', fontWeight: 600 }}>Verifying Cryptographic Privileges...</p>
+          <div style={{ width: '36px', height: '36px', border: '3px solid #E2E8F0', borderTopColor: '#16A34A', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px auto' }} />
+          <p style={{ fontSize: '13.5px', fontWeight: 600 }}>Loading administration console...</p>
         </div>
       </div>
     );
@@ -31,13 +31,13 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({ children, onExit
   // If logged in as regular customer (not admin)
   if (user && !isAdmin) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0B0F17', padding: '24px' }}>
-        <div style={{ maxWidth: '460px', width: '100%', backgroundColor: '#111827', border: '1px solid #1F2937', borderRadius: '16px', padding: '36px', textAlign: 'center', color: '#F3F4F6' }}>
-          <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: '#7F1D1D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px auto' }}>
-            <ShieldAlert size={28} color="#F87171" />
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F8FAFC', padding: '24px' }}>
+        <div style={{ maxWidth: '440px', width: '100%', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '36px', textAlign: 'center', color: '#0F172A', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.06), 0 8px 10px -6px rgba(0,0,0,0.04)' }}>
+          <div style={{ width: '52px', height: '52px', borderRadius: '50%', backgroundColor: '#FEE2E2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
+            <ShieldAlert size={26} color="#DC2626" />
           </div>
-          <h2 style={{ fontSize: '20px', fontWeight: 800, margin: '0 0 8px 0' }}>Access Restricted</h2>
-          <p style={{ fontSize: '14px', color: '#9CA3AF', margin: '0 0 16px 0', lineHeight: 1.5 }}>
+          <h2 style={{ fontSize: '19px', fontWeight: 800, margin: '0 0 8px 0', color: '#0F172A' }}>Access Restricted</h2>
+          <p style={{ fontSize: '13.5px', color: '#64748B', margin: '0 0 20px 0', lineHeight: 1.5 }}>
             You are signed in as <strong>{user.email}</strong>, which does not have Commercial Operations Administrator privileges.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -45,7 +45,7 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({ children, onExit
               onClick={signOut}
               style={{
                 width: '100%',
-                padding: '12px',
+                padding: '11px',
                 backgroundColor: '#DC2626',
                 border: 'none',
                 borderRadius: '8px',
@@ -61,11 +61,11 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({ children, onExit
               onClick={onExitToSite}
               style={{
                 width: '100%',
-                padding: '12px',
-                backgroundColor: 'transparent',
-                border: '1px solid #374151',
+                padding: '11px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #CBD5E1',
                 borderRadius: '8px',
-                color: '#D1D5DB',
+                color: '#475569',
                 fontWeight: 600,
                 fontSize: '13px',
                 cursor: 'pointer'
@@ -81,41 +81,42 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({ children, onExit
 
   // Not logged in at all
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0B0F17', padding: '24px' }}>
-      <div style={{ maxWidth: '440px', width: '100%', backgroundColor: '#0F172A', border: '1px solid #1E293B', borderRadius: '16px', padding: '36px', textAlign: 'center', color: '#F8FAFC', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
-        <div style={{ width: '56px', height: '56px', borderRadius: '12px', backgroundColor: '#1E293B', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px auto', border: '1px solid #334155' }}>
-          <Lock size={26} color="#76b82a" />
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#F8FAFC', padding: '24px' }}>
+      <div style={{ maxWidth: '440px', width: '100%', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '36px', textAlign: 'center', color: '#0F172A', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.06), 0 8px 10px -6px rgba(0,0,0,0.04)' }}>
+        <div style={{ width: '52px', height: '52px', borderRadius: '12px', backgroundColor: '#F0FDF4', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px auto', border: '1px solid #DCFCE7' }}>
+          <Lock size={24} color="#16A34A" />
         </div>
-        <div style={{ display: 'inline-block', backgroundColor: '#064E3B', color: '#34D399', fontSize: '11px', fontWeight: 700, padding: '3px 10px', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+        <div style={{ display: 'inline-block', backgroundColor: '#DCFCE7', color: '#15803D', fontSize: '11px', fontWeight: 700, padding: '3px 10px', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
           Protected Management Area
         </div>
-        <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '0 0 10px 0', letterSpacing: '-0.02em' }}>
+        <h2 style={{ fontSize: '21px', fontWeight: 800, margin: '0 0 10px 0', letterSpacing: '-0.02em', color: '#0F172A' }}>
           Autogrow Operations Portal
         </h2>
-        <p style={{ fontSize: '13.5px', color: '#94A3B8', margin: '0 0 24px 0', lineHeight: 1.5 }}>
+        <p style={{ fontSize: '13.5px', color: '#64748B', margin: '0 0 24px 0', lineHeight: 1.5 }}>
           Sign in with authorized administrator credentials to manage website products, customer quote orders, and grower feedback.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <button
             onClick={() => setIsAuthModalOpen(true)}
             style={{
               width: '100%',
-              padding: '13px',
-              backgroundColor: '#76b82a',
+              padding: '12px',
+              backgroundColor: '#16A34A',
               border: 'none',
               borderRadius: '8px',
               color: '#FFFFFF',
               fontWeight: 700,
-              fontSize: '14px',
+              fontSize: '13.5px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px'
+              gap: '8px',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
             }}
           >
-            <LogIn size={16} />
+            <LogIn size={15} />
             Sign In with Administrator Credentials
           </button>
 
@@ -123,11 +124,11 @@ export const AdminAuthGuard: React.FC<AdminAuthGuardProps> = ({ children, onExit
             onClick={onExitToSite}
             style={{
               width: '100%',
-              padding: '12px',
-              backgroundColor: 'transparent',
-              border: '1px solid #334155',
+              padding: '11px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #CBD5E1',
               borderRadius: '8px',
-              color: '#94A3B8',
+              color: '#475569',
               fontWeight: 600,
               fontSize: '13px',
               cursor: 'pointer',

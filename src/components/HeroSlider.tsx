@@ -32,7 +32,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
   if (!active) return null;
 
   return (
-    <section 
+    <section
       id="hero"
       style={{
         position: 'relative',
@@ -59,8 +59,8 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
             zIndex: 1,
           }}
         >
-          <img 
-            src={s.image} 
+          <img
+            src={s.image}
             alt={s.title}
             style={{
               width: '100%',
@@ -72,7 +72,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
             }}
           />
           {/* Subtle overlay */}
-          <div 
+          <div
             style={{
               position: 'absolute',
               inset: 0,
@@ -107,7 +107,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
             </h1>
 
             {/* 4 Commercial Operational Metrics with Green Hairline Bars */}
-            <div 
+            <div
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -158,7 +158,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
           </div>
         ) : (
           <div style={{ maxWidth: '780px' }}>
-            <div 
+            <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -178,7 +178,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
               AUTOGROW FLAGSHIP SYSTEMS · NZ ENGINEERED
             </div>
 
-            <h1 
+            <h1
               style={{
                 fontSize: 'clamp(2.5rem, 5.5vw, 4.2rem)',
                 fontWeight: 800,
@@ -192,7 +192,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
               {active.title}
             </h1>
 
-            <p 
+            <p
               style={{
                 fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
                 color: '#E5E7EB',
@@ -287,7 +287,7 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigateToSection }) =
       </button>
 
       {/* TrolMaster Bottom Slide Selector Tabs */}
-      <div 
+      <div
         style={{
           position: 'absolute',
           bottom: 0,

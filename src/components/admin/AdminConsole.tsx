@@ -16,7 +16,14 @@ import {
   Layers, 
   PhoneCall, 
   FileCode, 
-  AlertTriangle
+  AlertTriangle,
+  Globe,
+  ShoppingCart,
+  MessageSquare,
+  ChevronRight,
+  ShieldCheck,
+  CheckCircle2,
+  Copy
 } from 'lucide-react';
 import { useContent } from '../../context/ContentContext';
 import { ImageUploader } from './ImageUploader';
@@ -53,12 +60,12 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
 
   const showStatus = (msg: string) => {
     setStatusMessage(msg);
-    setTimeout(() => setStatusMessage(null), 3000);
+    setTimeout(() => setStatusMessage(null), 3500);
   };
 
   const handleSaveAndPublish = () => {
     publishDraft();
-    showStatus('Changes saved and published to live website!');
+    showStatus('Changes saved and published to production live website!');
   };
 
   // --- HERO SLIDES HELPERS ---
@@ -79,7 +86,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
       targetSection: 'suite',
     };
     updateHeroSlides([...draftContent.heroSlides, newSlide]);
-    showStatus('New hero slide added');
+    showStatus('New hero slide added to working draft');
   };
 
   const handleDeleteHeroSlide = (index: number) => {
@@ -124,7 +131,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
       category: storeFilter === 'all' ? 'hardware' : storeFilter,
       price: 499,
       inStock: true,
-      image: 'https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=1200&q=80',
       description: 'Rugged DIN-rail expansion module with isolated industrial I/O.',
       specs: '12V/24V DC · Modbus RTU · IP65 Enclosure',
     };
@@ -206,371 +213,291 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
     }
   };
 
+  const tabLabels: Record<AdminTab, string> = {
+    hero: 'Hero Slider Banners',
+    store: 'Store & Spare Parts Catalog',
+    blog: 'Grower Blog & Technical Guides',
+    showcase: 'Feature Highlights',
+    support: 'Support Hotlines & Distributors',
+    json: 'Raw JSON & Data Backup',
+  };
+
   return (
-    <div style={{ backgroundColor: '#0B0F10', minHeight: '100vh', color: '#E5E7EB', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', color: '#0F172A', display: 'flex' }}>
       
-      {/* 1. Header Toolbar */}
-      <header 
+      {/* ======================================================== */}
+      {/* 1. WORDPRESS / WIX STYLE ADMIN SIDEBAR (DEEP SLATE CHROME) */}
+      {/* ======================================================== */}
+      <aside 
         style={{
-          backgroundColor: '#161B18',
-          borderBottom: '1px solid rgba(255,255,255,0.1)',
-          padding: '14px 24px',
+          width: '270px',
+          backgroundColor: '#0F172A',
+          borderRight: '1px solid #1E293B',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          flexShrink: 0,
           position: 'sticky',
           top: 0,
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '16px',
+          height: '100vh',
+          zIndex: 40,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div 
-            style={{
-              width: '34px',
-              height: '34px',
-              borderRadius: '7px',
-              backgroundColor: '#76b82a',
-              color: '#FFFFFF',
-              fontWeight: 900,
-              fontSize: '18px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 0 14px rgba(118, 184, 42, 0.4)',
-            }}
-          >
-            A
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
-                AUTOGROW CMS
-              </span>
-              <span 
+        <div>
+          {/* Site Identity Header (Wix/WordPress Site Selector) */}
+          <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid #1E293B' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+              <div 
                 style={{
-                  backgroundColor: 'rgba(118, 184, 42, 0.15)',
-                  color: '#86EFAC',
-                  border: '1px solid rgba(118, 184, 42, 0.3)',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  padding: '2px 8px',
-                  borderRadius: '9999px',
-                  fontFamily: 'monospace',
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '8px',
+                  backgroundColor: '#16A34A',
+                  color: '#FFFFFF',
+                  fontWeight: 900,
+                  fontSize: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                STATIC ZERO-DB
-              </span>
-            </div>
-            <p style={{ margin: 0, fontSize: '12px', color: '#9CA3AF' }}>
-              Client-Side Content Management & Live Visual Publisher
-            </p>
-          </div>
-        </div>
-
-        {/* Action Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <button
-            onClick={onPreview}
-            style={{
-              padding: '8px 14px',
-              borderRadius: '6px',
-              backgroundColor: '#1F2937',
-              color: '#FFFFFF',
-              border: '1px solid #374151',
-              fontSize: '12.5px',
-              fontWeight: 600,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              cursor: 'pointer',
-            }}
-          >
-            <Eye size={14} style={{ color: '#60A5FA' }} />
-            Preview Website
-          </button>
-
-          <button
-            onClick={handleSaveAndPublish}
-            style={{
-              padding: '8px 18px',
-              borderRadius: '6px',
-              backgroundColor: isDraftModified ? '#76b82a' : '#15803D',
-              color: '#FFFFFF',
-              border: 'none',
-              fontSize: '13px',
-              fontWeight: 700,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              cursor: 'pointer',
-              boxShadow: isDraftModified ? '0 0 12px rgba(118, 184, 42, 0.5)' : 'none',
-            }}
-          >
-            <Check size={15} />
-            {isDraftModified ? 'Publish Changes' : 'Saved (Published)'}
-          </button>
-
-          <button
-            onClick={exportJson}
-            title="Download full JSON config backup"
-            style={{
-              padding: '8px 12px',
-              borderRadius: '6px',
-              backgroundColor: '#1E2421',
-              color: '#D1D5DB',
-              border: '1px solid rgba(255,255,255,0.15)',
-              fontSize: '12px',
-              fontWeight: 600,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              cursor: 'pointer',
-            }}
-          >
-            <Download size={13} />
-            Export JSON
-          </button>
-
-          <button
-            onClick={onExitToSite}
-            style={{
-              padding: '8px 12px',
-              borderRadius: '6px',
-              backgroundColor: 'transparent',
-              color: '#9CA3AF',
-              border: '1px solid rgba(255,255,255,0.1)',
-              fontSize: '12px',
-              fontWeight: 500,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              cursor: 'pointer',
-            }}
-          >
-            <ExternalLink size={13} />
-            Exit to Site
-          </button>
-        </div>
-      </header>
-
-      {/* 2. Notification / Modified Status Bar */}
-      {statusMessage && (
-        <div 
-          style={{
-            backgroundColor: '#15803D',
-            color: '#FFFFFF',
-            padding: '10px 24px',
-            fontSize: '13px',
-            fontWeight: 600,
-            textAlign: 'center',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-          }}
-        >
-          <Check size={16} />
-          {statusMessage}
-        </div>
-      )}
-
-      {isDraftModified && !statusMessage && (
-        <div 
-          style={{
-            backgroundColor: '#854D0E',
-            color: '#FEF08A',
-            padding: '8px 24px',
-            fontSize: '12.5px',
-            fontWeight: 600,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '8px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <AlertTriangle size={15} />
-            <span>You have unsaved changes in your draft. They are visible in Preview Mode but not yet saved to published localStorage.</span>
-          </div>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button 
-              onClick={discardDraft}
-              style={{
-                background: 'none',
-                border: '1px solid rgba(254, 240, 138, 0.4)',
-                color: '#FEF08A',
-                borderRadius: '4px',
-                padding: '2px 8px',
-                fontSize: '11px',
-                cursor: 'pointer',
-              }}
-            >
-              Discard Changes
-            </button>
-            <button 
-              onClick={handleSaveAndPublish}
-              style={{
-                backgroundColor: '#FEF08A',
-                border: 'none',
-                color: '#713F12',
-                borderRadius: '4px',
-                padding: '2px 10px',
-                fontSize: '11px',
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              Publish Now
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 3. Main Body: Sidebar Tabs + Editor Surface */}
-      <div style={{ flex: 1, display: 'flex', minHeight: 'calc(100vh - 70px)' }}>
-        
-        {/* Navigation Rail */}
-        <aside 
-          style={{
-            width: '260px',
-            backgroundColor: '#111827',
-            borderRight: '1px solid rgba(255,255,255,0.08)',
-            padding: '24px 16px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            flexShrink: 0,
-          }}
-        >
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', padding: '0 12px 8px', letterSpacing: '0.05em' }}>
-              Content Sections
+                A
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+                  Autogrow Web
+                </div>
+                <div style={{ fontSize: '11px', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                  <Globe size={11} style={{ color: '#64748B' }} />
+                  <span>autogrow.co.nz</span>
+                  <ExternalLink size={10} style={{ color: '#64748B' }} />
+                </div>
+              </div>
             </div>
 
+            {/* Production Status Tag */}
+            <div 
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                backgroundColor: 'rgba(22, 163, 74, 0.15)',
+                border: '1px solid rgba(22, 163, 74, 0.3)',
+                padding: '3px 8px',
+                borderRadius: '999px',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#86EFAC',
+                marginTop: '4px',
+              }}
+            >
+              <ShieldCheck size={12} style={{ color: '#22C55E' }} />
+              Production Live
+            </div>
+          </div>
+
+          {/* Navigation Groups */}
+          <nav style={{ padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            
+            <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', padding: '8px 10px 4px', letterSpacing: '0.08em' }}>
+              Site Content
+            </div>
+
+            {/* 1. Hero Banners */}
             <button
               onClick={() => setActiveTab('hero')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
+                justifyContent: 'space-between',
                 width: '100%',
                 padding: '10px 12px',
-                borderRadius: '6px',
-                fontSize: '13.5px',
+                borderRadius: '8px',
+                fontSize: '13px',
                 fontWeight: activeTab === 'hero' ? 700 : 500,
-                backgroundColor: activeTab === 'hero' ? '#1E2421' : 'transparent',
-                color: activeTab === 'hero' ? '#86EFAC' : '#D1D5DB',
-                border: activeTab === 'hero' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
+                backgroundColor: activeTab === 'hero' ? '#1E293B' : 'transparent',
+                color: activeTab === 'hero' ? '#FFFFFF' : '#94A3B8',
+                border: activeTab === 'hero' ? '1px solid #334155' : '1px solid transparent',
                 cursor: 'pointer',
                 textAlign: 'left',
-                transition: 'all 0.15s',
+                transition: 'all 0.15s ease',
               }}
             >
-              <Sliders size={16} style={{ color: activeTab === 'hero' ? '#76b82a' : '#9CA3AF' }} />
-              Hero Banners ({draftContent.heroSlides.length})
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Sliders size={16} style={{ color: activeTab === 'hero' ? '#22C55E' : '#64748B' }} />
+                Hero Banners
+              </div>
+              <span 
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '1px 6px',
+                  borderRadius: '999px',
+                  backgroundColor: activeTab === 'hero' ? '#16A34A' : '#334155',
+                  color: '#FFFFFF'
+                }}
+              >
+                {draftContent.heroSlides.length}
+              </span>
             </button>
 
-            <button
-              onClick={() => setActiveTab('store')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '6px',
-                fontSize: '13.5px',
-                fontWeight: activeTab === 'store' ? 700 : 500,
-                backgroundColor: activeTab === 'store' ? '#1E2421' : 'transparent',
-                color: activeTab === 'store' ? '#86EFAC' : '#D1D5DB',
-                border: activeTab === 'store' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.15s',
-              }}
-            >
-              <ShoppingBag size={16} style={{ color: activeTab === 'store' ? '#76b82a' : '#9CA3AF' }} />
-              Store Products ({draftContent.storeProducts.length})
-            </button>
-
-            <button
-              onClick={() => setActiveTab('blog')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '6px',
-                fontSize: '13.5px',
-                fontWeight: activeTab === 'blog' ? 700 : 500,
-                backgroundColor: activeTab === 'blog' ? '#1E2421' : 'transparent',
-                color: activeTab === 'blog' ? '#86EFAC' : '#D1D5DB',
-                border: activeTab === 'blog' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.15s',
-              }}
-            >
-              <BookOpen size={16} style={{ color: activeTab === 'blog' ? '#76b82a' : '#9CA3AF' }} />
-              Grower Blog ({draftContent.blogPosts.length})
-            </button>
-
+            {/* 2. Solutions Showcase */}
             <button
               onClick={() => setActiveTab('showcase')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
+                justifyContent: 'space-between',
                 width: '100%',
                 padding: '10px 12px',
-                borderRadius: '6px',
-                fontSize: '13.5px',
+                borderRadius: '8px',
+                fontSize: '13px',
                 fontWeight: activeTab === 'showcase' ? 700 : 500,
-                backgroundColor: activeTab === 'showcase' ? '#1E2421' : 'transparent',
-                color: activeTab === 'showcase' ? '#86EFAC' : '#D1D5DB',
-                border: activeTab === 'showcase' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
+                backgroundColor: activeTab === 'showcase' ? '#1E293B' : 'transparent',
+                color: activeTab === 'showcase' ? '#FFFFFF' : '#94A3B8',
+                border: activeTab === 'showcase' ? '1px solid #334155' : '1px solid transparent',
                 cursor: 'pointer',
                 textAlign: 'left',
-                transition: 'all 0.15s',
+                transition: 'all 0.15s ease',
               }}
             >
-              <Layers size={16} style={{ color: activeTab === 'showcase' ? '#76b82a' : '#9CA3AF' }} />
-              Feature Highlights ({draftContent.showcaseSections.length})
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Layers size={16} style={{ color: activeTab === 'showcase' ? '#22C55E' : '#64748B' }} />
+                Feature Highlights
+              </div>
+              <span 
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '1px 6px',
+                  borderRadius: '999px',
+                  backgroundColor: activeTab === 'showcase' ? '#16A34A' : '#334155',
+                  color: '#FFFFFF'
+                }}
+              >
+                {draftContent.showcaseSections.length}
+              </span>
             </button>
 
+            {/* 3. Store Products */}
+            <button
+              onClick={() => setActiveTab('store')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: activeTab === 'store' ? 700 : 500,
+                backgroundColor: activeTab === 'store' ? '#1E293B' : 'transparent',
+                color: activeTab === 'store' ? '#FFFFFF' : '#94A3B8',
+                border: activeTab === 'store' ? '1px solid #334155' : '1px solid transparent',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <ShoppingBag size={16} style={{ color: activeTab === 'store' ? '#22C55E' : '#64748B' }} />
+                Store Catalog
+              </div>
+              <span 
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '1px 6px',
+                  borderRadius: '999px',
+                  backgroundColor: activeTab === 'store' ? '#16A34A' : '#334155',
+                  color: '#FFFFFF'
+                }}
+              >
+                {draftContent.storeProducts.length}
+              </span>
+            </button>
+
+            {/* 4. Grower Blog */}
+            <button
+              onClick={() => setActiveTab('blog')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: activeTab === 'blog' ? 700 : 500,
+                backgroundColor: activeTab === 'blog' ? '#1E293B' : 'transparent',
+                color: activeTab === 'blog' ? '#FFFFFF' : '#94A3B8',
+                border: activeTab === 'blog' ? '1px solid #334155' : '1px solid transparent',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <BookOpen size={16} style={{ color: activeTab === 'blog' ? '#22C55E' : '#64748B' }} />
+                Grower Articles
+              </div>
+              <span 
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '1px 6px',
+                  borderRadius: '999px',
+                  backgroundColor: activeTab === 'blog' ? '#16A34A' : '#334155',
+                  color: '#FFFFFF'
+                }}
+              >
+                {draftContent.blogPosts.length}
+              </span>
+            </button>
+
+            {/* 5. Support & Distributors */}
             <button
               onClick={() => setActiveTab('support')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
+                justifyContent: 'space-between',
                 width: '100%',
                 padding: '10px 12px',
-                borderRadius: '6px',
-                fontSize: '13.5px',
+                borderRadius: '8px',
+                fontSize: '13px',
                 fontWeight: activeTab === 'support' ? 700 : 500,
-                backgroundColor: activeTab === 'support' ? '#1E2421' : 'transparent',
-                color: activeTab === 'support' ? '#86EFAC' : '#D1D5DB',
-                border: activeTab === 'support' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
+                backgroundColor: activeTab === 'support' ? '#1E293B' : 'transparent',
+                color: activeTab === 'support' ? '#FFFFFF' : '#94A3B8',
+                border: activeTab === 'support' ? '1px solid #334155' : '1px solid transparent',
                 cursor: 'pointer',
                 textAlign: 'left',
-                transition: 'all 0.15s',
+                transition: 'all 0.15s ease',
               }}
             >
-              <PhoneCall size={16} style={{ color: activeTab === 'support' ? '#76b82a' : '#9CA3AF' }} />
-              Support & Network
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <PhoneCall size={16} style={{ color: activeTab === 'support' ? '#22C55E' : '#64748B' }} />
+                Support & Network
+              </div>
+              <span 
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '1px 6px',
+                  borderRadius: '999px',
+                  backgroundColor: activeTab === 'support' ? '#16A34A' : '#334155',
+                  color: '#FFFFFF'
+                }}
+              >
+                {draftContent.distributors.length}
+              </span>
             </button>
 
-            <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.08)', margin: '12px 0' }} />
-
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', padding: '0 12px 8px', letterSpacing: '0.05em' }}>
-              Portability
+            <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', padding: '16px 10px 4px', letterSpacing: '0.08em' }}>
+              System & Backup
             </div>
 
+            {/* 6. Raw JSON & Import */}
             <button
               onClick={() => setActiveTab('json')}
               style={{
@@ -579,71 +506,399 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 gap: '10px',
                 width: '100%',
                 padding: '10px 12px',
-                borderRadius: '6px',
-                fontSize: '13.5px',
+                borderRadius: '8px',
+                fontSize: '13px',
                 fontWeight: activeTab === 'json' ? 700 : 500,
-                backgroundColor: activeTab === 'json' ? '#1E2421' : 'transparent',
-                color: activeTab === 'json' ? '#86EFAC' : '#D1D5DB',
-                border: activeTab === 'json' ? '1px solid rgba(118, 184, 42, 0.3)' : '1px solid transparent',
+                backgroundColor: activeTab === 'json' ? '#1E293B' : 'transparent',
+                color: activeTab === 'json' ? '#FFFFFF' : '#94A3B8',
+                border: activeTab === 'json' ? '1px solid #334155' : '1px solid transparent',
                 cursor: 'pointer',
                 textAlign: 'left',
-                transition: 'all 0.15s',
+                transition: 'all 0.15s ease',
               }}
             >
-              <FileCode size={16} style={{ color: activeTab === 'json' ? '#76b82a' : '#9CA3AF' }} />
-              Raw JSON & Import
+              <FileCode size={16} style={{ color: activeTab === 'json' ? '#22C55E' : '#64748B' }} />
+              Data Backup & Sync
             </button>
-          </nav>
 
-          {/* Reset Defaults */}
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px' }}>
-            <button
-              onClick={() => {
-                if (confirm('Reset all CMS content to factory defaults? This clears your localStorage changes.')) {
-                  resetToDefaults();
-                  showStatus('Reset to factory defaults.');
-                }
-              }}
+            {/* Quick Links to Management Pages */}
+            <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', padding: '16px 10px 4px', letterSpacing: '0.08em' }}>
+              Direct Operations
+            </div>
+
+            <a
+              href="#orders"
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                width: '100%',
-                padding: '8px 10px',
+                gap: '10px',
+                padding: '9px 12px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                color: '#94A3B8',
+                textDecoration: 'none',
+                transition: 'background 0.15s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#1E293B')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+            >
+              <ShoppingCart size={15} style={{ color: '#F59E0B' }} />
+              Manage Orders
+            </a>
+
+            <a
+              href="#feedback"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                padding: '9px 12px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                color: '#94A3B8',
+                textDecoration: 'none',
+                transition: 'background 0.15s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#1E293B')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+            >
+              <MessageSquare size={15} style={{ color: '#38BDF8' }} />
+              Grower Feedback
+            </a>
+
+          </nav>
+        </div>
+
+        {/* Sidebar Footer User Card */}
+        <div style={{ padding: '16px', borderTop: '1px solid #1E293B', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <button
+            onClick={() => {
+              if (confirm('Reset all CMS content to factory defaults? This clears your localStorage working changes.')) {
+                resetToDefaults();
+                showStatus('Reset to factory defaults.');
+              }
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              width: '100%',
+              padding: '7px 10px',
+              borderRadius: '6px',
+              fontSize: '11.5px',
+              color: '#F87171',
+              backgroundColor: 'rgba(239, 68, 68, 0.12)',
+              border: '1px solid rgba(239, 68, 68, 0.25)',
+              cursor: 'pointer',
+            }}
+          >
+            <RotateCcw size={12} />
+            Reset to Factory Defaults
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div 
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '50%',
+                  backgroundColor: '#334155',
+                  color: '#FFFFFF',
+                  fontWeight: 700,
+                  fontSize: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                CO
+              </div>
+              <div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF' }}>Chief Admin</div>
+                <div style={{ fontSize: '10px', color: '#64748B' }}>Operations Lead</div>
+              </div>
+            </div>
+
+            <button
+              onClick={onExitToSite}
+              title="Return to public site"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#94A3B8',
+                cursor: 'pointer',
+                padding: '4px',
+              }}
+            >
+              <ExternalLink size={15} />
+            </button>
+          </div>
+        </div>
+
+      </aside>
+
+      {/* ======================================================== */}
+      {/* 2. MAIN APPLICATION CANVAS (DAYLIGHT CMS WORKSPACE)      */}
+      {/* ======================================================== */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflowX: 'hidden' }}>
+        
+        {/* Top Header App Bar (Wix / WordPress Admin Bar) */}
+        <header 
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderBottom: '1px solid #E2E8F0',
+            padding: '12px 32px',
+            position: 'sticky',
+            top: 0,
+            zIndex: 30,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '16px',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+          }}
+        >
+          {/* Breadcrumbs & Active Page */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
+            <span style={{ color: '#64748B', fontWeight: 500 }}>Autogrow NZ</span>
+            <ChevronRight size={13} style={{ color: '#94A3B8' }} />
+            <span style={{ color: '#64748B', fontWeight: 500 }}>Site Management</span>
+            <ChevronRight size={13} style={{ color: '#94A3B8' }} />
+            <span style={{ color: '#0F172A', fontWeight: 700 }}>{tabLabels[activeTab]}</span>
+          </div>
+
+          {/* Action Buttons Toolbar */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            
+            {/* Unsaved Draft Changes Pill */}
+            {isDraftModified && (
+              <div 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: '#FEF3C7',
+                  border: '1px solid #FDE68A',
+                  color: '#92400E',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  padding: '4px 10px',
+                  borderRadius: '6px',
+                }}
+              >
+                <AlertTriangle size={13} style={{ color: '#D97706' }} />
+                <span>Unsaved Changes</span>
+                <button
+                  onClick={discardDraft}
+                  style={{
+                    marginLeft: '4px',
+                    background: 'none',
+                    border: 'none',
+                    color: '#B45309',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Discard
+                </button>
+              </div>
+            )}
+
+            {/* Preview Button */}
+            <button
+              onClick={onPreview}
+              style={{
+                padding: '8px 14px',
                 borderRadius: '6px',
-                fontSize: '11.5px',
-                color: '#EF4444',
-                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                border: '1px solid rgba(239, 68, 68, 0.2)',
+                backgroundColor: '#FFFFFF',
+                color: '#334155',
+                border: '1px solid #CBD5E1',
+                fontSize: '12.5px',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+              }}
+            >
+              <Eye size={14} style={{ color: '#0284C7' }} />
+              Preview Site
+            </button>
+
+            {/* Export JSON Button */}
+            <button
+              onClick={exportJson}
+              title="Download full JSON backup"
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                backgroundColor: '#FFFFFF',
+                color: '#334155',
+                border: '1px solid #CBD5E1',
+                fontSize: '12px',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+              }}
+            >
+              <Download size={13} />
+              Export JSON
+            </button>
+
+            {/* Publish Changes Button */}
+            <button
+              onClick={handleSaveAndPublish}
+              style={{
+                padding: '8px 18px',
+                borderRadius: '6px',
+                backgroundColor: '#16A34A',
+                color: '#FFFFFF',
+                border: 'none',
+                fontSize: '13px',
+                fontWeight: 700,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                boxShadow: '0 1px 3px rgba(22, 163, 74, 0.3)',
+              }}
+            >
+              <Check size={15} />
+              {isDraftModified ? 'Publish Changes' : 'Saved (Published)'}
+            </button>
+
+            {/* Exit to Site Button */}
+            <button
+              onClick={onExitToSite}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '6px',
+                backgroundColor: '#F1F5F9',
+                color: '#475569',
+                border: '1px solid #E2E8F0',
+                fontSize: '12px',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
                 cursor: 'pointer',
               }}
             >
-              <RotateCcw size={13} />
-              Reset All to Defaults
+              <ExternalLink size={13} />
+              Exit
             </button>
-          </div>
-        </aside>
 
-        {/* Editor Main Content Area */}
-        <main style={{ flex: 1, padding: '32px 40px', overflowY: 'auto', maxWidth: '1200px' }}>
+          </div>
+        </header>
+
+        {/* Status Notification Toast */}
+        {statusMessage && (
+          <div 
+            style={{
+              backgroundColor: '#ECFDF5',
+              borderBottom: '1px solid #A7F3D0',
+              color: '#065F46',
+              padding: '10px 32px',
+              fontSize: '13px',
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <CheckCircle2 size={16} style={{ color: '#059669' }} />
+            {statusMessage}
+          </div>
+        )}
+
+        {/* Content Area Main Scrollable View */}
+        <main style={{ flex: 1, padding: '28px 36px', maxWidth: '1240px', width: '100%', boxSizing: 'border-box' }}>
           
-          {/* TAB 1: HERO SLIDES */}
+          {/* Quick Metrics Ribbon (Wix / WordPress Style Summary Cards) */}
+          <div 
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+              gap: '16px',
+              marginBottom: '28px',
+            }}
+          >
+            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Hero Banners
+              </div>
+              <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
+                {draftContent.heroSlides.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Active Slides</span>
+              </div>
+              <div style={{ fontSize: '11px', color: '#16A34A', marginTop: '4px', fontWeight: 600 }}>
+                ● Slide 1: Default Growing Automation
+              </div>
+            </div>
+
+            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Store Catalog
+              </div>
+              <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
+                {draftContent.storeProducts.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>SKUs Published</span>
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '4px' }}>
+                Controllers, Skids & Sensors
+              </div>
+            </div>
+
+            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Grower Articles
+              </div>
+              <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
+                {draftContent.blogPosts.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Published Guides</span>
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '4px' }}>
+                Agronomy & CEA Engineering
+              </div>
+            </div>
+
+            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Global Network
+              </div>
+              <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
+                {draftContent.distributors.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Regional Hubs</span>
+              </div>
+              <div style={{ fontSize: '11px', color: '#16A34A', marginTop: '4px', fontWeight: 600 }}>
+                ● 24/7 Support Hotlines Connected
+              </div>
+            </div>
+          </div>
+
+          {/* ======================================================== */}
+          {/* TAB 1: HERO SLIDES (EASY HUMAN CONTENT EDITING)          */}
+          {/* ======================================================== */}
           {activeTab === 'hero' && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
-                  <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 6px 0' }}>
+                  <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
                     Hero Slider Banners
                   </h1>
-                  <p style={{ margin: 0, color: '#9CA3AF', fontSize: '13.5px' }}>
-                    Configure the main full-width banner slides shown on the homepage. Upload high-res images, edit copy, and link to products.
+                  <p style={{ margin: 0, color: '#64748B', fontSize: '13.5px' }}>
+                    Configure the main homepage hero slides. Upload high-res images, edit typography, and set target CTA links.
                   </p>
                 </div>
                 <button
                   onClick={handleAddHeroSlide}
                   style={{
-                    padding: '9px 16px',
-                    backgroundColor: '#76b82a',
+                    padding: '8px 16px',
+                    backgroundColor: '#16A34A',
                     color: '#FFFFFF',
                     border: 'none',
                     borderRadius: '6px',
@@ -653,6 +908,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                     alignItems: 'center',
                     gap: '6px',
                     cursor: 'pointer',
+                    boxShadow: '0 1px 2px rgba(22, 163, 74, 0.25)',
                   }}
                 >
                   <Plus size={15} />
@@ -660,19 +916,19 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {draftContent.heroSlides.map((slide, index) => (
                   <div 
                     key={slide.id}
                     style={{
-                      backgroundColor: '#161B18',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #E2E8F0',
                       borderRadius: '10px',
                       padding: '24px',
                       display: 'grid',
                       gridTemplateColumns: 'minmax(280px, 1fr) 2fr',
                       gap: '24px',
-                      position: 'relative',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                     }}
                   >
                     {/* Left: Image Uploader */}
@@ -688,8 +944,18 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                     {/* Right: Text Fields */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#76b82a', fontFamily: 'monospace' }}>
-                          SLIDE {index + 1} OF {draftContent.heroSlides.length}
+                        <span 
+                          style={{ 
+                            fontSize: '11.5px', 
+                            fontWeight: 700, 
+                            color: '#15803D', 
+                            backgroundColor: '#DCFCE7',
+                            padding: '3px 8px',
+                            borderRadius: '4px',
+                            fontFamily: 'monospace' 
+                          }}
+                        >
+                          SLIDE {index + 1} OF {draftContent.heroSlides.length} {index === 0 && '· (DEFAULT HERO)'}
                         </span>
                         
                         {/* Slide Management Buttons */}
@@ -698,11 +964,11 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                             disabled={index === 0}
                             onClick={() => handleMoveHeroSlide(index, 'up')}
                             style={{
-                              padding: '4px 8px',
-                              backgroundColor: '#1F2937',
-                              border: '1px solid #374151',
+                              padding: '5px 8px',
+                              backgroundColor: '#F8FAFC',
+                              border: '1px solid #CBD5E1',
                               borderRadius: '4px',
-                              color: index === 0 ? '#4B5563' : '#D1D5DB',
+                              color: index === 0 ? '#94A3B8' : '#334155',
                               cursor: index === 0 ? 'not-allowed' : 'pointer',
                             }}
                             title="Move Up"
@@ -713,11 +979,11 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                             disabled={index === draftContent.heroSlides.length - 1}
                             onClick={() => handleMoveHeroSlide(index, 'down')}
                             style={{
-                              padding: '4px 8px',
-                              backgroundColor: '#1F2937',
-                              border: '1px solid #374151',
+                              padding: '5px 8px',
+                              backgroundColor: '#F8FAFC',
+                              border: '1px solid #CBD5E1',
                               borderRadius: '4px',
-                              color: index === draftContent.heroSlides.length - 1 ? '#4B5563' : '#D1D5DB',
+                              color: index === draftContent.heroSlides.length - 1 ? '#94A3B8' : '#334155',
                               cursor: index === draftContent.heroSlides.length - 1 ? 'not-allowed' : 'pointer',
                             }}
                             title="Move Down"
@@ -727,11 +993,11 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                           <button
                             onClick={() => handleDeleteHeroSlide(index)}
                             style={{
-                              padding: '4px 8px',
-                              backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                              border: '1px solid rgba(239, 68, 68, 0.3)',
+                              padding: '5px 8px',
+                              backgroundColor: '#FEF2F2',
+                              border: '1px solid #FECACA',
                               borderRadius: '4px',
-                              color: '#EF4444',
+                              color: '#DC2626',
                               cursor: 'pointer',
                             }}
                             title="Delete Slide"
@@ -743,66 +1009,67 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px' }}>
                         <div>
-                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#9CA3AF', marginBottom: '4px' }}>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
                             Category Badge Tag
                           </label>
                           <input 
                             type="text" 
                             value={slide.tag} 
                             onChange={(e) => handleHeroChange(index, 'tag', e.target.value)}
-                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                           />
                         </div>
                         <div>
-                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#9CA3AF', marginBottom: '4px' }}>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
                             Headline Title
                           </label>
                           <input 
                             type="text" 
                             value={slide.title} 
                             onChange={(e) => handleHeroChange(index, 'title', e.target.value)}
-                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px', fontWeight: 600 }}
+                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px', fontWeight: 600 }}
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#9CA3AF', marginBottom: '4px' }}>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
                           Subtitle Description
                         </label>
                         <textarea 
                           rows={2}
                           value={slide.subtitle} 
                           onChange={(e) => handleHeroChange(index, 'subtitle', e.target.value)}
-                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px', resize: 'vertical' }}
+                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px', resize: 'vertical' }}
                         />
                       </div>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                         <div>
-                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#9CA3AF', marginBottom: '4px' }}>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
                             Button CTA Text
                           </label>
                           <input 
                             type="text" 
                             value={slide.buttonText} 
                             onChange={(e) => handleHeroChange(index, 'buttonText', e.target.value)}
-                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                           />
                         </div>
                         <div>
-                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#9CA3AF', marginBottom: '4px' }}>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
                             Target Section Destination
                           </label>
                           <select 
                             value={slide.targetSection}
                             onChange={(e) => handleHeroChange(index, 'targetSection', e.target.value)}
-                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                           >
                             <option value="suite">Specialized Hardware Suite (#suite)</option>
-                            <option value="app-preview">Autogrow App Preview (#app-preview)</option>
+                            <option value="showcase">Solutions Showcase (#showcase)</option>
+                            <option value="app">Autogrow Mobile App (#app)</option>
                             <option value="where-to-buy">Where to Buy & Support (#where-to-buy)</option>
-                            <option value="grower-stories">Grower Case Studies (#grower-stories)</option>
+                            <option value="stories">Grower Case Studies (#stories)</option>
                           </select>
                         </div>
                       </div>
@@ -813,43 +1080,44 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
             </div>
           )}
 
-          {/* TAB 2: STORE PRODUCTS */}
+          {/* ======================================================== */}
+          {/* TAB 2: STORE PRODUCTS CATALOG                            */}
+          {/* ======================================================== */}
           {activeTab === 'store' && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
-                  <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 6px 0' }}>
+                  <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
                     Online Store & Spare Parts Catalog
                   </h1>
-                  <p style={{ margin: 0, color: '#9CA3AF', fontSize: '13.5px' }}>
-                    Manage controllers, hardware lineups, and factory spare parts available in the online direct store.
+                  <p style={{ margin: 0, color: '#64748B', fontSize: '13.5px' }}>
+                    Manage commercial controllers, dosing skids, aspirated canopy pods, and direct parts in the store catalog.
                   </p>
                 </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button
-                    onClick={handleAddStoreProduct}
-                    style={{
-                      padding: '9px 16px',
-                      backgroundColor: '#76b82a',
-                      color: '#FFFFFF',
-                      border: 'none',
-                      borderRadius: '6px',
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <Plus size={15} />
-                    Add Product
-                  </button>
-                </div>
+                <button
+                  onClick={handleAddStoreProduct}
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#16A34A',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    cursor: 'pointer',
+                    boxShadow: '0 1px 2px rgba(22, 163, 74, 0.25)',
+                  }}
+                >
+                  <Plus size={15} />
+                  Add Product
+                </button>
               </div>
 
               {/* Category Filter Pills */}
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
                 {(['all', 'controllers', 'hardware', 'parts'] as const).map(cat => (
                   <button
                     key={cat}
@@ -859,11 +1127,12 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       borderRadius: '9999px',
                       fontSize: '12px',
                       fontWeight: storeFilter === cat ? 700 : 500,
-                      backgroundColor: storeFilter === cat ? '#76b82a' : '#1F2937',
-                      color: storeFilter === cat ? '#FFFFFF' : '#D1D5DB',
-                      border: 'none',
+                      backgroundColor: storeFilter === cat ? '#16A34A' : '#FFFFFF',
+                      color: storeFilter === cat ? '#FFFFFF' : '#475569',
+                      border: storeFilter === cat ? '1px solid #16A34A' : '1px solid #CBD5E1',
                       cursor: 'pointer',
                       textTransform: 'capitalize',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
                     }}
                   >
                     {cat === 'all' ? 'All Products' : cat === 'parts' ? 'Spare Parts' : cat}
@@ -871,7 +1140,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 ))}
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: '20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
                 {draftContent.storeProducts
                   .filter(p => storeFilter === 'all' || p.category === storeFilter)
                   .map((product) => {
@@ -880,17 +1149,18 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       <div 
                         key={product.id}
                         style={{
-                          backgroundColor: '#161B18',
-                          border: '1px solid rgba(255,255,255,0.1)',
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
                           borderRadius: '10px',
-                          padding: '18px',
+                          padding: '20px',
                           display: 'flex',
                           flexDirection: 'column',
                           gap: '12px',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                         }}
                       >
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontSize: '11px', fontFamily: 'monospace', color: '#76b82a', fontWeight: 700 }}>
+                          <span style={{ fontSize: '11px', fontFamily: 'monospace', color: '#16A34A', fontWeight: 700, backgroundColor: '#DCFCE7', padding: '2px 6px', borderRadius: '4px' }}>
                             {product.modelCode}
                           </span>
                           <button
@@ -904,7 +1174,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                             }}
                             title="Delete Product"
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={15} />
                           </button>
                         </div>
 
@@ -917,20 +1187,20 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                           <div>
-                            <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Model Code</label>
+                            <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Model Code</label>
                             <input 
                               type="text" 
                               value={product.modelCode}
                               onChange={(e) => handleStoreProductChange(originalIndex, 'modelCode', e.target.value)}
-                              style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px', fontFamily: 'monospace' }}
+                              style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px', fontFamily: 'monospace' }}
                             />
                           </div>
                           <div>
-                            <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Category</label>
+                            <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Category</label>
                             <select
                               value={product.category}
                               onChange={(e) => handleStoreProductChange(originalIndex, 'category', e.target.value as any)}
-                              style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                              style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                             >
                               <option value="controllers">Controllers</option>
                               <option value="hardware">Hardware</option>
@@ -940,27 +1210,27 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                         </div>
 
                         <div>
-                          <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Product Name</label>
+                          <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Product Name</label>
                           <input 
                             type="text" 
                             value={product.name}
                             onChange={(e) => handleStoreProductChange(originalIndex, 'name', e.target.value)}
-                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '13px', fontWeight: 600 }}
+                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '13px', fontWeight: 600 }}
                           />
                         </div>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                           <div>
-                            <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Price (USD $)</label>
+                            <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Price (USD $)</label>
                             <input 
                               type="number" 
                               value={product.price}
                               onChange={(e) => handleStoreProductChange(originalIndex, 'price', parseFloat(e.target.value) || 0)}
-                              style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                              style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                             />
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', paddingTop: '16px' }}>
-                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', cursor: 'pointer', color: product.inStock ? '#86EFAC' : '#EF4444' }}>
+                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', cursor: 'pointer', color: product.inStock ? '#15803D' : '#DC2626', fontWeight: 600 }}>
                               <input 
                                 type="checkbox" 
                                 checked={product.inStock}
@@ -972,22 +1242,22 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                         </div>
 
                         <div>
-                          <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Description</label>
+                          <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Description</label>
                           <textarea 
                             rows={2}
                             value={product.description}
                             onChange={(e) => handleStoreProductChange(originalIndex, 'description', e.target.value)}
-                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px', resize: 'vertical' }}
+                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px', resize: 'vertical' }}
                           />
                         </div>
 
                         <div>
-                          <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Specs Badge</label>
+                          <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Specs Badge</label>
                           <input 
                             type="text" 
                             value={product.specs}
                             onChange={(e) => handleStoreProductChange(originalIndex, 'specs', e.target.value)}
-                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '11px', fontFamily: 'monospace' }}
+                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '11px', fontFamily: 'monospace' }}
                           />
                         </div>
                       </div>
@@ -997,23 +1267,25 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
             </div>
           )}
 
-          {/* TAB 3: GROWER BLOG */}
+          {/* ======================================================== */}
+          {/* TAB 3: GROWER BLOG ARTICLES                              */}
+          {/* ======================================================== */}
           {activeTab === 'blog' && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
                 <div>
-                  <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 6px 0' }}>
+                  <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
                     Grower Blog & Technical Guides
                   </h1>
-                  <p style={{ margin: 0, color: '#9CA3AF', fontSize: '13.5px' }}>
-                    Publish educational articles, agronomic whitepapers, and customer case studies.
+                  <p style={{ margin: 0, color: '#64748B', fontSize: '13.5px' }}>
+                    Publish educational articles, agronomic whitepapers, and customer case studies for commercial growers.
                   </p>
                 </div>
                 <button
                   onClick={handleAddBlogPost}
                   style={{
-                    padding: '9px 16px',
-                    backgroundColor: '#76b82a',
+                    padding: '8px 16px',
+                    backgroundColor: '#16A34A',
                     color: '#FFFFFF',
                     border: 'none',
                     borderRadius: '6px',
@@ -1023,6 +1295,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                     alignItems: 'center',
                     gap: '6px',
                     cursor: 'pointer',
+                    boxShadow: '0 1px 2px rgba(22, 163, 74, 0.25)',
                   }}
                 >
                   <Plus size={15} />
@@ -1030,18 +1303,19 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {draftContent.blogPosts.map((post, index) => (
                   <div 
                     key={post.id}
                     style={{
-                      backgroundColor: '#161B18',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #E2E8F0',
                       borderRadius: '10px',
                       padding: '24px',
                       display: 'grid',
                       gridTemplateColumns: 'minmax(260px, 1fr) 2fr',
                       gap: '24px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                     }}
                   >
                     <div>
@@ -1055,7 +1329,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontSize: '11px', color: '#76b82a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                        <span style={{ fontSize: '11px', color: '#15803D', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '4px' }}>
                           {post.category} · {post.readTime}
                         </span>
                         <button
@@ -1063,7 +1337,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                           style={{
                             background: 'none',
                             border: 'none',
-                            color: '#EF4444',
+                            color: '#DC2626',
                             cursor: 'pointer',
                           }}
                           title="Delete Article"
@@ -1073,74 +1347,74 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Article Title</label>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Article Title</label>
                         <input 
                           type="text" 
-                          value={post.title}
+                          value={post.title} 
                           onChange={(e) => handleBlogPostChange(index, 'title', e.target.value)}
-                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '14px', fontWeight: 700 }}
+                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '14px', fontWeight: 700 }}
                         />
                       </div>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
                         <div>
-                          <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Category</label>
+                          <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Category</label>
                           <input 
                             type="text" 
-                            value={post.category}
+                            value={post.category} 
                             onChange={(e) => handleBlogPostChange(index, 'category', e.target.value)}
-                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                           />
                         </div>
                         <div>
-                          <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Date</label>
+                          <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Date</label>
                           <input 
                             type="text" 
-                            value={post.date}
+                            value={post.date} 
                             onChange={(e) => handleBlogPostChange(index, 'date', e.target.value)}
-                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                           />
                         </div>
                         <div>
-                          <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Read Time</label>
+                          <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Read Time</label>
                           <input 
                             type="text" 
-                            value={post.readTime}
+                            value={post.readTime} 
                             onChange={(e) => handleBlogPostChange(index, 'readTime', e.target.value)}
-                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                            style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Author Byline</label>
+                        <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Author Byline</label>
                         <input 
                           type="text" 
-                          value={post.author}
+                          value={post.author} 
                           onChange={(e) => handleBlogPostChange(index, 'author', e.target.value)}
-                          style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                          style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                         />
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>Short Summary Excerpt</label>
+                        <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Short Summary Excerpt</label>
                         <textarea 
                           rows={2}
-                          value={post.excerpt}
+                          value={post.excerpt} 
                           onChange={(e) => handleBlogPostChange(index, 'excerpt', e.target.value)}
-                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '12.5px', resize: 'vertical' }}
+                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '12.5px', resize: 'vertical' }}
                         />
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '10.5px', color: '#9CA3AF', marginBottom: '3px' }}>
+                        <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>
                           Article Content Paragraphs (separate paragraphs with blank lines)
                         </label>
                         <textarea 
                           rows={4}
-                          value={post.content.join('\n\n')}
+                          value={post.content.join('\n\n')} 
                           onChange={(e) => handleBlogPostChange(index, 'content', e.target.value.split('\n\n').filter(Boolean))}
-                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '12.5px', resize: 'vertical' }}
+                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '12.5px', resize: 'vertical' }}
                         />
                       </div>
                     </div>
@@ -1150,30 +1424,33 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
             </div>
           )}
 
-          {/* TAB 4: SHOWCASE SECTIONS */}
+          {/* ======================================================== */}
+          {/* TAB 4: FEATURE HIGHLIGHTS (SHOWCASE SECTIONS)            */}
+          {/* ======================================================== */}
           {activeTab === 'showcase' && (
             <div>
-              <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 6px 0' }}>
+              <div style={{ marginBottom: '20px' }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
                   Full-Bleed Feature Highlights
                 </h1>
-                <p style={{ margin: 0, color: '#9CA3AF', fontSize: '13.5px' }}>
-                  The 4 prominent background banner sections on the homepage (tekst-met-achtergrond format).
+                <p style={{ margin: 0, color: '#64748B', fontSize: '13.5px' }}>
+                  The 4 prominent background banner sections on the homepage (Solutions Showcase).
                 </p>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {draftContent.showcaseSections.map((sec, index) => (
                   <div 
                     key={sec.id}
                     style={{
-                      backgroundColor: '#161B18',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #E2E8F0',
                       borderRadius: '10px',
                       padding: '24px',
                       display: 'grid',
                       gridTemplateColumns: 'minmax(280px, 1fr) 2fr',
                       gap: '24px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                     }}
                   >
                     <ImageUploader 
@@ -1184,50 +1461,51 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                     />
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                      <span style={{ fontSize: '12px', fontWeight: 700, color: '#76b82a', fontFamily: 'monospace' }}>
+                      <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#15803D', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '4px', fontFamily: 'monospace', alignSelf: 'flex-start' }}>
                         SECTION {index + 1} (ID: {sec.id})
                       </span>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Headline</label>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Headline</label>
                         <input 
                           type="text" 
-                          value={sec.title}
+                          value={sec.title} 
                           onChange={(e) => handleShowcaseChange(index, 'title', e.target.value)}
-                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '14px', fontWeight: 700 }}
+                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '14px', fontWeight: 700 }}
                         />
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Description</label>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Description</label>
                         <textarea 
                           rows={3}
-                          value={sec.description}
+                          value={sec.description} 
                           onChange={(e) => handleShowcaseChange(index, 'description', e.target.value)}
-                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px', resize: 'vertical' }}
+                          style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px', resize: 'vertical' }}
                         />
                       </div>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                         <div>
-                          <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Button Text</label>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Button Text</label>
                           <input 
                             type="text" 
-                            value={sec.buttonText}
+                            value={sec.buttonText} 
                             onChange={(e) => handleShowcaseChange(index, 'buttonText', e.target.value)}
-                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                           />
                         </div>
                         <div>
-                          <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Target Section</label>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Target Section</label>
                           <select 
                             value={sec.targetSection}
                             onChange={(e) => handleShowcaseChange(index, 'targetSection', e.target.value)}
-                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                            style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                           >
                             <option value="suite">Hardware Suite (#suite)</option>
                             <option value="where-to-buy">Where to Buy (#where-to-buy)</option>
-                            <option value="app-preview">App Preview (#app-preview)</option>
+                            <option value="app">App Section (#app)</option>
+                            <option value="stories">Case Studies (#stories)</option>
                           </select>
                         </div>
                       </div>
@@ -1238,14 +1516,16 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
             </div>
           )}
 
-          {/* TAB 5: SUPPORT & NETWORK */}
+          {/* ======================================================== */}
+          {/* TAB 5: SUPPORT & NETWORK                                 */}
+          {/* ======================================================== */}
           {activeTab === 'support' && (
             <div>
-              <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 6px 0' }}>
+              <div style={{ marginBottom: '20px' }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
                   Support Hotlines & Global Distributors
                 </h1>
-                <p style={{ margin: 0, color: '#9CA3AF', fontSize: '13.5px' }}>
+                <p style={{ margin: 0, color: '#64748B', fontSize: '13.5px' }}>
                   Manage the telephone hotlines shown in the header/support bar and official commercial distribution partners.
                 </p>
               </div>
@@ -1253,93 +1533,95 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
               {/* Support Contacts Card */}
               <div 
                 style={{
-                  backgroundColor: '#161B18',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
                   borderRadius: '10px',
                   padding: '24px',
-                  marginBottom: '32px',
+                  marginBottom: '28px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                 }}
               >
-                <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#86EFAC', margin: '0 0 16px 0' }}>
+                <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: '0 0 16px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <PhoneCall size={16} style={{ color: '#16A34A' }} />
                   Global Helpdesk Contact Information
                 </h2>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>North America Hotline</label>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '4px' }}>North America Hotline</label>
                     <input 
                       type="text" 
                       value={draftContent.supportContacts.phoneUs}
                       onChange={(e) => updateSupportContacts({ ...draftContent.supportContacts, phoneUs: e.target.value })}
-                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px', fontFamily: 'monospace' }}
+                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px', fontFamily: 'monospace' }}
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>New Zealand Global HQ</label>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '4px' }}>New Zealand Global HQ</label>
                     <input 
                       type="text" 
                       value={draftContent.supportContacts.phoneNz}
                       onChange={(e) => updateSupportContacts({ ...draftContent.supportContacts, phoneNz: e.target.value })}
-                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px', fontFamily: 'monospace' }}
+                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px', fontFamily: 'monospace' }}
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>South East Asia Hub</label>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '4px' }}>South East Asia Hub</label>
                     <input 
                       type="text" 
                       value={draftContent.supportContacts.phoneSea}
                       onChange={(e) => updateSupportContacts({ ...draftContent.supportContacts, phoneSea: e.target.value })}
-                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px', fontFamily: 'monospace' }}
+                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px', fontFamily: 'monospace' }}
                     />
                   </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginTop: '16px' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Support Operating Hours</label>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '4px' }}>Support Operating Hours</label>
                     <input 
                       type="text" 
                       value={draftContent.supportContacts.supportHours}
                       onChange={(e) => updateSupportContacts({ ...draftContent.supportContacts, supportHours: e.target.value })}
-                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Helpdesk Email</label>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '4px' }}>Helpdesk Email</label>
                     <input 
                       type="text" 
                       value={draftContent.supportContacts.emailHelp}
                       onChange={(e) => updateSupportContacts({ ...draftContent.supportContacts, emailHelp: e.target.value })}
-                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '11px', color: '#9CA3AF', marginBottom: '3px' }}>Engineering Support Email</label>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '4px' }}>Engineering Support Email</label>
                     <input 
                       type="text" 
                       value={draftContent.supportContacts.emailEngineering}
                       onChange={(e) => updateSupportContacts({ ...draftContent.supportContacts, emailEngineering: e.target.value })}
-                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '6px', color: '#FFFFFF', fontSize: '13px' }}
+                      style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '13px' }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Distributors Section */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <div>
-                  <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 4px 0' }}>
+                  <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>
                     Distributor Partners ({draftContent.distributors.length})
                   </h2>
-                  <p style={{ margin: 0, fontSize: '12.5px', color: '#9CA3AF' }}>
-                    Locations shown on the interactive distributor finder map.
+                  <p style={{ margin: 0, fontSize: '12.5px', color: '#64748B' }}>
+                    Locations shown on the interactive distributor finder directory.
                   </p>
                 </div>
                 <button
                   onClick={handleAddDistributor}
                   style={{
                     padding: '8px 14px',
-                    backgroundColor: '#76b82a',
+                    backgroundColor: '#16A34A',
                     color: '#FFFFFF',
                     border: 'none',
                     borderRadius: '6px',
@@ -1349,6 +1631,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                     alignItems: 'center',
                     gap: '6px',
                     cursor: 'pointer',
+                    boxShadow: '0 1px 2px rgba(22, 163, 74, 0.25)',
                   }}
                 >
                   <Plus size={14} />
@@ -1361,17 +1644,20 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                   <div 
                     key={d.id}
                     style={{
-                      backgroundColor: '#161B18',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #E2E8F0',
                       borderRadius: '8px',
-                      padding: '16px',
+                      padding: '18px',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '10px',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '11px', color: '#76b82a', fontWeight: 700 }}>{d.region}</span>
+                      <span style={{ fontSize: '11px', color: '#15803D', fontWeight: 700, backgroundColor: '#DCFCE7', padding: '2px 8px', borderRadius: '4px' }}>
+                        {d.region}
+                      </span>
                       <button
                         onClick={() => handleDeleteDistributor(d.id)}
                         style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer' }}
@@ -1382,43 +1668,43 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '10px', color: '#9CA3AF' }}>Partner Name</label>
+                      <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Partner Name</label>
                       <input 
                         type="text" 
-                        value={d.partnerName}
+                        value={d.partnerName} 
                         onChange={(e) => handleDistributorChange(index, 'partnerName', e.target.value)}
-                        style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px', fontWeight: 600 }}
+                        style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px', fontWeight: 600 }}
                       />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                       <div>
-                        <label style={{ display: 'block', fontSize: '10px', color: '#9CA3AF' }}>Country</label>
+                        <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Country</label>
                         <input 
                           type="text" 
-                          value={d.country}
+                          value={d.country} 
                           onChange={(e) => handleDistributorChange(index, 'country', e.target.value)}
-                          style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                          style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                         />
                       </div>
                       <div>
-                        <label style={{ display: 'block', fontSize: '10px', color: '#9CA3AF' }}>Phone</label>
+                        <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Phone</label>
                         <input 
                           type="text" 
-                          value={d.supportPhone}
+                          value={d.supportPhone} 
                           onChange={(e) => handleDistributorChange(index, 'supportPhone', e.target.value)}
-                          style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                          style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '10px', color: '#9CA3AF' }}>Email Helpdesk</label>
+                      <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Email Helpdesk</label>
                       <input 
                         type="text" 
-                        value={d.email}
+                        value={d.email} 
                         onChange={(e) => handleDistributorChange(index, 'email', e.target.value)}
-                        style={{ width: '100%', padding: '6px 8px', backgroundColor: '#0B0F10', border: '1px solid #374151', borderRadius: '4px', color: '#FFFFFF', fontSize: '12px' }}
+                        style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                       />
                     </div>
                   </div>
@@ -1427,40 +1713,43 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
             </div>
           )}
 
-          {/* TAB 6: RAW JSON & BACKUPS */}
+          {/* ======================================================== */}
+          {/* TAB 6: RAW JSON & DATA BACKUPS                           */}
+          {/* ======================================================== */}
           {activeTab === 'json' && (
             <div>
-              <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 6px 0' }}>
+              <div style={{ marginBottom: '20px' }}>
+                <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
                   Static JSON Config & Zero-DB Portability
                 </h1>
-                <p style={{ margin: 0, color: '#9CA3AF', fontSize: '13.5px' }}>
+                <p style={{ margin: 0, color: '#64748B', fontSize: '13.5px' }}>
                   Download or import complete website states as pure JSON. You can commit exported JSON directly into your git repository or transfer configurations across browsers.
                 </p>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
                 {/* Export Card */}
                 <div 
                   style={{
-                    backgroundColor: '#161B18',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
                     borderRadius: '10px',
                     padding: '24px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                   }}
                 >
-                  <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Download size={18} style={{ color: '#76b82a' }} />
+                  <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Download size={17} style={{ color: '#16A34A' }} />
                     Download JSON Backup
                   </h2>
-                  <p style={{ fontSize: '12.5px', color: '#9CA3AF', lineHeight: 1.5, marginBottom: '16px' }}>
+                  <p style={{ fontSize: '12.5px', color: '#64748B', lineHeight: 1.5, marginBottom: '16px' }}>
                     Downloads the active draft configuration with all hero banners, products, articles, and image data URLs.
                   </p>
                   <button
                     onClick={exportJson}
                     style={{
-                      padding: '10px 18px',
-                      backgroundColor: '#76b82a',
+                      padding: '9px 16px',
+                      backgroundColor: '#16A34A',
                       color: '#FFFFFF',
                       border: 'none',
                       borderRadius: '6px',
@@ -1470,6 +1759,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '8px',
+                      boxShadow: '0 1px 2px rgba(22, 163, 74, 0.25)',
                     }}
                   >
                     <Download size={15} />
@@ -1480,25 +1770,26 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 {/* Import Card */}
                 <div 
                   style={{
-                    backgroundColor: '#161B18',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
                     borderRadius: '10px',
                     padding: '24px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                   }}
                 >
-                  <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Upload size={18} style={{ color: '#60A5FA' }} />
+                  <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Upload size={17} style={{ color: '#0284C7' }} />
                     Import JSON File
                   </h2>
-                  <p style={{ fontSize: '12.5px', color: '#9CA3AF', lineHeight: 1.5, marginBottom: '16px' }}>
+                  <p style={{ fontSize: '12.5px', color: '#64748B', lineHeight: 1.5, marginBottom: '16px' }}>
                     Upload an existing JSON export to restore or switch site configuration.
                   </p>
                   <label 
                     style={{
-                      padding: '10px 18px',
-                      backgroundColor: '#1F2937',
-                      color: '#FFFFFF',
-                      border: '1px solid #374151',
+                      padding: '9px 16px',
+                      backgroundColor: '#F1F5F9',
+                      color: '#334155',
+                      border: '1px solid #CBD5E1',
                       borderRadius: '6px',
                       fontSize: '13px',
                       fontWeight: 600,
@@ -1508,7 +1799,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       gap: '8px',
                     }}
                   >
-                    <Upload size={15} style={{ color: '#60A5FA' }} />
+                    <Upload size={15} style={{ color: '#0284C7' }} />
                     Choose JSON File
                     <input 
                       type="file" 
@@ -1537,14 +1828,15 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
               {/* Paste JSON directly */}
               <div 
                 style={{
-                  backgroundColor: '#161B18',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
                   borderRadius: '10px',
                   padding: '24px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                  <h2 style={{ fontSize: '15px', fontWeight: 700, color: '#FFFFFF', margin: 0 }}>
+                  <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
                     Direct JSON Paste / Inspect
                   </h2>
                   <button
@@ -1554,29 +1846,34 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                     }}
                     style={{
                       padding: '6px 12px',
-                      backgroundColor: '#1F2937',
-                      color: '#D1D5DB',
-                      border: '1px solid #374151',
+                      backgroundColor: '#F1F5F9',
+                      color: '#475569',
+                      border: '1px solid #CBD5E1',
                       borderRadius: '4px',
-                      fontSize: '11.5px',
+                      fontSize: '12px',
+                      fontWeight: 600,
                       cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
                     }}
                   >
+                    <Copy size={13} />
                     Copy Active JSON
                   </button>
                 </div>
                 <textarea 
-                  rows={12}
+                  rows={10}
                   placeholder="Paste JSON content here..."
                   value={importJsonText || JSON.stringify(draftContent, null, 2)}
                   onChange={(e) => setImportJsonText(e.target.value)}
                   style={{
                     width: '100%',
                     padding: '12px',
-                    backgroundColor: '#0B0F10',
-                    border: '1px solid #374151',
+                    backgroundColor: '#F8FAFC',
+                    border: '1px solid #CBD5E1',
                     borderRadius: '6px',
-                    color: '#86EFAC',
+                    color: '#0F172A',
                     fontSize: '12px',
                     fontFamily: 'monospace',
                     resize: 'vertical',
@@ -1595,7 +1892,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       }}
                       style={{
                         padding: '8px 16px',
-                        backgroundColor: '#76b82a',
+                        backgroundColor: '#16A34A',
                         color: '#FFFFFF',
                         border: 'none',
                         borderRadius: '6px',
@@ -1611,8 +1908,8 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       style={{
                         padding: '8px 14px',
                         backgroundColor: 'transparent',
-                        color: '#9CA3AF',
-                        border: '1px solid #374151',
+                        color: '#64748B',
+                        border: '1px solid #CBD5E1',
                         borderRadius: '6px',
                         fontSize: '12.5px',
                         cursor: 'pointer',
