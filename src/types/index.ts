@@ -83,6 +83,7 @@ export interface DistributorLocation {
   email: string;
   website?: string;
   address?: string;
+  isActive?: boolean;
 }
 
 export interface BlogPost {
@@ -96,6 +97,7 @@ export interface BlogPost {
   content: string[];
   author: string;
   image: string;
+  isActive?: boolean;
 }
 
 export interface StoreProduct {
@@ -108,6 +110,7 @@ export interface StoreProduct {
   image: string;
   description: string;
   specs: string;
+  isActive?: boolean;
 }
 
 export interface HeroSlideItem {
@@ -119,6 +122,7 @@ export interface HeroSlideItem {
   buttonText: string;
   targetSection: string;
   isBannerOnly?: boolean;
+  isActive?: boolean;
 }
 
 export interface ShowcaseSectionItem {
@@ -128,6 +132,7 @@ export interface ShowcaseSectionItem {
   image: string;
   buttonText: string;
   targetSection: string;
+  isActive?: boolean;
 }
 
 export interface SupportContacts {

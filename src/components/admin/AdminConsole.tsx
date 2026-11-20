@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Eye, 
+  EyeOff,
   Check, 
   RotateCcw, 
   Download, 
@@ -55,6 +56,8 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
 
   const [activeTab, setActiveTab] = useState<AdminTab>('hero');
   const [storeFilter, setStoreFilter] = useState<'all' | 'controllers' | 'hardware' | 'parts'>('all');
+  const [storeVisibilityFilter, setStoreVisibilityFilter] = useState<'all' | 'active' | 'deactivated'>('all');
+  const [blogVisibilityFilter, setBlogVisibilityFilter] = useState<'all' | 'active' | 'deactivated'>('all');
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [importJsonText, setImportJsonText] = useState('');
 
@@ -68,7 +71,36 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
     showStatus('Changes saved and published to production live website!');
   };
 
+  // Active vs Deactivated Counts for summary KPIs and badges
+  const heroTotal = draftContent.heroSlides.length;
+  const heroActive = draftContent.heroSlides.filter(s => s.isActive !== false).length;
+  const heroDeactivated = heroTotal - heroActive;
+
+  const showcaseTotal = draftContent.showcaseSections.length;
+  const showcaseActive = draftContent.showcaseSections.filter(s => s.isActive !== false).length;
+  const showcaseDeactivated = showcaseTotal - showcaseActive;
+
+  const storeTotal = draftContent.storeProducts.length;
+  const storeActive = draftContent.storeProducts.filter(p => p.isActive !== false).length;
+  const storeDeactivated = storeTotal - storeActive;
+
+  const blogTotal = draftContent.blogPosts.length;
+  const blogActive = draftContent.blogPosts.filter(b => b.isActive !== false).length;
+  const blogDeactivated = blogTotal - blogActive;
+
+  const distTotal = draftContent.distributors.length;
+  const distActive = draftContent.distributors.filter(d => d.isActive !== false).length;
+  const distDeactivated = distTotal - distActive;
+
   // --- HERO SLIDES HELPERS ---
+  const handleToggleHeroActive = (index: number) => {
+    const updated = [...draftContent.heroSlides];
+    const current = updated[index].isActive !== false;
+    updated[index] = { ...updated[index], isActive: !current };
+    updateHeroSlides(updated);
+    showStatus(current ? `Deactivated Slide #${index + 1} (hidden from public site)` : `Re-activated Slide #${index + 1} (visible on public site)`);
+  };
+
   const handleHeroChange = (index: number, field: keyof HeroSlideItem, value: any) => {
     const updated = [...draftContent.heroSlides];
     updated[index] = { ...updated[index], [field]: value };
@@ -110,6 +142,14 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
   };
 
   // --- SHOWCASE SECTIONS HELPERS ---
+  const handleToggleShowcaseActive = (index: number) => {
+    const updated = [...draftContent.showcaseSections];
+    const current = updated[index].isActive !== false;
+    updated[index] = { ...updated[index], isActive: !current };
+    updateShowcaseSections(updated);
+    showStatus(current ? `Deactivated Section #${index + 1} (hidden from public site)` : `Re-activated Section #${index + 1} (visible on public site)`);
+  };
+
   const handleShowcaseChange = (index: number, field: keyof ShowcaseSectionItem, value: any) => {
     const updated = [...draftContent.showcaseSections];
     updated[index] = { ...updated[index], [field]: value };
@@ -117,6 +157,15 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
   };
 
   // --- STORE PRODUCTS HELPERS ---
+  const handleToggleStoreProductActive = (id: string) => {
+    const target = draftContent.storeProducts.find(p => p.id === id);
+    if (!target) return;
+    const current = target.isActive !== false;
+    const updated = draftContent.storeProducts.map(p => p.id === id ? { ...p, isActive: !current } : p);
+    updateStoreProducts(updated);
+    showStatus(current ? `Deactivated "${target.name}" (hidden from online store)` : `Re-activated "${target.name}" (visible in online store)`);
+  };
+
   const handleStoreProductChange = (index: number, field: keyof StoreProduct, value: any) => {
     const updated = [...draftContent.storeProducts];
     updated[index] = { ...updated[index], [field]: value };
@@ -148,6 +197,15 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
   };
 
   // --- BLOG POSTS HELPERS ---
+  const handleToggleBlogPostActive = (id: string) => {
+    const target = draftContent.blogPosts.find(b => b.id === id);
+    if (!target) return;
+    const current = target.isActive !== false;
+    const updated = draftContent.blogPosts.map(b => b.id === id ? { ...b, isActive: !current } : b);
+    updateBlogPosts(updated);
+    showStatus(current ? `Deactivated article "${target.title}" (hidden from blog)` : `Re-activated article "${target.title}" (visible on blog)`);
+  };
+
   const handleBlogPostChange = (index: number, field: keyof BlogPost, value: any) => {
     const updated = [...draftContent.blogPosts];
     updated[index] = { ...updated[index], [field]: value };
@@ -183,6 +241,15 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
   };
 
   // --- DISTRIBUTOR HELPERS ---
+  const handleToggleDistributorActive = (id: string) => {
+    const target = draftContent.distributors.find(d => d.id === id);
+    if (!target) return;
+    const current = target.isActive !== false;
+    const updated = draftContent.distributors.map(d => d.id === id ? { ...d, isActive: !current } : d);
+    updateDistributors(updated);
+    showStatus(current ? `Deactivated distributor "${target.partnerName}" (hidden from directory)` : `Re-activated distributor "${target.partnerName}" (visible in directory)`);
+  };
+
   const handleDistributorChange = (index: number, field: keyof DistributorLocation, value: any) => {
     const updated = [...draftContent.distributors];
     updated[index] = { ...updated[index], [field]: value };
@@ -328,16 +395,17 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Hero Banners
               </div>
               <span 
+                title={heroDeactivated > 0 ? `${heroActive} active, ${heroDeactivated} deactivated` : `${heroTotal} active slides`}
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
                   padding: '1px 6px',
                   borderRadius: '999px',
-                  backgroundColor: activeTab === 'hero' ? '#16A34A' : '#334155',
+                  backgroundColor: heroDeactivated > 0 ? '#B45309' : activeTab === 'hero' ? '#16A34A' : '#334155',
                   color: '#FFFFFF'
                 }}
               >
-                {draftContent.heroSlides.length}
+                {heroDeactivated > 0 ? `${heroActive}/${heroTotal}` : heroTotal}
               </span>
             </button>
 
@@ -366,16 +434,17 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Feature Highlights
               </div>
               <span 
+                title={showcaseDeactivated > 0 ? `${showcaseActive} active, ${showcaseDeactivated} deactivated` : `${showcaseTotal} active highlights`}
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
                   padding: '1px 6px',
                   borderRadius: '999px',
-                  backgroundColor: activeTab === 'showcase' ? '#16A34A' : '#334155',
+                  backgroundColor: showcaseDeactivated > 0 ? '#B45309' : activeTab === 'showcase' ? '#16A34A' : '#334155',
                   color: '#FFFFFF'
                 }}
               >
-                {draftContent.showcaseSections.length}
+                {showcaseDeactivated > 0 ? `${showcaseActive}/${showcaseTotal}` : showcaseTotal}
               </span>
             </button>
 
@@ -404,16 +473,17 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Store Catalog
               </div>
               <span 
+                title={storeDeactivated > 0 ? `${storeActive} active, ${storeDeactivated} deactivated` : `${storeTotal} active products`}
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
                   padding: '1px 6px',
                   borderRadius: '999px',
-                  backgroundColor: activeTab === 'store' ? '#16A34A' : '#334155',
+                  backgroundColor: storeDeactivated > 0 ? '#B45309' : activeTab === 'store' ? '#16A34A' : '#334155',
                   color: '#FFFFFF'
                 }}
               >
-                {draftContent.storeProducts.length}
+                {storeDeactivated > 0 ? `${storeActive}/${storeTotal}` : storeTotal}
               </span>
             </button>
 
@@ -442,16 +512,17 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Grower Articles
               </div>
               <span 
+                title={blogDeactivated > 0 ? `${blogActive} published, ${blogDeactivated} deactivated` : `${blogTotal} published articles`}
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
                   padding: '1px 6px',
                   borderRadius: '999px',
-                  backgroundColor: activeTab === 'blog' ? '#16A34A' : '#334155',
+                  backgroundColor: blogDeactivated > 0 ? '#B45309' : activeTab === 'blog' ? '#16A34A' : '#334155',
                   color: '#FFFFFF'
                 }}
               >
-                {draftContent.blogPosts.length}
+                {blogDeactivated > 0 ? `${blogActive}/${blogTotal}` : blogTotal}
               </span>
             </button>
 
@@ -480,16 +551,17 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Support & Network
               </div>
               <span 
+                title={distDeactivated > 0 ? `${distActive} active, ${distDeactivated} deactivated` : `${distTotal} active hubs`}
                 style={{
                   fontSize: '11px',
                   fontWeight: 700,
                   padding: '1px 6px',
                   borderRadius: '999px',
-                  backgroundColor: activeTab === 'support' ? '#16A34A' : '#334155',
+                  backgroundColor: distDeactivated > 0 ? '#B45309' : activeTab === 'support' ? '#16A34A' : '#334155',
                   color: '#FFFFFF'
                 }}
               >
-                {draftContent.distributors.length}
+                {distDeactivated > 0 ? `${distActive}/${distTotal}` : distTotal}
               </span>
             </button>
 
@@ -836,10 +908,10 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Hero Banners
               </div>
               <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
-                {draftContent.heroSlides.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Active Slides</span>
+                {heroActive} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Active Slides</span>
               </div>
-              <div style={{ fontSize: '11px', color: '#16A34A', marginTop: '4px', fontWeight: 600 }}>
-                ● Slide 1: Default Growing Automation
+              <div style={{ fontSize: '11px', color: heroDeactivated > 0 ? '#B45309' : '#16A34A', marginTop: '4px', fontWeight: 600 }}>
+                {heroDeactivated > 0 ? `⚠️ ${heroDeactivated} slide(s) deactivated (hidden)` : '● All hero slides active on website'}
               </div>
             </div>
 
@@ -848,10 +920,10 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Store Catalog
               </div>
               <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
-                {draftContent.storeProducts.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>SKUs Published</span>
+                {storeActive} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Live SKUs</span>
               </div>
-              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '4px' }}>
-                Controllers, Skids & Sensors
+              <div style={{ fontSize: '11px', color: storeDeactivated > 0 ? '#B45309' : '#64748B', marginTop: '4px', fontWeight: storeDeactivated > 0 ? 600 : 400 }}>
+                {storeDeactivated > 0 ? `⚠️ ${storeDeactivated} product(s) deactivated (kept in CMS)` : 'Controllers, Skids & Sensors'}
               </div>
             </div>
 
@@ -860,10 +932,10 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Grower Articles
               </div>
               <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
-                {draftContent.blogPosts.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Published Guides</span>
+                {blogActive} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Live Articles</span>
               </div>
-              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '4px' }}>
-                Agronomy & CEA Engineering
+              <div style={{ fontSize: '11px', color: blogDeactivated > 0 ? '#B45309' : '#64748B', marginTop: '4px', fontWeight: blogDeactivated > 0 ? 600 : 400 }}>
+                {blogDeactivated > 0 ? `⚠️ ${blogDeactivated} article(s) deactivated (kept in CMS)` : 'Agronomy & CEA Engineering'}
               </div>
             </div>
 
@@ -872,10 +944,10 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 Global Network
               </div>
               <div style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>
-                {draftContent.distributors.length} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Regional Hubs</span>
+                {distActive} <span style={{ fontSize: '13px', fontWeight: 500, color: '#64748B' }}>Active Hubs</span>
               </div>
-              <div style={{ fontSize: '11px', color: '#16A34A', marginTop: '4px', fontWeight: 600 }}>
-                ● 24/7 Support Hotlines Connected
+              <div style={{ fontSize: '11px', color: distDeactivated > 0 ? '#B45309' : '#16A34A', marginTop: '4px', fontWeight: 600 }}>
+                {distDeactivated > 0 ? `⚠️ ${distDeactivated} partner(s) deactivated` : '● 24/7 Support Hotlines Connected'}
               </div>
             </div>
           </div>
@@ -917,95 +989,191 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {draftContent.heroSlides.map((slide, index) => (
-                  <div 
-                    key={slide.id}
-                    style={{
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #E2E8F0',
-                      borderRadius: '10px',
-                      padding: '24px',
-                      display: 'grid',
-                      gridTemplateColumns: 'minmax(280px, 1fr) 2fr',
-                      gap: '24px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                    }}
-                  >
-                    {/* Left: Image Uploader */}
-                    <div>
-                      <ImageUploader 
-                        label={`Slide #${index + 1} Image`}
-                        value={slide.image}
-                        onChange={(url) => handleHeroChange(index, 'image', url)}
-                        aspectRatio="video"
-                      />
-                    </div>
-
-                    {/* Right: Text Fields */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span 
-                          style={{ 
-                            fontSize: '11.5px', 
-                            fontWeight: 700, 
-                            color: '#15803D', 
-                            backgroundColor: '#DCFCE7',
-                            padding: '3px 8px',
-                            borderRadius: '4px',
-                            fontFamily: 'monospace' 
-                          }}
-                        >
-                          SLIDE {index + 1} OF {draftContent.heroSlides.length} {index === 0 && '· (DEFAULT HERO)'}
-                        </span>
-                        
-                        {/* Slide Management Buttons */}
-                        <div style={{ display: 'flex', gap: '6px' }}>
-                          <button
-                            disabled={index === 0}
-                            onClick={() => handleMoveHeroSlide(index, 'up')}
-                            style={{
-                              padding: '5px 8px',
-                              backgroundColor: '#F8FAFC',
-                              border: '1px solid #CBD5E1',
-                              borderRadius: '4px',
-                              color: index === 0 ? '#94A3B8' : '#334155',
-                              cursor: index === 0 ? 'not-allowed' : 'pointer',
-                            }}
-                            title="Move Up"
-                          >
-                            <ArrowUp size={14} />
-                          </button>
-                          <button
-                            disabled={index === draftContent.heroSlides.length - 1}
-                            onClick={() => handleMoveHeroSlide(index, 'down')}
-                            style={{
-                              padding: '5px 8px',
-                              backgroundColor: '#F8FAFC',
-                              border: '1px solid #CBD5E1',
-                              borderRadius: '4px',
-                              color: index === draftContent.heroSlides.length - 1 ? '#94A3B8' : '#334155',
-                              cursor: index === draftContent.heroSlides.length - 1 ? 'not-allowed' : 'pointer',
-                            }}
-                            title="Move Down"
-                          >
-                            <ArrowDown size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteHeroSlide(index)}
-                            style={{
-                              padding: '5px 8px',
-                              backgroundColor: '#FEF2F2',
-                              border: '1px solid #FECACA',
-                              borderRadius: '4px',
-                              color: '#DC2626',
-                              cursor: 'pointer',
-                            }}
-                            title="Delete Slide"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
+                {draftContent.heroSlides.map((slide, index) => {
+                  const isDeactivated = slide.isActive === false;
+                  return (
+                    <div 
+                      key={slide.id}
+                      style={{
+                        backgroundColor: isDeactivated ? '#FFFDF5' : '#FFFFFF',
+                        border: isDeactivated ? '1px dashed #F59E0B' : '1px solid #E2E8F0',
+                        borderRadius: '10px',
+                        padding: '24px',
+                        display: 'grid',
+                        gridTemplateColumns: 'minmax(280px, 1fr) 2fr',
+                        gap: '24px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                        position: 'relative',
+                      }}
+                    >
+                      {/* Left: Image Uploader */}
+                      <div style={{ opacity: isDeactivated ? 0.75 : 1 }}>
+                        <ImageUploader 
+                          label={`Slide #${index + 1} Image ${isDeactivated ? '(Deactivated)' : ''}`}
+                          value={slide.image}
+                          onChange={(url) => handleHeroChange(index, 'image', url)}
+                          aspectRatio="video"
+                        />
                       </div>
+
+                      {/* Right: Text Fields */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                        {isDeactivated && (
+                          <div 
+                            style={{
+                              backgroundColor: '#FEF3C7',
+                              border: '1px solid #FDE68A',
+                              borderRadius: '6px',
+                              padding: '8px 12px',
+                              fontSize: '12px',
+                              color: '#92400E',
+                              fontWeight: 600,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '8px',
+                            }}
+                          >
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <EyeOff size={14} style={{ color: '#D97706' }} />
+                              Deactivated · This hero banner is hidden from website visitors but kept in your system.
+                            </span>
+                            <button
+                              onClick={() => handleToggleHeroActive(index)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: '#15803D',
+                                fontWeight: 800,
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                                fontSize: '12px',
+                              }}
+                            >
+                              Re-activate now
+                            </button>
+                          </div>
+                        )}
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                          {isDeactivated ? (
+                            <span 
+                              style={{ 
+                                fontSize: '11px', 
+                                fontWeight: 700, 
+                                color: '#B45309', 
+                                backgroundColor: '#FEF3C7',
+                                border: '1px solid #FDE68A',
+                                padding: '3px 8px',
+                                borderRadius: '4px',
+                                fontFamily: 'monospace',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}
+                            >
+                              <EyeOff size={11} />
+                              SLIDE {index + 1} · DEACTIVATED (HIDDEN)
+                            </span>
+                          ) : (
+                            <span 
+                              style={{ 
+                                fontSize: '11.5px', 
+                                fontWeight: 700, 
+                                color: '#15803D', 
+                                backgroundColor: '#DCFCE7',
+                                padding: '3px 8px',
+                                borderRadius: '4px',
+                                fontFamily: 'monospace',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                              }}
+                            >
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#16A34A' }} />
+                              SLIDE {index + 1} OF {heroTotal} {index === 0 && '· (DEFAULT HERO)'}
+                            </span>
+                          )}
+                          
+                          {/* Slide Management Buttons: Activate/Deactivate, Move, Delete */}
+                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                            <button
+                              onClick={() => handleToggleHeroActive(index)}
+                              style={{
+                                padding: '5px 10px',
+                                backgroundColor: isDeactivated ? '#16A34A' : '#F8FAFC',
+                                border: `1px solid ${isDeactivated ? '#16A34A' : '#CBD5E1'}`,
+                                borderRadius: '4px',
+                                color: isDeactivated ? '#FFFFFF' : '#475569',
+                                fontSize: '11.5px',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                boxShadow: isDeactivated ? '0 1px 2px rgba(22, 163, 74, 0.25)' : 'none',
+                              }}
+                              title={isDeactivated ? "Re-activate to show on website again" : "Deactivate to hide from website without deleting"}
+                            >
+                              {isDeactivated ? (
+                                <>
+                                  <Eye size={13} />
+                                  Re-activate
+                                </>
+                              ) : (
+                                <>
+                                  <EyeOff size={13} style={{ color: '#D97706' }} />
+                                  Deactivate
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              disabled={index === 0}
+                              onClick={() => handleMoveHeroSlide(index, 'up')}
+                              style={{
+                                padding: '5px 8px',
+                                backgroundColor: '#F8FAFC',
+                                border: '1px solid #CBD5E1',
+                                borderRadius: '4px',
+                                color: index === 0 ? '#94A3B8' : '#334155',
+                                cursor: index === 0 ? 'not-allowed' : 'pointer',
+                              }}
+                              title="Move Up"
+                            >
+                              <ArrowUp size={14} />
+                            </button>
+                            <button
+                              disabled={index === draftContent.heroSlides.length - 1}
+                              onClick={() => handleMoveHeroSlide(index, 'down')}
+                              style={{
+                                padding: '5px 8px',
+                                backgroundColor: '#F8FAFC',
+                                border: '1px solid #CBD5E1',
+                                borderRadius: '4px',
+                                color: index === draftContent.heroSlides.length - 1 ? '#94A3B8' : '#334155',
+                                cursor: index === draftContent.heroSlides.length - 1 ? 'not-allowed' : 'pointer',
+                              }}
+                              title="Move Down"
+                            >
+                              <ArrowDown size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteHeroSlide(index)}
+                              style={{
+                                padding: '5px 8px',
+                                backgroundColor: '#FEF2F2',
+                                border: '1px solid #FECACA',
+                                borderRadius: '4px',
+                                color: '#DC2626',
+                                cursor: 'pointer',
+                              }}
+                              title="Delete Slide Permanently"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px' }}>
                         <div>
@@ -1075,7 +1243,8 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       </div>
                     </div>
                   </div>
-                ))}
+                );
+              })}
               </div>
             </div>
           )}
@@ -1116,41 +1285,100 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 </button>
               </div>
 
-              {/* Category Filter Pills */}
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
-                {(['all', 'controllers', 'hardware', 'parts'] as const).map(cat => (
+              {/* Category & Visibility Filter Pills */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {(['all', 'controllers', 'hardware', 'parts'] as const).map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setStoreFilter(cat)}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '9999px',
+                        fontSize: '12px',
+                        fontWeight: storeFilter === cat ? 700 : 500,
+                        backgroundColor: storeFilter === cat ? '#16A34A' : '#FFFFFF',
+                        color: storeFilter === cat ? '#FFFFFF' : '#475569',
+                        border: storeFilter === cat ? '1px solid #16A34A' : '1px solid #CBD5E1',
+                        cursor: 'pointer',
+                        textTransform: 'capitalize',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                      }}
+                    >
+                      {cat === 'all' ? 'All Categories' : cat === 'parts' ? 'Spare Parts' : cat}
+                    </button>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', backgroundColor: '#F1F5F9', padding: '3px', borderRadius: '8px' }}>
                   <button
-                    key={cat}
-                    onClick={() => setStoreFilter(cat)}
+                    onClick={() => setStoreVisibilityFilter('all')}
                     style={{
-                      padding: '6px 14px',
-                      borderRadius: '9999px',
-                      fontSize: '12px',
-                      fontWeight: storeFilter === cat ? 700 : 500,
-                      backgroundColor: storeFilter === cat ? '#16A34A' : '#FFFFFF',
-                      color: storeFilter === cat ? '#FFFFFF' : '#475569',
-                      border: storeFilter === cat ? '1px solid #16A34A' : '1px solid #CBD5E1',
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '11.5px',
+                      fontWeight: storeVisibilityFilter === 'all' ? 700 : 500,
+                      backgroundColor: storeVisibilityFilter === 'all' ? '#FFFFFF' : 'transparent',
+                      color: storeVisibilityFilter === 'all' ? '#0F172A' : '#64748B',
+                      border: 'none',
                       cursor: 'pointer',
-                      textTransform: 'capitalize',
-                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                      boxShadow: storeVisibilityFilter === 'all' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
                     }}
                   >
-                    {cat === 'all' ? 'All Products' : cat === 'parts' ? 'Spare Parts' : cat}
+                    All ({storeTotal})
                   </button>
-                ))}
+                  <button
+                    onClick={() => setStoreVisibilityFilter('active')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '11.5px',
+                      fontWeight: storeVisibilityFilter === 'active' ? 700 : 500,
+                      backgroundColor: storeVisibilityFilter === 'active' ? '#FFFFFF' : 'transparent',
+                      color: storeVisibilityFilter === 'active' ? '#15803D' : '#64748B',
+                      border: 'none',
+                      cursor: 'pointer',
+                      boxShadow: storeVisibilityFilter === 'active' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                    }}
+                  >
+                    ● Live Only ({storeActive})
+                  </button>
+                  <button
+                    onClick={() => setStoreVisibilityFilter('deactivated')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '11.5px',
+                      fontWeight: storeVisibilityFilter === 'deactivated' ? 700 : 500,
+                      backgroundColor: storeVisibilityFilter === 'deactivated' ? '#FFFFFF' : 'transparent',
+                      color: storeVisibilityFilter === 'deactivated' ? '#B45309' : '#64748B',
+                      border: 'none',
+                      cursor: 'pointer',
+                      boxShadow: storeVisibilityFilter === 'deactivated' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                    }}
+                  >
+                    ⚠️ Deactivated ({storeDeactivated})
+                  </button>
+                </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
                 {draftContent.storeProducts
                   .filter(p => storeFilter === 'all' || p.category === storeFilter)
+                  .filter(p => {
+                    if (storeVisibilityFilter === 'active') return p.isActive !== false;
+                    if (storeVisibilityFilter === 'deactivated') return p.isActive === false;
+                    return true;
+                  })
                   .map((product) => {
                     const originalIndex = draftContent.storeProducts.findIndex(p => p.id === product.id);
+                    const isDeactivated = product.isActive === false;
                     return (
                       <div 
                         key={product.id}
                         style={{
-                          backgroundColor: '#FFFFFF',
-                          border: '1px solid #E2E8F0',
+                          backgroundColor: isDeactivated ? '#FFFDF5' : '#FFFFFF',
+                          border: isDeactivated ? '1px dashed #F59E0B' : '1px solid #E2E8F0',
                           borderRadius: '10px',
                           padding: '20px',
                           display: 'flex',
@@ -1159,31 +1387,117 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                           boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                         }}
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontSize: '11px', fontFamily: 'monospace', color: '#16A34A', fontWeight: 700, backgroundColor: '#DCFCE7', padding: '2px 6px', borderRadius: '4px' }}>
-                            {product.modelCode}
-                          </span>
-                          <button
-                            onClick={() => handleDeleteStoreProduct(product.id)}
+                        {isDeactivated && (
+                          <div 
                             style={{
-                              background: 'none',
-                              border: 'none',
-                              color: '#EF4444',
-                              cursor: 'pointer',
-                              padding: '2px',
+                              backgroundColor: '#FEF3C7',
+                              border: '1px solid #FDE68A',
+                              borderRadius: '6px',
+                              padding: '6px 10px',
+                              fontSize: '11.5px',
+                              color: '#92400E',
+                              fontWeight: 600,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '6px',
                             }}
-                            title="Delete Product"
                           >
-                            <Trash2 size={15} />
-                          </button>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <EyeOff size={13} style={{ color: '#D97706' }} />
+                              Deactivated · Hidden from buyers
+                            </span>
+                            <button
+                              onClick={() => handleToggleStoreProductActive(product.id)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: '#15803D',
+                                fontWeight: 800,
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                                fontSize: '11px',
+                              }}
+                            >
+                              Show in Store
+                            </button>
+                          </div>
+                        )}
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontSize: '11px', fontFamily: 'monospace', color: '#16A34A', fontWeight: 700, backgroundColor: '#DCFCE7', padding: '2px 6px', borderRadius: '4px' }}>
+                              {product.modelCode}
+                            </span>
+                            {isDeactivated ? (
+                              <span style={{ fontSize: '10.5px', color: '#B45309', fontWeight: 700, backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '1px 6px', borderRadius: '4px' }}>
+                                Hidden
+                              </span>
+                            ) : (
+                              <span style={{ fontSize: '10.5px', color: '#15803D', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#16A34A' }} />
+                                Live
+                              </span>
+                            )}
+                          </div>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            {/* Deactivate / Re-activate Button */}
+                            <button
+                              onClick={() => handleToggleStoreProductActive(product.id)}
+                              style={{
+                                padding: '4px 8px',
+                                backgroundColor: isDeactivated ? '#16A34A' : '#F8FAFC',
+                                border: `1px solid ${isDeactivated ? '#16A34A' : '#CBD5E1'}`,
+                                borderRadius: '4px',
+                                color: isDeactivated ? '#FFFFFF' : '#475569',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                boxShadow: isDeactivated ? '0 1px 2px rgba(22, 163, 74, 0.25)' : 'none',
+                              }}
+                              title={isDeactivated ? "Re-activate product to show on storefront" : "Deactivate product to hide from online store without deleting"}
+                            >
+                              {isDeactivated ? (
+                                <>
+                                  <Eye size={12} />
+                                  Re-activate
+                                </>
+                              ) : (
+                                <>
+                                  <EyeOff size={12} style={{ color: '#D97706' }} />
+                                  Deactivate
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              onClick={() => handleDeleteStoreProduct(product.id)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: '#EF4444',
+                                cursor: 'pointer',
+                                padding: '2px',
+                              }}
+                              title="Delete Product Permanently"
+                            >
+                              <Trash2 size={15} />
+                            </button>
+                          </div>
                         </div>
 
-                        <ImageUploader 
-                          label="Product Photo"
-                          value={product.image}
-                          onChange={(url) => handleStoreProductChange(originalIndex, 'image', url)}
-                          aspectRatio="card"
-                        />
+                        <div style={{ opacity: isDeactivated ? 0.75 : 1 }}>
+                          <ImageUploader 
+                            label={`Product Photo ${isDeactivated ? '(Deactivated)' : ''}`}
+                            value={product.image}
+                            onChange={(url) => handleStoreProductChange(originalIndex, 'image', url)}
+                            aspectRatio="card"
+                          />
+                        </div>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                           <div>
@@ -1303,55 +1617,203 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {draftContent.blogPosts.map((post, index) => (
-                  <div 
-                    key={post.id}
+              {/* Visibility Filter Row */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', backgroundColor: '#F1F5F9', padding: '3px', borderRadius: '8px' }}>
+                  <button
+                    onClick={() => setBlogVisibilityFilter('all')}
                     style={{
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #E2E8F0',
-                      borderRadius: '10px',
-                      padding: '24px',
-                      display: 'grid',
-                      gridTemplateColumns: 'minmax(260px, 1fr) 2fr',
-                      gap: '24px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '11.5px',
+                      fontWeight: blogVisibilityFilter === 'all' ? 700 : 500,
+                      backgroundColor: blogVisibilityFilter === 'all' ? '#FFFFFF' : 'transparent',
+                      color: blogVisibilityFilter === 'all' ? '#0F172A' : '#64748B',
+                      border: 'none',
+                      cursor: 'pointer',
+                      boxShadow: blogVisibilityFilter === 'all' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
                     }}
                   >
-                    <div>
-                      <ImageUploader 
-                        label="Article Cover Photo"
-                        value={post.image}
-                        onChange={(url) => handleBlogPostChange(index, 'image', url)}
-                        aspectRatio="card"
-                      />
-                    </div>
+                    All Articles ({blogTotal})
+                  </button>
+                  <button
+                    onClick={() => setBlogVisibilityFilter('active')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '11.5px',
+                      fontWeight: blogVisibilityFilter === 'active' ? 700 : 500,
+                      backgroundColor: blogVisibilityFilter === 'active' ? '#FFFFFF' : 'transparent',
+                      color: blogVisibilityFilter === 'active' ? '#15803D' : '#64748B',
+                      border: 'none',
+                      cursor: 'pointer',
+                      boxShadow: blogVisibilityFilter === 'active' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                    }}
+                  >
+                    ● Published Live ({blogActive})
+                  </button>
+                  <button
+                    onClick={() => setBlogVisibilityFilter('deactivated')}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '11.5px',
+                      fontWeight: blogVisibilityFilter === 'deactivated' ? 700 : 500,
+                      backgroundColor: blogVisibilityFilter === 'deactivated' ? '#FFFFFF' : 'transparent',
+                      color: blogVisibilityFilter === 'deactivated' ? '#B45309' : '#64748B',
+                      border: 'none',
+                      cursor: 'pointer',
+                      boxShadow: blogVisibilityFilter === 'deactivated' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none',
+                    }}
+                  >
+                    ⚠️ Deactivated ({blogDeactivated})
+                  </button>
+                </div>
+              </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontSize: '11px', color: '#15803D', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '4px' }}>
-                          {post.category} · {post.readTime}
-                        </span>
-                        <button
-                          onClick={() => handleDeleteBlogPost(post.id)}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            color: '#DC2626',
-                            cursor: 'pointer',
-                          }}
-                          title="Delete Article"
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {draftContent.blogPosts
+                  .filter(post => {
+                    if (blogVisibilityFilter === 'active') return post.isActive !== false;
+                    if (blogVisibilityFilter === 'deactivated') return post.isActive === false;
+                    return true;
+                  })
+                  .map((post) => {
+                    const originalIndex = draftContent.blogPosts.findIndex(b => b.id === post.id);
+                    const isDeactivated = post.isActive === false;
+                    return (
+                      <div 
+                        key={post.id}
+                        style={{
+                          backgroundColor: isDeactivated ? '#FFFDF5' : '#FFFFFF',
+                          border: isDeactivated ? '1px dashed #F59E0B' : '1px solid #E2E8F0',
+                          borderRadius: '10px',
+                          padding: '24px',
+                          display: 'grid',
+                          gridTemplateColumns: 'minmax(260px, 1fr) 2fr',
+                          gap: '24px',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                        }}
+                      >
+                        <div style={{ opacity: isDeactivated ? 0.75 : 1 }}>
+                          <ImageUploader 
+                            label={`Article Cover Photo ${isDeactivated ? '(Deactivated)' : ''}`}
+                            value={post.image}
+                            onChange={(url) => handleBlogPostChange(originalIndex, 'image', url)}
+                            aspectRatio="card"
+                          />
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                          {isDeactivated && (
+                            <div 
+                              style={{
+                                backgroundColor: '#FEF3C7',
+                                border: '1px solid #FDE68A',
+                                borderRadius: '6px',
+                                padding: '6px 10px',
+                                fontSize: '11.5px',
+                                color: '#92400E',
+                                fontWeight: 600,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '6px',
+                              }}
+                            >
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <EyeOff size={13} style={{ color: '#D97706' }} />
+                                Deactivated · Hidden from blog readers (kept safely in CMS)
+                              </span>
+                              <button
+                                onClick={() => handleToggleBlogPostActive(post.id)}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: '#15803D',
+                                  fontWeight: 800,
+                                  textDecoration: 'underline',
+                                  cursor: 'pointer',
+                                  fontSize: '11px',
+                                }}
+                              >
+                                Publish to Blog
+                              </button>
+                            </div>
+                          )}
+
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span style={{ fontSize: '11px', color: '#15803D', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '4px' }}>
+                                {post.category} · {post.readTime}
+                              </span>
+                              {isDeactivated ? (
+                                <span style={{ fontSize: '10.5px', color: '#B45309', fontWeight: 700, backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '1px 6px', borderRadius: '4px' }}>
+                                  Hidden Draft
+                                </span>
+                              ) : (
+                                <span style={{ fontSize: '10.5px', color: '#15803D', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#16A34A' }} />
+                                  Live
+                                </span>
+                              )}
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              {/* Deactivate / Re-activate Button */}
+                              <button
+                                onClick={() => handleToggleBlogPostActive(post.id)}
+                                style={{
+                                  padding: '4px 8px',
+                                  backgroundColor: isDeactivated ? '#16A34A' : '#F8FAFC',
+                                  border: `1px solid ${isDeactivated ? '#16A34A' : '#CBD5E1'}`,
+                                  borderRadius: '4px',
+                                  color: isDeactivated ? '#FFFFFF' : '#475569',
+                                  fontSize: '11px',
+                                  fontWeight: 700,
+                                  cursor: 'pointer',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px',
+                                  boxShadow: isDeactivated ? '0 1px 2px rgba(22, 163, 74, 0.25)' : 'none',
+                                }}
+                                title={isDeactivated ? "Publish article back onto blog" : "Deactivate article to hide from blog without deleting"}
+                              >
+                                {isDeactivated ? (
+                                  <>
+                                    <Eye size={12} />
+                                    Re-activate
+                                  </>
+                                ) : (
+                                  <>
+                                    <EyeOff size={12} style={{ color: '#D97706' }} />
+                                    Deactivate
+                                  </>
+                                )}
+                              </button>
+
+                              <button
+                                onClick={() => handleDeleteBlogPost(post.id)}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: '#DC2626',
+                                  cursor: 'pointer',
+                                  padding: '2px',
+                                }}
+                                title="Delete Article Permanently"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </div>
+                          </div>
 
                       <div>
                         <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Article Title</label>
                         <input 
                           type="text" 
                           value={post.title} 
-                          onChange={(e) => handleBlogPostChange(index, 'title', e.target.value)}
+                          onChange={(e) => handleBlogPostChange(originalIndex, 'title', e.target.value)}
                           style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '14px', fontWeight: 700 }}
                         />
                       </div>
@@ -1362,7 +1824,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                           <input 
                             type="text" 
                             value={post.category} 
-                            onChange={(e) => handleBlogPostChange(index, 'category', e.target.value)}
+                            onChange={(e) => handleBlogPostChange(originalIndex, 'category', e.target.value)}
                             style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                           />
                         </div>
@@ -1371,7 +1833,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                           <input 
                             type="text" 
                             value={post.date} 
-                            onChange={(e) => handleBlogPostChange(index, 'date', e.target.value)}
+                            onChange={(e) => handleBlogPostChange(originalIndex, 'date', e.target.value)}
                             style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                           />
                         </div>
@@ -1380,7 +1842,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                           <input 
                             type="text" 
                             value={post.readTime} 
-                            onChange={(e) => handleBlogPostChange(index, 'readTime', e.target.value)}
+                            onChange={(e) => handleBlogPostChange(originalIndex, 'readTime', e.target.value)}
                             style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                           />
                         </div>
@@ -1391,7 +1853,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                         <input 
                           type="text" 
                           value={post.author} 
-                          onChange={(e) => handleBlogPostChange(index, 'author', e.target.value)}
+                          onChange={(e) => handleBlogPostChange(originalIndex, 'author', e.target.value)}
                           style={{ width: '100%', padding: '6px 8px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '4px', color: '#0F172A', fontSize: '12px' }}
                         />
                       </div>
@@ -1401,7 +1863,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                         <textarea 
                           rows={2}
                           value={post.excerpt} 
-                          onChange={(e) => handleBlogPostChange(index, 'excerpt', e.target.value)}
+                          onChange={(e) => handleBlogPostChange(originalIndex, 'excerpt', e.target.value)}
                           style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '12.5px', resize: 'vertical' }}
                         />
                       </div>
@@ -1413,13 +1875,14 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                         <textarea 
                           rows={4}
                           value={post.content.join('\n\n')} 
-                          onChange={(e) => handleBlogPostChange(index, 'content', e.target.value.split('\n\n').filter(Boolean))}
+                          onChange={(e) => handleBlogPostChange(originalIndex, 'content', e.target.value.split('\n\n').filter(Boolean))}
                           style={{ width: '100%', padding: '8px 10px', backgroundColor: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '6px', color: '#0F172A', fontSize: '12.5px', resize: 'vertical' }}
                         />
                       </div>
                     </div>
                   </div>
-                ))}
+                );
+              })}
               </div>
             </div>
           )}
@@ -1439,31 +1902,118 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {draftContent.showcaseSections.map((sec, index) => (
-                  <div 
-                    key={sec.id}
-                    style={{
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #E2E8F0',
-                      borderRadius: '10px',
-                      padding: '24px',
-                      display: 'grid',
-                      gridTemplateColumns: 'minmax(280px, 1fr) 2fr',
-                      gap: '24px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-                    }}
-                  >
-                    <ImageUploader 
-                      label={`Section #${index + 1} Background`}
-                      value={sec.image}
-                      onChange={(url) => handleShowcaseChange(index, 'image', url)}
-                      aspectRatio="video"
-                    />
+                {draftContent.showcaseSections.map((sec, index) => {
+                  const isDeactivated = sec.isActive === false;
+                  return (
+                    <div 
+                      key={sec.id}
+                      style={{
+                        backgroundColor: isDeactivated ? '#FFFDF5' : '#FFFFFF',
+                        border: isDeactivated ? '1px dashed #F59E0B' : '1px solid #E2E8F0',
+                        borderRadius: '10px',
+                        padding: '24px',
+                        display: 'grid',
+                        gridTemplateColumns: 'minmax(280px, 1fr) 2fr',
+                        gap: '24px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                      }}
+                    >
+                      <div style={{ opacity: isDeactivated ? 0.75 : 1 }}>
+                        <ImageUploader 
+                          label={`Section #${index + 1} Background ${isDeactivated ? '(Deactivated)' : ''}`}
+                          value={sec.image}
+                          onChange={(url) => handleShowcaseChange(index, 'image', url)}
+                          aspectRatio="video"
+                        />
+                      </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                      <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#15803D', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '4px', fontFamily: 'monospace', alignSelf: 'flex-start' }}>
-                        SECTION {index + 1} (ID: {sec.id})
-                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        {isDeactivated && (
+                          <div 
+                            style={{
+                              backgroundColor: '#FEF3C7',
+                              border: '1px solid #FDE68A',
+                              borderRadius: '6px',
+                              padding: '6px 10px',
+                              fontSize: '11.5px',
+                              color: '#92400E',
+                              fontWeight: 600,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '6px',
+                            }}
+                          >
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <EyeOff size={13} style={{ color: '#D97706' }} />
+                              Deactivated · This highlight section is hidden from homepage visitors.
+                            </span>
+                            <button
+                              onClick={() => handleToggleShowcaseActive(index)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: '#15803D',
+                                fontWeight: 800,
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                                fontSize: '11px',
+                              }}
+                            >
+                              Show on site
+                            </button>
+                          </div>
+                        )}
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#15803D', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '4px', fontFamily: 'monospace' }}>
+                              SECTION {index + 1} (ID: {sec.id})
+                            </span>
+                            {isDeactivated ? (
+                              <span style={{ fontSize: '10.5px', color: '#B45309', fontWeight: 700, backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '1px 6px', borderRadius: '4px' }}>
+                                Hidden
+                              </span>
+                            ) : (
+                              <span style={{ fontSize: '10.5px', color: '#15803D', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#16A34A' }} />
+                                Live
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Deactivate / Re-activate Button */}
+                          <button
+                            onClick={() => handleToggleShowcaseActive(index)}
+                            style={{
+                              padding: '4px 8px',
+                              backgroundColor: isDeactivated ? '#16A34A' : '#F8FAFC',
+                              border: `1px solid ${isDeactivated ? '#16A34A' : '#CBD5E1'}`,
+                              borderRadius: '4px',
+                              color: isDeactivated ? '#FFFFFF' : '#475569',
+                              fontSize: '11px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              boxShadow: isDeactivated ? '0 1px 2px rgba(22, 163, 74, 0.25)' : 'none',
+                            }}
+                            title={isDeactivated ? "Re-activate to display on homepage" : "Deactivate section to hide from homepage"}
+                          >
+                            {isDeactivated ? (
+                              <>
+                                <Eye size={12} />
+                                Re-activate
+                              </>
+                            ) : (
+                              <>
+                                <EyeOff size={12} style={{ color: '#D97706' }} />
+                                Deactivate
+                              </>
+                            )}
+                          </button>
+                        </div>
 
                       <div>
                         <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Headline</label>
@@ -1511,7 +2061,8 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       </div>
                     </div>
                   </div>
-                ))}
+                );
+              })}
               </div>
             </div>
           )}
@@ -1640,32 +2191,118 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px' }}>
-                {draftContent.distributors.map((d, index) => (
-                  <div 
-                    key={d.id}
-                    style={{
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #E2E8F0',
-                      borderRadius: '8px',
-                      padding: '18px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '10px',
-                      boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '11px', color: '#15803D', fontWeight: 700, backgroundColor: '#DCFCE7', padding: '2px 8px', borderRadius: '4px' }}>
-                        {d.region}
-                      </span>
-                      <button
-                        onClick={() => handleDeleteDistributor(d.id)}
-                        style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer' }}
-                        title="Delete Distributor"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
+                {draftContent.distributors.map((d, index) => {
+                  const isDeactivated = d.isActive === false;
+                  return (
+                    <div 
+                      key={d.id}
+                      style={{
+                        backgroundColor: isDeactivated ? '#FFFDF5' : '#FFFFFF',
+                        border: isDeactivated ? '1px dashed #F59E0B' : '1px solid #E2E8F0',
+                        borderRadius: '8px',
+                        padding: '18px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                      }}
+                    >
+                      {isDeactivated && (
+                        <div 
+                          style={{
+                            backgroundColor: '#FEF3C7',
+                            border: '1px solid #FDE68A',
+                            borderRadius: '6px',
+                            padding: '6px 10px',
+                            fontSize: '11px',
+                            color: '#92400E',
+                            fontWeight: 600,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '6px',
+                          }}
+                        >
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <EyeOff size={13} style={{ color: '#D97706' }} />
+                            Deactivated · Hidden from buyers
+                          </span>
+                          <button
+                            onClick={() => handleToggleDistributorActive(d.id)}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: '#15803D',
+                              fontWeight: 800,
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                              fontSize: '11px',
+                            }}
+                          >
+                            Show
+                          </button>
+                        </div>
+                      )}
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '11px', color: '#15803D', fontWeight: 700, backgroundColor: '#DCFCE7', padding: '2px 8px', borderRadius: '4px' }}>
+                            {d.region}
+                          </span>
+                          {isDeactivated ? (
+                            <span style={{ fontSize: '10.5px', color: '#B45309', fontWeight: 700, backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '1px 6px', borderRadius: '4px' }}>
+                              Hidden
+                            </span>
+                          ) : (
+                            <span style={{ fontSize: '10.5px', color: '#15803D', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#16A34A' }} />
+                              Live
+                            </span>
+                          )}
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          {/* Deactivate / Re-activate Button */}
+                          <button
+                            onClick={() => handleToggleDistributorActive(d.id)}
+                            style={{
+                              padding: '3px 8px',
+                              backgroundColor: isDeactivated ? '#16A34A' : '#F8FAFC',
+                              border: `1px solid ${isDeactivated ? '#16A34A' : '#CBD5E1'}`,
+                              borderRadius: '4px',
+                              color: isDeactivated ? '#FFFFFF' : '#475569',
+                              fontSize: '11px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              boxShadow: isDeactivated ? '0 1px 2px rgba(22, 163, 74, 0.25)' : 'none',
+                            }}
+                            title={isDeactivated ? "Re-activate partner to show on directory" : "Deactivate partner to hide from directory without deleting"}
+                          >
+                            {isDeactivated ? (
+                              <>
+                                <Eye size={12} />
+                                Re-activate
+                              </>
+                            ) : (
+                              <>
+                                <EyeOff size={12} style={{ color: '#D97706' }} />
+                                Deactivate
+                              </>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => handleDeleteDistributor(d.id)}
+                            style={{ background: 'none', border: 'none', color: '#EF4444', cursor: 'pointer', padding: '2px' }}
+                            title="Delete Distributor Permanently"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
 
                     <div>
                       <label style={{ display: 'block', fontSize: '10.5px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: '3px' }}>Partner Name</label>
@@ -1708,7 +2345,8 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                       />
                     </div>
                   </div>
-                ))}
+                );
+              })}
               </div>
             </div>
           )}

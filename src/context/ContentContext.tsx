@@ -64,8 +64,22 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // Check if draft differs from published
   const isDraftModified = JSON.stringify(content) !== JSON.stringify(draftContent);
 
-  // Effective content: during preview mode, render the working draft
-  const activeContent = isPreviewMode ? draftContent : content;
+  // Helper to filter out deactivated items for public site display
+  const filterActiveContent = (data: SiteContentData): SiteContentData => {
+    const liveHeroSlides = data.heroSlides.filter(s => s.isActive !== false);
+    return {
+      ...data,
+      // If all hero slides are deactivated, retain slide 1 as safe fallback so hero never crashes
+      heroSlides: liveHeroSlides.length > 0 ? liveHeroSlides : data.heroSlides.slice(0, 1),
+      showcaseSections: data.showcaseSections.filter(s => s.isActive !== false),
+      storeProducts: data.storeProducts.filter(p => p.isActive !== false),
+      blogPosts: data.blogPosts.filter(b => b.isActive !== false),
+      distributors: data.distributors.filter(d => d.isActive !== false),
+    };
+  };
+
+  // Effective content: during preview mode, render the working draft (active items only)
+  const activeContent = filterActiveContent(isPreviewMode ? draftContent : content);
 
   // Mutator helpers
   const updateHeroSlides = (slides: HeroSlideItem[]) => {
