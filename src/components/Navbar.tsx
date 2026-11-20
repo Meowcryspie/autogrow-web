@@ -666,7 +666,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {profile?.full_name || (isAdmin ? 'Chief Operations Admin' : 'Grower Client')}
                         </span>
-                        <span style={{ 
+                        <span 
+                          data-testid="profile-role-badge"
+                          style={{ 
                           backgroundColor: isAdmin ? '#DCFCE7' : '#EFF6FF', 
                           color: isAdmin ? '#15803D' : '#1D4ED8', 
                           fontSize: '9px', 

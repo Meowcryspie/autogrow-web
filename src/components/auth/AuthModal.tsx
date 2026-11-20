@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, User, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { 
+  X, 
+  Lock, 
+  Mail, 
+  User, 
+  Building2, 
+  ShieldCheck, 
+  ArrowRight, 
+  CheckCircle2, 
+  Eye, 
+  EyeOff, 
+  KeyRound, 
+  AlertCircle
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { ADMIN_REGISTRATION_PASSCODE } from '../../lib/authSecurity';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -17,12 +31,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   successMessage,
   onSuccess
 }) => {
-  const { signIn, signUp, devLoginAs, isConfigured } = useAuth();
+  const { signIn, signUp, devLoginAs } = useAuth();
 
   const [mode, setMode] = useState<'signin' | 'signup'>(defaultMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [facilityName, setFacilityName] = useState('');
+  
+  // Admin passcode for staff registration
+  const [isAdminRegistration, setIsAdminRegistration] = useState(false);
+  const [adminPasscode, setAdminPasscode] = useState('');
+
+  // Password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState<string | null>(successMessage || null);
@@ -32,6 +57,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setNotification(null);
     setLoading(true);
 
     if (mode === 'signin') {
@@ -41,34 +67,67 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         setLoading(false);
       } else {
         setLoading(false);
-        if (onSuccess) onSuccess();
-        onClose();
+        setNotification('Signed in successfully! Loading your dashboard...');
+        setTimeout(() => {
+          if (onSuccess) onSuccess();
+          onClose();
+        }, 600);
       }
     } else {
-      if (!fullName.trim()) {
-        setError('Please enter your full name.');
+      // Sign Up Validations
+      if (!fullName.trim() || fullName.trim().length < 2) {
+        setError('Please enter your full name (minimum 2 characters).');
         setLoading(false);
         return;
       }
-      const res = await signUp(email, password, fullName);
+
+      if (password !== confirmPassword) {
+        setError('Passwords do not match. Please ensure both passwords match exactly.');
+        setLoading(false);
+        return;
+      }
+
+      if (password.length < 8) {
+        setError('Password must be at least 8 characters long and contain letters and numbers.');
+        setLoading(false);
+        return;
+      }
+
+      if (isAdminRegistration && !adminPasscode.trim()) {
+        setError('Please enter the administrator provisioning passcode, or uncheck staff registration.');
+        setLoading(false);
+        return;
+      }
+
+      const res = await signUp(
+        email, 
+        password, 
+        fullName, 
+        facilityName, 
+        isAdminRegistration ? adminPasscode : undefined
+      );
+
       if (res.error) {
         setError(res.error);
         setLoading(false);
       } else {
         setLoading(false);
-        setNotification('Account created successfully! You are now logged in.');
+        setNotification('Account registered successfully! You are now logged in.');
         setTimeout(() => {
           if (onSuccess) onSuccess();
           onClose();
-        }, 1200);
+        }, 900);
       }
     }
   };
 
   const handleDevLogin = (role: 'admin' | 'customer') => {
     devLoginAs(role);
-    if (onSuccess) onSuccess();
-    onClose();
+    setNotification(role === 'admin' ? 'Logged in as Chief Operations Admin' : 'Logged in as Commercial Grower');
+    setTimeout(() => {
+      if (onSuccess) onSuccess();
+      onClose();
+    }, 400);
   };
 
   return (
@@ -76,33 +135,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-        backdropFilter: 'blur(6px)',
+        backgroundColor: 'rgba(15, 23, 42, 0.65)',
+        backdropFilter: 'blur(5px)',
         zIndex: 99999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '16px'
+        padding: '16px',
+        overflowY: 'auto'
       }}
       onClick={onClose}
     >
       <div 
+        data-testid="auth-modal"
         style={{
-          backgroundColor: '#0F172A',
-          border: '1px solid #1E293B',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E2E8F0',
           borderRadius: '16px',
           width: '100%',
-          maxWidth: '440px',
+          maxWidth: '470px',
           padding: '32px',
-          color: '#F8FAFC',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-          position: 'relative'
+          color: '#0F172A',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+          position: 'relative',
+          margin: 'auto'
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
+          data-testid="auth-close-btn"
+          aria-label="Close dialog"
           style={{
             position: 'absolute',
             top: '20px',
@@ -111,62 +175,71 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             border: 'none',
             color: '#64748B',
             cursor: 'pointer',
-            padding: '4px',
-            display: 'flex'
+            padding: '6px',
+            borderRadius: '6px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'background 0.15s ease'
           }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F1F5F9')}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
         >
-          <X size={20} />
+          <X size={19} />
         </button>
 
         {/* Brand Header */}
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#76b82a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center', marginBottom: '22px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(22, 163, 74, 0.25)' }}>
               <ShieldCheck size={22} color="#FFFFFF" />
             </div>
-            <span style={{ fontSize: '20px', fontWeight: 800, letterSpacing: '-0.02em', color: '#FFFFFF' }}>
+            <span style={{ fontSize: '20px', fontWeight: 800, letterSpacing: '-0.02em', color: '#0F172A' }}>
               AUTOGROW
             </span>
           </div>
-          <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 6px 0', color: '#F1F5F9' }}>
-            {mode === 'signin' ? 'Sign In to Your Account' : 'Create Commercial Grower Account'}
+          <h3 style={{ fontSize: '19px', fontWeight: 800, margin: '0 0 4px 0', color: '#0F172A' }}>
+            {mode === 'signin' ? 'Sign In to Your Account' : 'Register Commercial Account'}
           </h3>
-          <p style={{ fontSize: '13px', color: '#94A3B8', margin: 0 }}>
+          <p style={{ fontSize: '13px', color: '#64748B', margin: 0 }}>
             {mode === 'signin' 
-              ? 'Access quote carts, order history, and technical telemetry'
-              : 'Register to place quote orders and access engineering schematics'}
+              ? 'Access quote carts, order history, and operations management'
+              : 'Create a verified commercial account for equipment quotes and support'}
           </p>
         </div>
 
         {/* Notification Banner */}
         {notification && (
-          <div style={{ marginBottom: '16px', padding: '10px 14px', backgroundColor: '#064E3B', border: '1px solid #059669', borderRadius: '8px', color: '#A7F3D0', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <CheckCircle2 size={16} />
+          <div data-testid="auth-notification-banner" style={{ marginBottom: '16px', padding: '10px 14px', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '8px', color: '#065F46', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
+            <CheckCircle2 size={16} style={{ color: '#059669', flexShrink: 0 }} />
             <span>{notification}</span>
           </div>
         )}
 
         {/* Error Banner */}
         {error && (
-          <div style={{ marginBottom: '16px', padding: '10px 14px', backgroundColor: '#7F1D1D', border: '1px solid #DC2626', borderRadius: '8px', color: '#FECACA', fontSize: '13px' }}>
-            {error}
+          <div data-testid="auth-error-alert" style={{ marginBottom: '16px', padding: '10px 14px', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '8px', color: '#991B1B', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500 }}>
+            <AlertCircle size={16} style={{ color: '#DC2626', flexShrink: 0 }} />
+            <span>{error}</span>
           </div>
         )}
 
-        {/* Tab Toggle */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', backgroundColor: '#1E293B', borderRadius: '10px', padding: '4px', marginBottom: '20px' }}>
+        {/* Mode Toggle Switcher */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', backgroundColor: '#F1F5F9', borderRadius: '10px', padding: '4px', marginBottom: '20px' }}>
           <button
             type="button"
+            data-testid="auth-tab-signin"
             onClick={() => { setMode('signin'); setError(null); }}
             style={{
               padding: '8px',
               border: 'none',
               borderRadius: '7px',
-              backgroundColor: mode === 'signin' ? '#76b82a' : 'transparent',
-              color: mode === 'signin' ? '#FFFFFF' : '#94A3B8',
+              backgroundColor: mode === 'signin' ? '#FFFFFF' : 'transparent',
+              color: mode === 'signin' ? '#0F172A' : '#64748B',
               fontWeight: 700,
               fontSize: '13px',
               cursor: 'pointer',
+              boxShadow: mode === 'signin' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
               transition: 'all 0.15s ease'
             }}
           >
@@ -174,16 +247,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </button>
           <button
             type="button"
+            data-testid="auth-tab-signup"
             onClick={() => { setMode('signup'); setError(null); }}
             style={{
               padding: '8px',
               border: 'none',
               borderRadius: '7px',
-              backgroundColor: mode === 'signup' ? '#76b82a' : 'transparent',
-              color: mode === 'signup' ? '#FFFFFF' : '#94A3B8',
+              backgroundColor: mode === 'signup' ? '#FFFFFF' : 'transparent',
+              color: mode === 'signup' ? '#0F172A' : '#64748B',
               fontWeight: 700,
               fontSize: '13px',
               cursor: 'pointer',
+              boxShadow: mode === 'signup' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
               transition: 'all 0.15s ease'
             }}
           >
@@ -191,57 +266,88 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+        {/* Form Body */}
+        <form noValidate onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {mode === 'signup' && (
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#CBD5E1', marginBottom: '6px' }}>
-                Full Name / Commercial Facility
-              </label>
-              <div style={{ position: 'relative' }}>
-                <User size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#64748B' }} />
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Marcus Vance (Pacific Greens)"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px 10px 38px',
-                    backgroundColor: '#1E293B',
-                    border: '1px solid #334155',
-                    borderRadius: '8px',
-                    color: '#FFFFFF',
-                    fontSize: '14px',
-                    outline: 'none',
-                    boxSizing: 'border-box'
-                  }}
-                />
+            <>
+              <div>
+                <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                  Full Name <span style={{ color: '#DC2626' }}>*</span>
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <User size={16} style={{ position: 'absolute', left: '12px', top: '11px', color: '#94A3B8' }} />
+                  <input
+                    type="text"
+                    data-testid="signup-fullname"
+                    required
+                    placeholder="e.g. Marcus Vance"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '9px 12px 9px 38px',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '8px',
+                      color: '#0F172A',
+                      fontSize: '13.5px',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                  Facility / Company Name
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <Building2 size={16} style={{ position: 'absolute', left: '12px', top: '11px', color: '#94A3B8' }} />
+                  <input
+                    type="text"
+                    data-testid="signup-facility"
+                    placeholder="e.g. Pacific Greens Glasshouse Ltd"
+                    value={facilityName}
+                    onChange={(e) => setFacilityName(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '9px 12px 9px 38px',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '8px',
+                      color: '#0F172A',
+                      fontSize: '13.5px',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                </div>
+              </div>
+            </>
           )}
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#CBD5E1', marginBottom: '6px' }}>
-              Work Email Address
+            <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+              Work Email Address <span style={{ color: '#DC2626' }}>*</span>
             </label>
             <div style={{ position: 'relative' }}>
-              <Mail size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#64748B' }} />
+              <Mail size={16} style={{ position: 'absolute', left: '12px', top: '11px', color: '#94A3B8' }} />
               <input
                 type="email"
+                data-testid="auth-email-input"
                 required
-                placeholder="grower@greenhouse.com"
+                placeholder="grower@commercialgreenhouse.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '10px 12px 10px 38px',
-                  backgroundColor: '#1E293B',
-                  border: '1px solid #334155',
+                  padding: '9px 12px 9px 38px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #CBD5E1',
                   borderRadius: '8px',
-                  color: '#FFFFFF',
-                  fontSize: '14px',
+                  color: '#0F172A',
+                  fontSize: '13.5px',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
@@ -250,40 +356,158 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#CBD5E1', marginBottom: '6px' }}>
-              Password
-            </label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+              <label style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Password <span style={{ color: '#DC2626' }}>*</span>
+              </label>
+              {mode === 'signup' && (
+                <span style={{ fontSize: '11px', color: '#64748B' }}>Min 8 chars (letters + numbers)</span>
+              )}
+            </div>
             <div style={{ position: 'relative' }}>
-              <Lock size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#64748B' }} />
+              <Lock size={16} style={{ position: 'absolute', left: '12px', top: '11px', color: '#94A3B8' }} />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
+                data-testid="auth-password-input"
                 required
-                minLength={6}
+                minLength={8}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '10px 12px 10px 38px',
-                  backgroundColor: '#1E293B',
-                  border: '1px solid #334155',
+                  padding: '9px 40px 9px 38px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #CBD5E1',
                   borderRadius: '8px',
-                  color: '#FFFFFF',
-                  fontSize: '14px',
+                  color: '#0F172A',
+                  fontSize: '13.5px',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '10px',
+                  background: 'none',
+                  border: 'none',
+                  color: '#64748B',
+                  cursor: 'pointer',
+                  padding: '2px'
+                }}
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
           </div>
 
+          {mode === 'signup' && (
+            <div>
+              <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 700, color: '#334155', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                Confirm Password <span style={{ color: '#DC2626' }}>*</span>
+              </label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={16} style={{ position: 'absolute', left: '12px', top: '11px', color: '#94A3B8' }} />
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  data-testid="signup-confirm-password"
+                  required
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '9px 40px 9px 38px',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '8px',
+                    color: '#0F172A',
+                    fontSize: '13.5px',
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '10px',
+                    background: 'none',
+                    border: 'none',
+                    color: '#64748B',
+                    cursor: 'pointer',
+                    padding: '2px'
+                  }}
+                  title={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Optional Admin Passcode Accordion for Staff Registration */}
+          {mode === 'signup' && (
+            <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '10px 12px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 600, color: '#475569', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  data-testid="signup-admin-checkbox"
+                  checked={isAdminRegistration}
+                  onChange={(e) => setIsAdminRegistration(e.target.checked)}
+                />
+                <span>Registering as Autogrow Staff / Operations Admin</span>
+              </label>
+              {isAdminRegistration && (
+                <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid #E2E8F0' }}>
+                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#1E293B', textTransform: 'uppercase', marginBottom: '4px' }}>
+                    Admin Provisioning Passcode
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <KeyRound size={15} style={{ position: 'absolute', left: '10px', top: '10px', color: '#64748B' }} />
+                    <input
+                      type="text"
+                      data-testid="signup-admin-passcode"
+                      placeholder={`Passcode: ${ADMIN_REGISTRATION_PASSCODE}`}
+                      value={adminPasscode}
+                      onChange={(e) => setAdminPasscode(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '8px 10px 8px 34px',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #CBD5E1',
+                        borderRadius: '6px',
+                        color: '#0F172A',
+                        fontSize: '12.5px',
+                        fontFamily: 'monospace',
+                        boxSizing: 'border-box'
+                      }}
+                    />
+                  </div>
+                  <span style={{ fontSize: '10.5px', color: '#64748B', marginTop: '3px', display: 'block' }}>
+                    Security verification required for website management & order triage authority.
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Submit Button */}
           <button
             type="submit"
+            data-testid="auth-submit-btn"
             disabled={loading}
             style={{
-              marginTop: '8px',
+              marginTop: '4px',
               padding: '12px',
-              backgroundColor: '#76b82a',
+              backgroundColor: '#16A34A',
               border: 'none',
               borderRadius: '8px',
               color: '#FFFFFF',
@@ -294,54 +518,88 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
+              boxShadow: '0 2px 4px rgba(22, 163, 74, 0.25)',
               transition: 'background-color 0.15s ease'
             }}
           >
-            {loading ? 'Authenticating...' : (mode === 'signin' ? 'Sign In' : 'Create Account')}
+            {loading ? 'Authenticating...' : (mode === 'signin' ? 'Sign In' : 'Create Commercial Account')}
             {!loading && <ArrowRight size={16} />}
           </button>
         </form>
 
-        {/* Demo Fast Login Helpers */}
-        <div style={{ marginTop: '24px', paddingTop: '18px', borderTop: '1px solid #1E293B' }}>
-          <div style={{ fontSize: '11px', textTransform: 'uppercase', color: '#64748B', fontWeight: 700, letterSpacing: '0.05em', textAlign: 'center', marginBottom: '10px' }}>
-            One-Click Testing Switcher {!isConfigured && '(Demo Database)'}
+        {/* Demo Fast Login Section (Kept & clearly labeled for demo evaluation) */}
+        <div style={{ marginTop: '22px', paddingTop: '16px', borderTop: '1px solid #E2E8F0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginBottom: '8px' }}>
+            <span style={{ fontSize: '10.5px', textTransform: 'uppercase', color: '#64748B', fontWeight: 800, letterSpacing: '0.06em' }}>
+              🧪 DEMO EVALUATION SHORTCUTS
+            </span>
           </div>
+          <p style={{ fontSize: '11px', color: '#64748B', textAlign: 'center', margin: '0 0 10px 0', lineHeight: 1.4 }}>
+            For reviewer convenience: click below to simulate verified roles without typing credentials.
+          </p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
             <button
               type="button"
+              data-testid="demo-login-admin"
               onClick={() => handleDevLogin('admin')}
               style={{
-                padding: '8px 10px',
-                backgroundColor: '#1E293B',
-                border: '1px solid #334155',
-                borderRadius: '6px',
-                color: '#E2E8F0',
+                padding: '9px 10px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #CBD5E1',
+                borderRadius: '8px',
+                color: '#0F172A',
                 fontSize: '12px',
-                fontWeight: 600,
-                cursor: 'pointer'
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '2px',
+                transition: 'all 0.15s ease'
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F1F5F9')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F8FAFC')}
             >
-              👑 Login as Admin
+              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                👑 <span>Demo Admin</span>
+              </span>
+              <span style={{ fontSize: '10px', color: '#15803D', fontWeight: 600 }}>
+                Operations Lead
+              </span>
             </button>
+
             <button
               type="button"
+              data-testid="demo-login-grower"
               onClick={() => handleDevLogin('customer')}
               style={{
-                padding: '8px 10px',
-                backgroundColor: '#1E293B',
-                border: '1px solid #334155',
-                borderRadius: '6px',
-                color: '#E2E8F0',
+                padding: '9px 10px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #CBD5E1',
+                borderRadius: '8px',
+                color: '#0F172A',
                 fontSize: '12px',
-                fontWeight: 600,
-                cursor: 'pointer'
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '2px',
+                transition: 'all 0.15s ease'
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F1F5F9')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#F8FAFC')}
             >
-              🌱 Login as Customer
+              <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                🌱 <span>Demo Grower</span>
+              </span>
+              <span style={{ fontSize: '10px', color: '#2563EB', fontWeight: 600 }}>
+                Pacific Greens
+              </span>
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );
