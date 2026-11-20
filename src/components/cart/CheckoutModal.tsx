@@ -11,6 +11,7 @@ interface CheckoutModalProps {
   totalValue: number;
   onOrderSuccess: (orderNumber: string) => void;
   onRequireAuth: () => void;
+  initialFarmDetails?: { facilityType?: string; area?: string; crop?: string };
 }
 
 export const CheckoutModal: React.FC<CheckoutModalProps> = ({
@@ -19,19 +20,42 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   cartItems,
   totalValue,
   onOrderSuccess,
-  onRequireAuth
+  onRequireAuth,
+  initialFarmDetails
 }) => {
   const { user, profile } = useAuth();
 
   const [customerName, setCustomerName] = useState(profile?.full_name || '');
   const [customerEmail, setCustomerEmail] = useState(user?.email || '');
   const [customerPhone, setCustomerPhone] = useState('');
-  const [companyName, setCompanyName] = useState('');
+  const [companyName, setCompanyName] = useState(profile?.facilityName || profile?.facility_name || '');
   const [shippingAddress, setShippingAddress] = useState('');
-  const [facilityVoltage, setFacilityVoltage] = useState('220-240V (Standard Australasia/Europe)');
-  const [notes, setNotes] = useState('');
+  const [facilityVoltage, setFacilityVoltage] = useState('220-240V / 50Hz (Standard Australasia/Europe/Malaysia)');
+  const [farmArea, setFarmArea] = useState(initialFarmDetails?.area || '2,500 m² (~0.6 Acre)');
+  const [cropType, setCropType] = useState(initialFarmDetails?.crop || 'Vine Crops (Tomatoes, Capsicums)');
+  const [targetRegion, setTargetRegion] = useState('New Zealand & Australasia');
+  const [notes, setNotes] = useState(initialFarmDetails?.facilityType ? `Facility Type: ${initialFarmDetails.facilityType}` : '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (user?.email) {
+      setCustomerEmail(user.email);
+    }
+    if (profile?.full_name) {
+      setCustomerName(profile.full_name);
+    }
+    const fac = profile?.facilityName || profile?.facility_name;
+    if (fac) {
+      setCompanyName(fac);
+    }
+  }, [user, profile]);
+
+  React.useEffect(() => {
+    if (initialFarmDetails?.area) setFarmArea(initialFarmDetails.area);
+    if (initialFarmDetails?.crop) setCropType(initialFarmDetails.crop);
+    if (initialFarmDetails?.facilityType) setNotes(`Facility Type: ${initialFarmDetails.facilityType}`);
+  }, [initialFarmDetails]);
 
   if (!isOpen) return null;
 
@@ -77,10 +101,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           </div>
 
           <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: '0 0 8px' }}>
-            Sign In to Complete Order
+            Sign In to Request Equipment Quote
           </h3>
           <p style={{ fontSize: '14px', color: '#6B7280', margin: '0 0 24px', lineHeight: 1.5 }}>
-            To ensure genuine commercial warranty, direct engineering support, and order tracking, please sign in or register your farm.
+            Commercial CEA hardware is custom-quoted to your greenhouse dimensions and power grid. Sign in or register your farm to receive an itemized commercial quotation.
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -101,7 +125,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 cursor: 'pointer'
               }}
             >
-              Sign In / Register Account
+              Sign In / Register Farm Account
             </button>
             <button
               onClick={onClose}
@@ -116,7 +140,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 cursor: 'pointer'
               }}
             >
-              Continue Browsing Store
+              Continue Browsing Equipment
             </button>
           </div>
         </div>
@@ -136,7 +160,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setIsSubmitting(true);
 
     try {
-      const orderNumber = `AG-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const orderNumber = `RFQ-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
       const orderItems: OrderItem[] = cartItems.map(item => ({
         id: String(item.product.id),
@@ -146,6 +170,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         price: item.product.price,
         category: item.product.category
       }));
+
+      const fullNotes = [
+        `[COMMERCIAL RFQ - QUOTE FOR ORDER]`,
+        `Farm Footprint: ${farmArea}`,
+        `Crop Category: ${cropType}`,
+        `Target Delivery Region: ${targetRegion}`,
+        notes.trim() ? `Grower Notes: ${notes.trim()}` : ''
+      ].filter(Boolean).join(' | ');
 
       await createOrder({
         order_number: orderNumber,
@@ -159,15 +191,15 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         total_amount: totalValue,
         items: orderItems,
         status: 'pending',
-        notes: notes.trim() || undefined
+        notes: fullNotes
       });
 
       setIsSubmitting(false);
       onOrderSuccess(orderNumber);
       onClose();
     } catch (err: any) {
-      console.error('Failed to submit order', err);
-      setError(err?.message || 'Failed to submit order. Please check your connection.');
+      console.error('Failed to submit quote request', err);
+      setError(err?.message || 'Failed to submit quote request. Please check your connection.');
       setIsSubmitting(false);
     }
   };
@@ -191,7 +223,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: '16px',
-          maxWidth: '560px',
+          maxWidth: '580px',
           width: '100%',
           padding: '32px',
           maxHeight: '90vh',
@@ -209,14 +241,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         </button>
 
         <div style={{ borderBottom: '1px solid #E5E7EB', paddingBottom: '16px', marginBottom: '20px' }}>
-          <div style={{ display: 'inline-block', backgroundColor: '#F0FDF4', color: '#15803D', fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '999px', textTransform: 'uppercase', marginBottom: '6px' }}>
-            Commercial Skid & Parts Checkout
+          <div style={{ display: 'inline-block', backgroundColor: '#ECFDF5', color: '#065F46', fontSize: '11px', fontWeight: 800, padding: '3px 9px', borderRadius: '999px', textTransform: 'uppercase', marginBottom: '6px', border: '1px solid #A7F3D0' }}>
+            REQUEST FOR QUOTE (RFQ) · TAILORED FARM PRICING
           </div>
-          <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#111827', margin: 0 }}>
-            Dispatch Facility Order
+          <h2 style={{ fontSize: '21px', fontWeight: 800, color: '#111827', margin: 0 }}>
+            Request Equipment Quote
           </h2>
-          <p style={{ fontSize: '13px', color: '#6B7280', margin: '4px 0 0' }}>
-            Order routed to Autogrow Operations Desk. We review electrical compliance before dispatch.
+          <p style={{ fontSize: '13px', color: '#6B7280', margin: '4px 0 0', lineHeight: 1.4 }}>
+            Commercial CEA hardware is customized to your facility dimensions and voltage. Submit your equipment list to receive an official engineering quotation within 1 business day.
           </p>
         </div>
 
@@ -232,7 +264,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-                Customer Name *
+                Contact / Lead Grower *
               </label>
               <input
                 type="text"
@@ -262,20 +294,20 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-                Commercial Farm / Company
+                Farm / Company Name
               </label>
               <input
                 type="text"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Pacific Greens Ltd"
+                placeholder="Pacific Greens Glasshouse Ltd"
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13px', boxSizing: 'border-box' }}
               />
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-                Phone Number (Dispatch Contact)
+                Phone / WhatsApp (For Rapid Quote)
               </label>
               <input
                 type="tel"
@@ -287,9 +319,78 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </div>
           </div>
 
+          {/* Farm Sizing Specifics */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', padding: '12px', borderRadius: '8px' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 700, color: '#1E293B', textTransform: 'uppercase', marginBottom: '4px' }}>
+                Farm Footprint / Area
+              </label>
+              <select
+                value={farmArea}
+                onChange={(e) => setFarmArea(e.target.value)}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '12.5px', backgroundColor: '#FFFFFF' }}
+              >
+                <option value="< 1,000 m² (Boutique / R&D)">Under 1,000 m² (&lt; 0.25 Acre)</option>
+                <option value="1,000 – 5,000 m² (~1 Acre)">1,000 – 5,000 m² (~1 Acre)</option>
+                <option value="5,000 – 20,000 m² (~2.5–5 Acres)">5,000 – 20,000 m² (2.5 – 5 Acres)</option>
+                <option value="20,000+ m² (5+ Hectares)">20,000+ m² (5+ Hectares)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '11.5px', fontWeight: 700, color: '#1E293B', textTransform: 'uppercase', marginBottom: '4px' }}>
+                Primary Crop Cultivation
+              </label>
+              <select
+                value={cropType}
+                onChange={(e) => setCropType(e.target.value)}
+                style={{ width: '100%', padding: '8px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '12.5px', backgroundColor: '#FFFFFF' }}
+              >
+                <option value="Vine Crops (Tomatoes, Capsicums, Cucumbers)">Vine Crops (Tomatoes, Peppers)</option>
+                <option value="Leafy Greens (NFT Hydroponics, Herbs)">Leafy Greens (NFT / Hydroponics)</option>
+                <option value="Soft Berries (Strawberries in Coir)">Soft Berries (Strawberries, Blueberries)</option>
+                <option value="Medicinal & High-Value CEA">Medicinal & Specialty Crops</option>
+              </select>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
+                Delivery Country / Region
+              </label>
+              <select
+                value={targetRegion}
+                onChange={(e) => setTargetRegion(e.target.value)}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13px', boxSizing: 'border-box' }}
+              >
+                <option value="New Zealand & Australasia">New Zealand & Australasia</option>
+                <option value="Malaysia & Southeast Asia">Malaysia & Southeast Asia</option>
+                <option value="North America (USA & Canada)">North America (USA & Canada)</option>
+                <option value="Europe & United Kingdom">Europe & United Kingdom</option>
+                <option value="Global / Other International">Global / Other International</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
+                Facility Voltage & Frequency
+              </label>
+              <select
+                value={facilityVoltage}
+                onChange={(e) => setFacilityVoltage(e.target.value)}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13px', boxSizing: 'border-box' }}
+              >
+                <option value="220-240V / 50Hz (Standard Australasia/Europe/Malaysia)">220-240V / 50Hz (Australasia, Malaysia, UK)</option>
+                <option value="110-120V / 60Hz (Standard North America)">110-120V / 60Hz (North America)</option>
+                <option value="24VAC Low Voltage Irrigation Skid">24VAC Low Voltage Skid</option>
+              </select>
+            </div>
+          </div>
+
           <div>
             <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-              Greenhouse Delivery Address *
+              Facility Delivery Address *
             </label>
             <input
               type="text"
@@ -303,44 +404,29 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
           <div>
             <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-              Facility Electrical Voltage (Pump & Solenoid Coil Rating)
-            </label>
-            <select
-              value={facilityVoltage}
-              onChange={(e) => setFacilityVoltage(e.target.value)}
-              style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13px', boxSizing: 'border-box' }}
-            >
-              <option value="220-240V (Standard Australasia/Europe)">220-240V / 50Hz (Standard Australasia, UK, Europe)</option>
-              <option value="110-120V (Standard North America)">110-120V / 60Hz (Standard North America, Canada)</option>
-              <option value="24VAC Low Voltage Specialized">24VAC Low Voltage Irrigation Skid</option>
-            </select>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-              Special Engineering Notes / Fertilizer Types
+              Engineering Requirements / Sensor Cable Lengths
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="e.g. Acid injection pump needs Viton seals for concentrated nitric acid"
+              placeholder="e.g. Need 15m cable lengths for pyranometer mast and Viton pump seals for nitric acid dosing"
               rows={2}
               style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '13px', boxSizing: 'border-box' }}
             />
           </div>
 
-          {/* Cart Summary Strip */}
-          <div style={{ backgroundColor: '#F9FAFB', padding: '12px 16px', borderRadius: '8px', border: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Quote Basket Summary Strip */}
+          <div style={{ backgroundColor: '#F8FAFC', padding: '12px 16px', borderRadius: '8px', border: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <div style={{ fontSize: '12px', color: '#6B7280' }}>
-                {cartItems.length} product lines ({cartItems.reduce((acc, i) => acc + i.quantity, 0)} total units)
+              <div style={{ fontSize: '12px', color: '#64748B' }}>
+                {cartItems.length} equipment line items ({cartItems.reduce((acc, i) => acc + i.quantity, 0)} total units)
               </div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#111827' }}>
-                Total: <span style={{ color: '#15803D' }}>${totalValue.toLocaleString()} USD</span>
+              <div style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A' }}>
+                Estimated Hardware: <span style={{ color: '#16A34A' }}>${totalValue.toLocaleString()} USD</span>
               </div>
             </div>
-            <span style={{ fontSize: '11px', color: '#6B7280', textAlign: 'right' }}>
-              Commercial Invoice<br />Generated on Submission
+            <span style={{ fontSize: '11px', color: '#64748B', textAlign: 'right' }}>
+              Formal Itemized Quote<br />Issued via Email
             </span>
           </div>
 
@@ -349,18 +435,23 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             disabled={isSubmitting}
             style={{
               padding: '13px',
-              backgroundColor: '#76b82a',
+              backgroundColor: '#16A34A',
               border: 'none',
               borderRadius: '8px',
               color: '#FFFFFF',
               fontWeight: 800,
-              fontSize: '14px',
+              fontSize: '14.5px',
               cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              marginTop: '6px'
+              marginTop: '6px',
+              boxShadow: '0 2px 6px rgba(22, 163, 74, 0.25)'
             }}
           >
-            {isSubmitting ? 'Transmitting Order to Ops Desk...' : 'Confirm & Transmit Commercial Order'}
+            {isSubmitting ? 'Transmitting Quote Request...' : 'Submit Equipment Quote Request (RFQ)'}
           </button>
+
+          <div style={{ fontSize: '11px', color: '#64748B', textAlign: 'center', marginTop: '2px' }}>
+            No payment required today. An official commercial quotation with regional freight and calibration will be emailed.
+          </div>
         </form>
       </div>
     </div>

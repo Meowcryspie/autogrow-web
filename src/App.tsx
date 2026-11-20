@@ -6,6 +6,7 @@ import { CategoryShowcase } from './components/CategoryShowcase';
 import { SpecializedSuite } from './components/SpecializedSuite';
 import { GrowerSuccessStories } from './components/GrowerSuccessStories';
 import { AppDownloadSection } from './components/AppDownloadSection';
+import { FarmEvaluatorSection } from './components/FarmEvaluatorSection';
 import { WhereToBuySupport } from './components/WhereToBuySupport';
 import { Footer } from './components/Footer';
 import { ProductDetailModal } from './components/ProductDetailModal';
@@ -31,6 +32,30 @@ const MainApp: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [evaluatorCartItems, setEvaluatorCartItems] = useState<any[] | null>(null);
+  const [evaluatorFarmDetails, setEvaluatorFarmDetails] = useState<any | null>(null);
+
+  const handleOpenQuoteWithPackage = (items: any[], farmDetails: any) => {
+    // Map items to StoreProduct shape for cart
+    const mapped = items.map((it, idx) => ({
+      product: {
+        id: `pkg-${idx}-${Date.now()}`,
+        name: it.name,
+        category: it.category || 'hardware',
+        modelCode: it.modelCode,
+        price: it.price,
+        description: `Pre-configured CEA package item for ${farmDetails.area}`,
+        specs: `Engineering Package · ${it.modelCode}`,
+        inStock: true,
+        image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=600&q=80'
+      },
+      quantity: it.quantity
+    }));
+    setEvaluatorCartItems(mapped);
+    setEvaluatorFarmDetails(farmDetails);
+    setCurrentPage('store');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const { setPreviewMode } = useContent();
 
@@ -81,7 +106,8 @@ const MainApp: React.FC = () => {
       return;
     }
 
-    const element = document.getElementById(sectionId);
+    const targetId = sectionId === 'evaluator' ? 'farm-evaluator' : sectionId;
+    const element = document.getElementById(targetId);
     if (element) {
       const navOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
@@ -147,6 +173,12 @@ const MainApp: React.FC = () => {
             {/* 6. TrolMaster Specialized Suite (Moved below Case Studies as requested) */}
             <SpecializedSuite onSelectProduct={handleSelectProduct} />
 
+            {/* Farm Evaluation & IoT System Sizing Configurator (Milesight/Netafim Benchmark) */}
+            <FarmEvaluatorSection 
+              onOpenQuoteWithPackage={handleOpenQuoteWithPackage}
+              onNavigateToSection={handleNavigateToSection}
+            />
+
             {/* 7. TrolMaster "Grow in your POCKET!" App Section + 1:1 Responsive Phone Scaler */}
             <AppDownloadSection />
 
@@ -177,6 +209,8 @@ const MainApp: React.FC = () => {
           <StorePage 
             onBackToHome={() => handleNavigateToPage('home')}
             onNavigateToSection={handleNavigateToSection}
+            initialCartItems={evaluatorCartItems || undefined}
+            initialFarmDetails={evaluatorFarmDetails || undefined}
           />
         )}
 

@@ -24,9 +24,14 @@ import {
   ChevronRight,
   ShieldCheck,
   CheckCircle2,
-  Copy
+  Copy,
+  Users,
+  UserCheck,
+  ShieldAlert
 } from 'lucide-react';
 import { useContent } from '../../context/ContentContext';
+import { useAuth } from '../../context/AuthContext';
+import { SUPERADMIN_EMAIL } from '../../lib/authSecurity';
 import { ImageUploader } from './ImageUploader';
 import type { HeroSlideItem, ShowcaseSectionItem, StoreProduct, BlogPost, DistributorLocation } from '../../types';
 
@@ -35,7 +40,7 @@ interface AdminConsoleProps {
   onPreview: () => void;
 }
 
-type AdminTab = 'hero' | 'store' | 'blog' | 'showcase' | 'support' | 'json';
+type AdminTab = 'hero' | 'store' | 'blog' | 'showcase' | 'support' | 'staff' | 'json';
 
 export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPreview }) => {
   const { 
@@ -54,12 +59,46 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
     importJson 
   } = useContent();
 
+  const { 
+    user: currentAuthUser, 
+    isSuperAdmin, 
+    getAllUsers, 
+    promoteUser, 
+    demoteUser, 
+    authorizeStaff, 
+    revokeStaff, 
+    getStaffList 
+  } = useAuth();
+
   const [activeTab, setActiveTab] = useState<AdminTab>('hero');
   const [storeFilter, setStoreFilter] = useState<'all' | 'controllers' | 'hardware' | 'parts'>('all');
   const [storeVisibilityFilter, setStoreVisibilityFilter] = useState<'all' | 'active' | 'deactivated'>('all');
   const [blogVisibilityFilter, setBlogVisibilityFilter] = useState<'all' | 'active' | 'deactivated'>('all');
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [importJsonText, setImportJsonText] = useState('');
+
+  // Staff & Admin Access State
+  const [staffUsers, setStaffUsers] = useState<any[]>([]);
+  const [whitelistEmails, setWhitelistEmails] = useState<string[]>([]);
+  const [newStaffEmailInput, setNewStaffEmailInput] = useState('');
+  const [staffLoading, setStaffLoading] = useState(false);
+
+  const loadStaffData = async () => {
+    setStaffLoading(true);
+    try {
+      const uList = await getAllUsers();
+      setStaffUsers(uList);
+      setWhitelistEmails(getStaffList());
+    } finally {
+      setStaffLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (activeTab === 'staff') {
+      loadStaffData();
+    }
+  }, [activeTab]);
 
   const showStatus = (msg: string) => {
     setStatusMessage(msg);
@@ -286,6 +325,7 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
     blog: 'Grower Blog & Technical Guides',
     showcase: 'Feature Highlights',
     support: 'Support Hotlines & Distributors',
+    staff: 'Staff & Admin Access Control',
     json: 'Raw JSON & Data Backup',
   };
 
@@ -566,8 +606,37 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
             </button>
 
             <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', padding: '16px 10px 4px', letterSpacing: '0.08em' }}>
-              System & Backup
+              System & Permissions
             </div>
+
+            {/* Staff & Admin Access Control (Superadmin) */}
+            <button
+              onClick={() => setActiveTab('staff')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                fontSize: '13px',
+                fontWeight: activeTab === 'staff' ? 700 : 500,
+                backgroundColor: activeTab === 'staff' ? '#1E293B' : 'transparent',
+                color: activeTab === 'staff' ? '#FFFFFF' : '#94A3B8',
+                border: activeTab === 'staff' ? '1px solid #334155' : '1px solid transparent',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Users size={16} style={{ color: activeTab === 'staff' ? '#22C55E' : '#64748B' }} />
+                Staff & Admin Access
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 800, padding: '1px 6px', borderRadius: '999px', backgroundColor: '#15803D', color: '#FFFFFF' }}>
+                {staffUsers.filter(u => u.role === 'admin').length || 1}
+              </span>
+            </button>
 
             {/* 6. Raw JSON & Import */}
             <button
@@ -2348,6 +2417,308 @@ export const AdminConsole: React.FC<AdminConsoleProps> = ({ onExitToSite, onPrev
                 );
               })}
               </div>
+            </div>
+          )}
+
+          {/* ======================================================== */}
+          {/* TAB: STAFF & ADMIN ACCESS CONTROL (SUPERADMIN)           */}
+          {/* ======================================================== */}
+          {activeTab === 'staff' && (
+            <div>
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '3px 10px', borderRadius: '999px', color: '#065F46', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px' }}>
+                  <ShieldCheck size={13} style={{ color: '#059669' }} />
+                  <span>{isSuperAdmin ? 'Superadmin Authority' : 'Operations Admin'} · Active Session: {currentAuthUser?.email || 'Authenticated'}</span>
+                </div>
+                <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0' }}>
+                  Staff Members & Admin Delegation
+                </h1>
+                <p style={{ margin: 0, color: '#64748B', fontSize: '14px', lineHeight: 1.5, maxWidth: '820px' }}>
+                  Public visitors only register as commercial growers without access to CMS or global order controls. As Superadmin, you can pre-authorize staff emails or instantly promote registered accounts to Operations Administrator.
+                </p>
+              </div>
+
+              {/* Status & Pre-Authorization Row */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px', marginBottom: '32px' }}>
+                
+                {/* Pre-Authorize Staff by Email */}
+                <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                  <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <UserCheck size={18} style={{ color: '#16A34A' }} />
+                    Pre-Authorize Staff Member
+                  </h3>
+                  <p style={{ fontSize: '12.5px', color: '#64748B', margin: '0 0 16px 0', lineHeight: 1.4 }}>
+                    Add an Auckland staff or regional operations email address. When this person signs in or registers, they are automatically granted Operations Admin authority.
+                  </p>
+
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input 
+                      type="email"
+                      placeholder="e.g. engineer.vance@autogrow.co.nz"
+                      value={newStaffEmailInput}
+                      onChange={(e) => setNewStaffEmailInput(e.target.value)}
+                      style={{
+                        flex: 1,
+                        padding: '9px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid #CBD5E1',
+                        fontSize: '13px',
+                        outline: 'none'
+                      }}
+                    />
+                    <button
+                      onClick={() => {
+                        if (!newStaffEmailInput.trim()) return;
+                        const res = authorizeStaff(newStaffEmailInput.trim());
+                        showStatus(res.message);
+                        if (res.success) {
+                          setNewStaffEmailInput('');
+                          loadStaffData();
+                        }
+                      }}
+                      style={{
+                        padding: '9px 18px',
+                        backgroundColor: '#16A34A',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        borderRadius: '8px',
+                        fontSize: '13px',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <Plus size={15} />
+                      Authorize Staff
+                    </button>
+                  </div>
+
+                  {/* Whitelist Display */}
+                  <div style={{ marginTop: '20px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', marginBottom: '8px' }}>
+                      Current Whitelisted Staff Emails ({whitelistEmails.length})
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {whitelistEmails.map(em => {
+                        const isRoot = em.toLowerCase() === SUPERADMIN_EMAIL.toLowerCase();
+                        return (
+                          <div 
+                            key={em} 
+                            style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'space-between',
+                              padding: '8px 12px',
+                              backgroundColor: '#F8FAFC',
+                              border: '1px solid #E2E8F0',
+                              borderRadius: '6px',
+                              fontSize: '12.5px'
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ fontWeight: 600, color: '#0F172A' }}>{em}</span>
+                              {isRoot && (
+                                <span style={{ backgroundColor: '#FEF3C7', color: '#B45309', fontSize: '10px', fontWeight: 800, padding: '1px 6px', borderRadius: '4px' }}>
+                                  ROOT SUPERADMIN
+                                </span>
+                              )}
+                            </div>
+                            {!isRoot && (
+                              <button
+                                onClick={() => {
+                                  if (confirm(`Revoke admin privileges for ${em}?`)) {
+                                    const res = revokeStaff(em);
+                                    showStatus(res.message);
+                                    loadStaffData();
+                                  }
+                                }}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: '#DC2626',
+                                  fontSize: '11.5px',
+                                  fontWeight: 600,
+                                  cursor: 'pointer',
+                                  padding: '2px 6px'
+                                }}
+                              >
+                                Revoke
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Superadmin Security Protocol Card */}
+                <div style={{ backgroundColor: '#0F172A', color: '#FFFFFF', borderRadius: '12px', padding: '24px', border: '1px solid #1E293B' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                    <ShieldAlert size={20} style={{ color: '#4ADE80' }} />
+                    <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
+                      Access Control Directives
+                    </h3>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '12.5px', color: '#94A3B8', lineHeight: 1.5 }}>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <span style={{ color: '#4ADE80', fontWeight: 800 }}>✓</span>
+                      <span><strong>Zero Public Elevation:</strong> Visitors who sign up publicly are strictly registered as Commercial Growers (customer role).</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <span style={{ color: '#4ADE80', fontWeight: 800 }}>✓</span>
+                      <span><strong>Superadmin Gate:</strong> Only you or pre-whitelisted operations staff can log into the CMS and manage quotes.</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <span style={{ color: '#4ADE80', fontWeight: 800 }}>✓</span>
+                      <span><strong>Protected Root Account:</strong> <code style={{ color: '#86EFAC', backgroundColor: '#1E293B', padding: '2px 4px', borderRadius: '4px' }}>{SUPERADMIN_EMAIL}</code> cannot be locked out or demoted.</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Registered Users Directory & Instant Elevation */}
+              <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
+                      Registered User Directory ({staffUsers.length})
+                    </h3>
+                    <p style={{ fontSize: '12.5px', color: '#64748B', margin: 0 }}>
+                      All active grower and administrator accounts registered in the local/cloud directory.
+                    </p>
+                  </div>
+                  <button
+                    onClick={loadStaffData}
+                    disabled={staffLoading}
+                    style={{
+                      padding: '6px 12px',
+                      backgroundColor: '#F1F5F9',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: '#475569',
+                      cursor: staffLoading ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    {staffLoading ? 'Refreshing...' : 'Refresh Directory'}
+                  </button>
+                </div>
+
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                    <thead>
+                      <tr style={{ backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0', textAlign: 'left', color: '#475569', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                        <th style={{ padding: '10px 12px' }}>User & Facility</th>
+                        <th style={{ padding: '10px 12px' }}>Email Address</th>
+                        <th style={{ padding: '10px 12px' }}>Role</th>
+                        <th style={{ padding: '10px 12px' }}>Registered Date</th>
+                        <th style={{ padding: '10px 12px', textAlign: 'right' }}>Administrative Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {staffUsers.map((u: any) => {
+                        const isAdm = u.role === 'admin';
+                        const isRoot = u.email?.toLowerCase() === SUPERADMIN_EMAIL.toLowerCase();
+
+                        return (
+                          <tr key={u.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
+                            <td style={{ padding: '12px' }}>
+                              <div style={{ fontWeight: 700, color: '#0F172A' }}>{u.fullName || 'Commercial Client'}</div>
+                              <div style={{ fontSize: '11px', color: '#64748B' }}>{u.facilityName || 'Greenhouse Facility'}</div>
+                            </td>
+                            <td style={{ padding: '12px', fontFamily: 'monospace', color: '#334155', fontSize: '12px' }}>
+                              {u.email}
+                            </td>
+                            <td style={{ padding: '12px' }}>
+                              <span 
+                                style={{
+                                  backgroundColor: isAdm ? '#DCFCE7' : '#EFF6FF',
+                                  color: isAdm ? '#15803D' : '#1D4ED8',
+                                  fontSize: '11px',
+                                  fontWeight: 800,
+                                  padding: '3px 8px',
+                                  borderRadius: '4px',
+                                  letterSpacing: '0.04em'
+                                }}
+                              >
+                                {isAdm ? 'OPERATIONS ADMIN' : 'GROWER'}
+                              </span>
+                            </td>
+                            <td style={{ padding: '12px', color: '#64748B', fontSize: '12px' }}>
+                              {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A'}
+                            </td>
+                            <td style={{ padding: '12px', textAlign: 'right' }}>
+                              {isRoot ? (
+                                <span style={{ fontSize: '11px', fontWeight: 800, color: '#B45309', backgroundColor: '#FEF3C7', padding: '3px 8px', borderRadius: '4px' }}>
+                                  Root Superadmin
+                                </span>
+                              ) : isAdm ? (
+                                <button
+                                  onClick={async () => {
+                                    if (confirm(`Demote ${u.fullName || u.email} to normal commercial grower?`)) {
+                                      const res = await demoteUser(u.id);
+                                      if (res.success) {
+                                        showStatus(`Demoted ${u.email} to grower role.`);
+                                        loadStaffData();
+                                      } else {
+                                        alert(res.message || 'Failed to demote user.');
+                                      }
+                                    }
+                                  }}
+                                  style={{
+                                    padding: '5px 12px',
+                                    backgroundColor: '#FEF2F2',
+                                    color: '#DC2626',
+                                    border: '1px solid #FECACA',
+                                    borderRadius: '6px',
+                                    fontSize: '11.5px',
+                                    fontWeight: 700,
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  Revoke Admin Access
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={async () => {
+                                    if (confirm(`Grant operations admin access to ${u.fullName || u.email}?`)) {
+                                      const success = await promoteUser(u.id);
+                                      if (success) {
+                                        showStatus(`Granted Operations Admin access to ${u.email}!`);
+                                        loadStaffData();
+                                      }
+                                    }
+                                  }}
+                                  style={{
+                                    padding: '5px 12px',
+                                    backgroundColor: '#F0FDF4',
+                                    color: '#15803D',
+                                    border: '1px solid #BBF7D0',
+                                    borderRadius: '6px',
+                                    fontSize: '11.5px',
+                                    fontWeight: 700,
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  Grant Operations Admin
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+
             </div>
           )}
 

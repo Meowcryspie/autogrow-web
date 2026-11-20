@@ -134,13 +134,13 @@ export const OrdersManagementPage: React.FC<OrdersManagementPageProps> = ({ onBa
   const getStatusBadge = (status: OrderStatus) => {
     switch (status) {
       case 'pending':
-        return { bg: '#FEF3C7', text: '#D97706', border: '#FDE68A', label: 'Pending Review' };
+        return { bg: '#FEF3C7', text: '#D97706', border: '#FDE68A', label: 'Quote Review Pending' };
       case 'processing':
-        return { bg: '#DBEAFE', text: '#2563EB', border: '#BFDBFE', label: 'Processing Skid' };
+        return { bg: '#DBEAFE', text: '#2563EB', border: '#BFDBFE', label: 'Quotation Issued / In Engineering' };
       case 'completed':
-        return { bg: '#DCFCE7', text: '#15803D', border: '#BBF7D0', label: 'Dispatched / Fulfilled' };
+        return { bg: '#DCFCE7', text: '#15803D', border: '#BBF7D0', label: 'Approved / Dispatched' };
       case 'cancelled':
-        return { bg: '#FEE2E2', text: '#DC2626', border: '#FECACA', label: 'Cancelled' };
+        return { bg: '#FEE2E2', text: '#DC2626', border: '#FECACA', label: 'Closed' };
     }
   };
 
@@ -199,15 +199,15 @@ export const OrdersManagementPage: React.FC<OrdersManagementPageProps> = ({ onBa
         {/* Page Title & Mission */}
         <div style={{ marginBottom: '36px' }}>
           <div style={{ display: 'inline-block', backgroundColor: '#F3F4F6', color: '#374151', padding: '4px 12px', borderRadius: '9999px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
-            {isAdmin ? 'Commercial Operations Desk' : 'Grower Order History'}
+            {isAdmin ? 'Commercial Operations Desk' : 'Grower RFQ & Quote History'}
           </div>
           <h1 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.75rem)', fontWeight: 800, color: '#111827', margin: '0 0 10px 0', letterSpacing: '-0.02em' }}>
-            {isAdmin ? 'Commercial Orders & Fertigation Quotes' : 'My Orders & Commercial Quotes'}
+            {isAdmin ? 'Equipment Quotes & Facility Orders' : 'My Equipment Quotes & Orders'}
           </h1>
           <p style={{ fontSize: '16px', color: '#4B5563', lineHeight: 1.6, margin: 0, maxWidth: '780px' }}>
             {isAdmin 
-              ? 'Manage commercial hardware skids, controller quote submissions, and dispatch schedules received from registered greenhouse facilities worldwide.'
-              : 'Review your commercial equipment orders, dispatch tracking, skid assemblies, and quotation records.'
+              ? 'Triage greenhouse equipment quote requests (RFQ), verify voltage/hydraulic parameters, and issue itemized commercial quotations with regional freight.'
+              : 'Review your submitted equipment quotes, engineering reviews, and dispatch tracking.'
             }
           </p>
         </div>

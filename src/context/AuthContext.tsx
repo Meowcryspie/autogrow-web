@@ -18,6 +18,13 @@ import {
   clearFailedAttempts,
   ADMIN_REGISTRATION_PASSCODE,
   SESSION_DURATION_MS,
+  SUPERADMIN_EMAIL,
+  getAuthorizedStaffEmails,
+  isEmailAuthorizedStaff,
+  authorizeStaffEmail,
+  revokeStaffEmail,
+  promoteUserToAdmin,
+  demoteUserToCustomer,
   type RegisteredUser,
   type AuthSession
 } from '../lib/authSecurity';
@@ -26,6 +33,7 @@ interface AuthContextType {
   user: User | null;
   profile: UserProfile | null;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
   isLoading: boolean;
   isConfigured: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
@@ -33,11 +41,17 @@ interface AuthContextType {
     email: string, 
     password: string, 
     fullName: string, 
-    facilityName?: string, 
-    adminPasscode?: string
+    facilityName?: string
   ) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   devLoginAs: (role: 'admin' | 'customer') => void;
+  // Staff & Admin Permissions (Controlled by Superadmin)
+  getAllUsers: () => Promise<RegisteredUser[]>;
+  promoteUser: (userId: string) => Promise<boolean>;
+  demoteUser: (userId: string) => Promise<{ success: boolean; message?: string }>;
+  authorizeStaff: (email: string) => { success: boolean; message: string };
+  revokeStaff: (email: string) => { success: boolean; message: string };
+  getStaffList: () => string[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -210,7 +224,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // ==============================================================================
-  // SECURE SIGN UP / REGISTRATION FLOW
+  // SECURE SIGN UP / REGISTRATION FLOW (PUBLIC GROWER REGISTRATION)
   // ==============================================================================
   const signUp = async (
     email: string, 
@@ -242,9 +256,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { error: strength.message || 'Password does not meet security requirements.' };
     }
 
+    // Determine admin privilege: either pre-authorized on staff whitelist, or matching emergency secret
+    const isWhitelisted = isEmailAuthorizedStaff(cleanEmail);
+    const hasEmergencyPasscode = adminPasscode?.trim() === ADMIN_REGISTRATION_PASSCODE;
+    const isAuthorizedAdmin = isWhitelisted || hasEmergencyPasscode;
+
     // 2. Supabase Flow (if configured)
     if (isSupabaseConfigured) {
-      const isAdm = adminPasscode?.trim() === ADMIN_REGISTRATION_PASSCODE;
       const { error } = await supabase.auth.signUp({
         email: cleanEmail,
         password,
@@ -252,7 +270,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           data: { 
             full_name: cleanName,
             facility_name: cleanFacility,
-            role: isAdm ? 'admin' : 'customer'
+            role: isAuthorizedAdmin ? 'admin' : 'customer'
           }
         }
       });
@@ -269,8 +287,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { error: 'An account with this email address already exists. Please sign in instead.' };
     }
 
-    // 4. Role Authorization Rule:
-    // If an adminPasscode is explicitly submitted, strictly validate it against the provisioning secret
+    // If an invalid admin passcode was submitted explicitly, reject
     if (adminPasscode !== undefined && adminPasscode !== null && adminPasscode.trim() !== '') {
       if (adminPasscode.trim() !== ADMIN_REGISTRATION_PASSCODE) {
         setIsLoading(false);
@@ -278,7 +295,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
 
-    const isAuthorizedAdmin = Boolean(adminPasscode && adminPasscode.trim() === ADMIN_REGISTRATION_PASSCODE);
     const role: UserRole = isAuthorizedAdmin ? 'admin' : 'customer';
 
     // 5. Generate Salt & Hash Password
@@ -387,18 +403,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Role authorization is strictly determined by verified profile role
   const isAdmin = profile?.role === 'admin';
+  const isSuperAdmin = user?.email?.toLowerCase() === SUPERADMIN_EMAIL.toLowerCase();
+
+  // Staff & Admin Permission helpers
+  const getAllUsers = async (): Promise<RegisteredUser[]> => {
+    return await getRegisteredUsers();
+  };
+
+  const promoteUser = async (userId: string): Promise<boolean> => {
+    const success = await promoteUserToAdmin(userId);
+    if (success && user?.id === userId) {
+      setProfile(prev => prev ? { ...prev, role: 'admin' } : null);
+    }
+    return success;
+  };
+
+  const demoteUser = async (userId: string): Promise<{ success: boolean; message?: string }> => {
+    const res = await demoteUserToCustomer(userId);
+    if (res.success && user?.id === userId) {
+      setProfile(prev => prev ? { ...prev, role: 'customer' } : null);
+    }
+    return res;
+  };
+
+  const authorizeStaff = (email: string) => {
+    return authorizeStaffEmail(email);
+  };
+
+  const revokeStaff = (email: string) => {
+    return revokeStaffEmail(email);
+  };
+
+  const getStaffList = () => {
+    return getAuthorizedStaffEmails();
+  };
 
   return (
     <AuthContext.Provider value={{
       user,
       profile,
       isAdmin,
+      isSuperAdmin,
       isLoading,
       isConfigured: isSupabaseConfigured,
       signIn,
       signUp,
       signOut,
-      devLoginAs
+      devLoginAs,
+      getAllUsers,
+      promoteUser,
+      demoteUser,
+      authorizeStaff,
+      revokeStaff,
+      getStaffList
     }}>
       {children}
     </AuthContext.Provider>

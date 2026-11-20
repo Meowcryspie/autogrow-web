@@ -4,6 +4,8 @@ export interface UserProfile {
   id: string;
   email: string;
   full_name?: string;
+  facility_name?: string;
+  facilityName?: string;
   role: UserRole;
   created_at: string;
 }

@@ -8,20 +8,34 @@ import type { StoreProduct } from '../types';
 interface StorePageProps {
   onBackToHome: () => void;
   onNavigateToSection?: (sectionId: string) => void;
+  initialCartItems?: { product: StoreProduct; quantity: number }[];
+  initialFarmDetails?: { facilityType?: string; area?: string; crop?: string };
 }
 
-export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateToSection }) => {
+export const StorePage: React.FC<StorePageProps> = ({ 
+  onBackToHome, 
+  onNavigateToSection,
+  initialCartItems,
+  initialFarmDetails 
+}) => {
   const { activeContent } = useContent();
   const products = activeContent.storeProducts;
 
   const [selectedCat, setSelectedCat] = useState<'all' | 'controllers' | 'hardware' | 'parts'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [cartItems, setCartItems] = useState<{ product: StoreProduct; quantity: number }[]>([]);
+  const [cartItems, setCartItems] = useState<{ product: StoreProduct; quantity: number }[]>(initialCartItems || []);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(Boolean(initialCartItems && initialCartItems.length > 0));
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [confirmedOrderNumber, setConfirmedOrderNumber] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (initialCartItems && initialCartItems.length > 0) {
+      setCartItems(initialCartItems);
+      setIsCheckoutOpen(true);
+    }
+  }, [initialCartItems]);
 
   const categories: { id: 'all' | 'controllers' | 'hardware' | 'parts'; label: string; icon: any }[] = [
     { id: 'all', label: 'All Products', icon: Layers },
@@ -112,37 +126,83 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
           <div 
             style={{
               display: 'inline-block',
-              backgroundColor: '#F0FDF4',
-              color: '#15803D',
-              border: '1px solid #BBF7D0',
+              backgroundColor: '#ECFDF5',
+              color: '#065F46',
+              border: '1px solid #A7F3D0',
               padding: '4px 12px',
               borderRadius: '9999px',
-              fontSize: '12px',
-              fontWeight: 700,
+              fontSize: '11.5px',
+              fontWeight: 800,
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
               marginBottom: '16px',
             }}
           >
-            Direct Commercial AgTech Store
+            B2B Commercial Hardware · Request for Quote (RFQ)
           </div>
 
           <h1 
             style={{
               fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)',
               fontWeight: 900,
-              color: '#111827',
+              color: '#0F172A',
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
               marginBottom: '16px',
             }}
           >
-            Online Store
+            Equipment Quote Catalog
           </h1>
 
-          <p style={{ fontSize: '17px', color: '#4B5563', lineHeight: 1.6, margin: 0 }}>
-            Order genuine commercial controllers, hardware instrumentation, sensory pods, and spare parts directly from Autogrow with worldwide courier dispatch.
+          <p style={{ fontSize: '16.5px', color: '#475569', lineHeight: 1.6, margin: 0 }}>
+            Configure commercial controllers, dosing skids, substrate sensors, and probes directly for your farm. Add items to your Quote Basket to receive itemized regional pricing, power/voltage matching, and shipping schedules from our Auckland engineering desk.
           </p>
+
+          {/* Farm Evaluator Callout Banner */}
+          <div 
+            style={{ 
+              marginTop: '24px', 
+              padding: '16px 20px', 
+              backgroundColor: '#F8FAFC', 
+              border: '1px solid #E2E8F0', 
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              flexWrap: 'wrap'
+            }}
+          >
+            <div>
+              <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A' }}>
+                💡 Not sure which controller or sensor density fits your acreage?
+              </div>
+              <div style={{ fontSize: '12px', color: '#64748B', marginTop: '2px' }}>
+                Use our interactive Farm Evaluation tool to calculate exact MultiGrow™ hardware specifications for your greenhouse.
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                onBackToHome();
+                setTimeout(() => {
+                  const el = document.getElementById('farm-evaluator');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 150);
+              }}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#0F172A',
+                color: '#FFFFFF',
+                borderRadius: '8px',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '12px',
+                cursor: 'pointer'
+              }}
+            >
+              Open Farm Evaluator
+            </button>
+          </div>
         </div>
       </div>
 
@@ -329,7 +389,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
                       className="btn btn-primary"
                       style={{ padding: '8px 18px', fontSize: '12px' }}
                     >
-                      Add to Cart
+                      Add to Quote (RFQ)
                     </button>
                   </div>
                 </div>
@@ -434,7 +494,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
                   style={{ width: '100%', padding: '14px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                 >
                   <ShieldCheck size={16} />
-                  Proceed to Commercial Checkout
+                  Submit Request for Quote (RFQ)
                 </button>
               </div>
             )}
@@ -448,6 +508,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
         onClose={() => setIsCheckoutOpen(false)}
         cartItems={cartItems}
         totalValue={totalCartValue}
+        initialFarmDetails={initialFarmDetails}
         onRequireAuth={() => setIsAuthModalOpen(true)}
         onOrderSuccess={(orderNum) => {
           setConfirmedOrderNumber(orderNum);
@@ -482,7 +543,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
             style={{
               backgroundColor: '#FFFFFF',
               borderRadius: '16px',
-              maxWidth: '460px',
+              maxWidth: '480px',
               width: '100%',
               padding: '36px',
               textAlign: 'center',
@@ -494,13 +555,13 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
               <CheckCircle2 size={32} color="#15803D" />
             </div>
             <div style={{ fontSize: '11px', textTransform: 'uppercase', color: '#15803D', fontWeight: 800, letterSpacing: '0.05em', marginBottom: '6px' }}>
-              Order Received by Operations Desk
+              Quote Request Received · Auckland Engineering Desk
             </div>
             <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#111827', margin: '0 0 10px' }}>
-              Order Reference #{confirmedOrderNumber}
+              Reference #{confirmedOrderNumber}
             </h3>
             <p style={{ fontSize: '14px', color: '#4B5563', lineHeight: 1.6, margin: '0 0 24px' }}>
-              Thank you! Your commercial order has been recorded into our system. An Autogrow technical specialist will review your voltage requirements and contact you within 1 business hour.
+              Thank you! Your equipment quote request has been transmitted to our operations team. A systems engineer will review your greenhouse dimensions, AC voltage, and sensor configuration, and deliver an itemized commercial quotation to your email within 1 business day.
             </p>
             <button
               onClick={() => setConfirmedOrderNumber(null)}
@@ -516,7 +577,7 @@ export const StorePage: React.FC<StorePageProps> = ({ onBackToHome, onNavigateTo
                 cursor: 'pointer'
               }}
             >
-              Done & Return to Store
+              Done & Return to Quote Catalog
             </button>
           </div>
         </div>

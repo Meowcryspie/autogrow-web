@@ -530,7 +530,26 @@ export const Navbar: React.FC<NavbarProps> = ({
               Autogrow App
             </button>
 
-            {/* 4. Online Store */}
+            {/* Farm Evaluator Sizing Tool */}
+            <button 
+              onClick={() => onNavigateToSection('evaluator')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#1F2937',
+                fontWeight: 600,
+                fontSize: '14.5px',
+                cursor: 'pointer',
+                padding: '8px 0',
+                transition: 'color 0.15s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#1F2937')}
+            >
+              Farm Evaluator
+            </button>
+
+            {/* 4. Equipment Quotes Catalog */}
             <button 
               onClick={() => onNavigateToPage('store')}
               style={{
@@ -546,7 +565,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={(e) => (e.currentTarget.style.color = '#76b82a')}
               onMouseLeave={(e) => (e.currentTarget.style.color = currentPage === 'store' ? '#76b82a' : '#1F2937')}
             >
-              Online Store
+              Quote Catalog
             </button>
 
             {/* 5. Blog */}
@@ -715,7 +734,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         }}
                       >
                         <ShoppingCart size={16} style={{ color: '#76b82a' }} />
-                        <span>Orders</span>
+                        <span>Quotes & Orders</span>
                       </button>
 
                       <button

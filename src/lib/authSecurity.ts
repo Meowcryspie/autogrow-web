@@ -250,9 +250,119 @@ export function validatePasswordStrength(password: string): { valid: boolean; me
     return { valid: false, message: 'Password must be at least 8 characters long.' };
   }
   const hasLetter = /[a-zA-Z]/.test(password);
-  const hasNumberOrSymbol = /[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+  const hasNumberOrSymbol = /[0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
   if (!hasLetter || !hasNumberOrSymbol) {
     return { valid: false, message: 'Password must include both letters and at least one number or symbol.' };
   }
   return { valid: true };
+}
+
+// ==============================================================================
+// 7. SUPERADMIN & STAFF AUTHORIZATION MANAGEMENT
+// ==============================================================================
+
+export const SUPERADMIN_EMAIL = 'admin@autogrow.com';
+const STAFF_WHITELIST_KEY = 'autogrow_staff_whitelist_v1';
+
+export function getAuthorizedStaffEmails(): string[] {
+  try {
+    const raw = localStorage.getItem(STAFF_WHITELIST_KEY);
+    if (!raw) {
+      const defaultWhitelist = [SUPERADMIN_EMAIL];
+      localStorage.setItem(STAFF_WHITELIST_KEY, JSON.stringify(defaultWhitelist));
+      return defaultWhitelist;
+    }
+    const list: string[] = JSON.parse(raw);
+    if (!list.includes(SUPERADMIN_EMAIL)) {
+      list.unshift(SUPERADMIN_EMAIL);
+    }
+    return list;
+  } catch {
+    return [SUPERADMIN_EMAIL];
+  }
+}
+
+export function isEmailAuthorizedStaff(email: string): boolean {
+  const clean = email.toLowerCase().trim();
+  const list = getAuthorizedStaffEmails();
+  return list.some(e => e.toLowerCase() === clean);
+}
+
+export function authorizeStaffEmail(email: string): { success: boolean; message: string } {
+  const clean = email.toLowerCase().trim();
+  if (!validateEmailFormat(clean)) {
+    return { success: false, message: 'Invalid email address format.' };
+  }
+  const list = getAuthorizedStaffEmails();
+  if (!list.some(e => e.toLowerCase() === clean)) {
+    list.push(clean);
+    localStorage.setItem(STAFF_WHITELIST_KEY, JSON.stringify(list));
+  }
+
+  // If this user already exists in the registry, elevate them immediately
+  try {
+    const rawUsers = localStorage.getItem(REGISTRY_STORAGE_KEY);
+    if (rawUsers) {
+      const users: RegisteredUser[] = JSON.parse(rawUsers);
+      const target = users.find(u => u.email.toLowerCase() === clean);
+      if (target) {
+        target.role = 'admin';
+        localStorage.setItem(REGISTRY_STORAGE_KEY, JSON.stringify(users));
+      }
+    }
+  } catch (err) {
+    console.error('Error promoting existing user on authorization:', err);
+  }
+
+  return { success: true, message: `Successfully authorized ${clean} as Operations Admin.` };
+}
+
+export function revokeStaffEmail(email: string): { success: boolean; message: string } {
+  const clean = email.toLowerCase().trim();
+  if (clean === SUPERADMIN_EMAIL.toLowerCase()) {
+    return { success: false, message: 'Superadmin root account cannot be revoked.' };
+  }
+  let list = getAuthorizedStaffEmails();
+  list = list.filter(e => e.toLowerCase() !== clean);
+  localStorage.setItem(STAFF_WHITELIST_KEY, JSON.stringify(list));
+
+  // Demote in registry
+  try {
+    const rawUsers = localStorage.getItem(REGISTRY_STORAGE_KEY);
+    if (rawUsers) {
+      const users: RegisteredUser[] = JSON.parse(rawUsers);
+      const target = users.find(u => u.email.toLowerCase() === clean);
+      if (target) {
+        target.role = 'customer';
+        localStorage.setItem(REGISTRY_STORAGE_KEY, JSON.stringify(users));
+      }
+    }
+  } catch (err) {
+    console.error('Error demoting user on revocation:', err);
+  }
+
+  return { success: true, message: `Revoked admin privileges for ${clean}.` };
+}
+
+export async function promoteUserToAdmin(userId: string): Promise<boolean> {
+  const users = await getRegisteredUsers();
+  const target = users.find(u => u.id === userId);
+  if (!target) return false;
+  target.role = 'admin';
+  saveRegisteredUsers(users);
+  authorizeStaffEmail(target.email);
+  return true;
+}
+
+export async function demoteUserToCustomer(userId: string): Promise<{ success: boolean; message?: string }> {
+  const users = await getRegisteredUsers();
+  const target = users.find(u => u.id === userId);
+  if (!target) return { success: false, message: 'User not found.' };
+  if (target.email.toLowerCase() === SUPERADMIN_EMAIL.toLowerCase()) {
+    return { success: false, message: 'Superadmin root account cannot be demoted.' };
+  }
+  target.role = 'customer';
+  saveRegisteredUsers(users);
+  revokeStaffEmail(target.email);
+  return { success: true };
 }

@@ -10,11 +10,9 @@ import {
   CheckCircle2, 
   Eye, 
   EyeOff, 
-  KeyRound, 
   AlertCircle
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { ADMIN_REGISTRATION_PASSCODE } from '../../lib/authSecurity';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -40,10 +38,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [fullName, setFullName] = useState('');
   const [facilityName, setFacilityName] = useState('');
   
-  // Admin passcode for staff registration
-  const [isAdminRegistration, setIsAdminRegistration] = useState(false);
-  const [adminPasscode, setAdminPasscode] = useState('');
-
   // Password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -93,18 +87,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         return;
       }
 
-      if (isAdminRegistration && !adminPasscode.trim()) {
-        setError('Please enter the administrator provisioning passcode, or uncheck staff registration.');
-        setLoading(false);
-        return;
-      }
-
       const res = await signUp(
         email, 
         password, 
         fullName, 
-        facilityName, 
-        isAdminRegistration ? adminPasscode : undefined
+        facilityName
       );
 
       if (res.error) {
@@ -450,52 +437,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-            </div>
-          )}
-
-          {/* Optional Admin Passcode Accordion for Staff Registration */}
-          {mode === 'signup' && (
-            <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '10px 12px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: 600, color: '#475569', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  data-testid="signup-admin-checkbox"
-                  checked={isAdminRegistration}
-                  onChange={(e) => setIsAdminRegistration(e.target.checked)}
-                />
-                <span>Registering as Autogrow Staff / Operations Admin</span>
-              </label>
-              {isAdminRegistration && (
-                <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid #E2E8F0' }}>
-                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#1E293B', textTransform: 'uppercase', marginBottom: '4px' }}>
-                    Admin Provisioning Passcode
-                  </label>
-                  <div style={{ position: 'relative' }}>
-                    <KeyRound size={15} style={{ position: 'absolute', left: '10px', top: '10px', color: '#64748B' }} />
-                    <input
-                      type="text"
-                      data-testid="signup-admin-passcode"
-                      placeholder={`Passcode: ${ADMIN_REGISTRATION_PASSCODE}`}
-                      value={adminPasscode}
-                      onChange={(e) => setAdminPasscode(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '8px 10px 8px 34px',
-                        backgroundColor: '#FFFFFF',
-                        border: '1px solid #CBD5E1',
-                        borderRadius: '6px',
-                        color: '#0F172A',
-                        fontSize: '12.5px',
-                        fontFamily: 'monospace',
-                        boxSizing: 'border-box'
-                      }}
-                    />
-                  </div>
-                  <span style={{ fontSize: '10.5px', color: '#64748B', marginTop: '3px', display: 'block' }}>
-                    Security verification required for website management & order triage authority.
-                  </span>
-                </div>
-              )}
             </div>
           )}
 
