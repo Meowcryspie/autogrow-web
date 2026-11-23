@@ -15,7 +15,8 @@ import {
   CheckCircle2,
   Sliders,
   User,
-  LogOut
+  LogOut,
+  Activity
 } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 import { useAuth } from '../context/AuthContext';
@@ -614,6 +615,30 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Search size={18} />
             </button>
+
+            {/* FarmOS 3D Digital Twin Console Link */}
+            <a
+              href="https://meowcryspie.github.io/autogrow-farm/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '8px 14px',
+                borderRadius: '8px',
+                backgroundColor: '#0F172A',
+                color: '#FFFFFF',
+                fontSize: '13px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                boxShadow: '0 2px 8px rgba(15, 23, 42, 0.2)',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <Activity size={14} color="#10B981" />
+              <span>FarmOS 3D Console</span>
+            </a>
 
             {/* Single Green Where to Buy Button (Kept green as requested) */}
             <button

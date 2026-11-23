@@ -215,6 +215,50 @@ export const AppDownloadSection: React.FC = () => {
               </div>
             </div>
 
+            {/* Console & Digital Twin Link Banner */}
+            <div 
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '10px',
+                border: '1px solid #76b82a',
+                marginBottom: '24px',
+                boxShadow: '0 4px 12px rgba(118, 184, 42, 0.08)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Activity size={20} color="#76b82a" />
+                <div>
+                  <div style={{ fontSize: '13px', fontWeight: 800, color: '#111827' }}>
+                    FarmOS 3D Digital Twin Console
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: '#6B7280' }}>
+                    Interactive 1x1 isometric tile grid & multi-controller farm management.
+                  </div>
+                </div>
+              </div>
+              <a
+                href="https://meowcryspie.github.io/autogrow-farm/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  padding: '6px 14px',
+                  backgroundColor: '#0F172A',
+                  color: '#FFFFFF',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                Launch 3D Console ↗
+              </a>
+            </div>
+
             {/* App Store Download Badges */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '32px' }}>
               <div 
