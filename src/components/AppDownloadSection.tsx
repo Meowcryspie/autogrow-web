@@ -15,6 +15,9 @@ import {
   CheckCircle2,
   Sliders
 } from 'lucide-react';
+import { FarmOneDrawing } from './graphics/FarmOneDrawing';
+import { FarmTwoDrawing } from './graphics/FarmTwoDrawing';
+import { EcGauge } from './graphics/EcGauge';
 
 interface ViewportPreset {
   id: string;
@@ -454,26 +457,32 @@ export const AppDownloadSection: React.FC = () => {
                     </div>
 
                     {/* Farm Cards */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       {/* Farm 1: Cameron Highlands */}
                       <div 
                         onClick={() => setActiveScreen('tank')}
                         style={{
                           backgroundColor: '#FFFFFF',
-                          borderRadius: '14px',
+                          borderRadius: '16px',
                           border: '1px solid #E5E7EB',
                           padding: '14px',
                           cursor: 'pointer',
-                          boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                          transition: 'transform 0.15s ease',
                         }}
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        {/* 3D Isometric Farm Model */}
+                        <div style={{ width: '100%', maxWidth: '260px', margin: '0 auto 8px auto', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.06))' }}>
+                          <FarmOneDrawing />
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                           <span style={{ fontSize: '10px', fontWeight: 700, backgroundColor: '#DCFCE7', color: '#15803D', padding: '2px 8px', borderRadius: '4px' }}>
                             ALL ONLINE
                           </span>
                           <span style={{ fontSize: '11px', color: '#6B7280' }}>Cameron Highlands</span>
                         </div>
-                        <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
+                        <h4 style={{ fontSize: '16px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
                           Highlands Hydroponics
                         </h4>
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#4B5563', borderTop: '1px solid #F3F4F6', paddingTop: '8px' }}>
@@ -487,20 +496,26 @@ export const AppDownloadSection: React.FC = () => {
                         onClick={() => setActiveScreen('tank')}
                         style={{
                           backgroundColor: '#FFFFFF',
-                          borderRadius: '14px',
+                          borderRadius: '16px',
                           border: '1px solid #E5E7EB',
                           padding: '14px',
                           cursor: 'pointer',
-                          boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                          transition: 'transform 0.15s ease',
                         }}
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        {/* 3D Isometric Farm Model */}
+                        <div style={{ width: '100%', maxWidth: '260px', margin: '0 auto 8px auto', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.06))' }}>
+                          <FarmTwoDrawing />
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                           <span style={{ fontSize: '10px', fontWeight: 700, backgroundColor: '#FEF3C7', color: '#B45309', padding: '2px 8px', borderRadius: '4px' }}>
                             1 ATTENTION
                           </span>
                           <span style={{ fontSize: '11px', color: '#6B7280' }}>Genting Highlands</span>
                         </div>
-                        <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
+                        <h4 style={{ fontSize: '16px', fontWeight: 800, color: '#111827', margin: '0 0 6px 0' }}>
                           Pahang Berry Bay
                         </h4>
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#4B5563', borderTop: '1px solid #F3F4F6', paddingTop: '8px' }}>
@@ -547,26 +562,23 @@ export const AppDownloadSection: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Circular EC Gauge Card */}
-                    <div style={{ backgroundColor: '#FFFFFF', borderRadius: '16px', border: '1px solid #E5E7EB', padding: '18px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', marginBottom: '8px' }}>
+                    {/* Curved Sweep EC Gauge Card */}
+                    <div style={{ backgroundColor: '#FFFFFF', borderRadius: '16px', border: '1px solid #E5E7EB', padding: '14px', textAlign: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#6B7280', textTransform: 'uppercase', marginBottom: '4px' }}>
                         Electrical Conductivity (EC)
                       </div>
 
-                      {/* Gauge Value Display */}
-                      <div style={{ position: 'relative', width: '130px', height: '130px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                        <svg width="130" height="130" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)', position: 'absolute' }}>
-                          <circle cx="50" cy="50" r="40" fill="transparent" stroke="#E5E7EB" strokeWidth="8" />
-                          <circle cx="50" cy="50" r="40" fill="transparent" stroke="#76b82a" strokeWidth="8" strokeDasharray="251.2" strokeDashoffset="70" strokeLinecap="round" />
-                        </svg>
-                        <span style={{ fontSize: '28px', fontWeight: 900, color: '#111827', fontFamily: 'monospace', lineHeight: 1 }}>
-                          {liveEC.toFixed(2)}
-                        </span>
-                        <span style={{ fontSize: '11px', color: '#6B7280', fontWeight: 600 }}>mS/cm</span>
-                      </div>
+                      {/* Curved Sweep Gauge from Version 1 */}
+                      <EcGauge 
+                        ec={liveEC}
+                        target={targetEC}
+                        lowLimit={1.4}
+                        highLimit={2.2}
+                        statusColor="green"
+                      />
 
                       {/* Target Stepper */}
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', marginTop: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', marginTop: '4px' }}>
                         <button
                           onClick={() => setTargetEC(prev => Math.max(0.6, Number((prev - 0.1).toFixed(1))))}
                           style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#F3F4F6', border: '1px solid #D1D5DB', fontWeight: 800, fontSize: '14px', cursor: 'pointer' }}
