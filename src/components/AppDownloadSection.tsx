@@ -18,6 +18,7 @@ import {
 import { FarmOneDrawing } from './graphics/FarmOneDrawing';
 import { FarmTwoDrawing } from './graphics/FarmTwoDrawing';
 import { EcGauge } from './graphics/EcGauge';
+import { useAuth } from '../context/AuthContext';
 
 interface ViewportPreset {
   id: string;
@@ -28,6 +29,7 @@ interface ViewportPreset {
 }
 
 export const AppDownloadSection: React.FC = () => {
+  const { user, isAdmin } = useAuth();
   const presets: ViewportPreset[] = [
     { id: 'compact', name: 'Compact', width: 340, height: 690, deviceLabel: '340 × 690 · SE / Pocket' },
     { id: 'standard', name: 'Standard', width: 380, height: 760, deviceLabel: '380 × 760 · iPhone / Pixel' },
@@ -215,49 +217,52 @@ export const AppDownloadSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Console & Digital Twin Link Banner */}
-            <div 
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '12px 16px',
-                backgroundColor: '#FFFFFF',
-                borderRadius: '10px',
-                border: '1px solid #76b82a',
-                marginBottom: '24px',
-                boxShadow: '0 4px 12px rgba(118, 184, 42, 0.08)'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Activity size={20} color="#76b82a" />
-                <div>
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: '#111827' }}>
-                    FarmOS 3D Digital Twin Console
-                  </div>
-                  <div style={{ fontSize: '11.5px', color: '#6B7280' }}>
-                    Interactive 1x1 isometric tile grid & multi-controller farm management.
-                  </div>
-                </div>
-              </div>
-              <a
-                href="https://meowcryspie.github.io/autogrow-farm/"
-                target="_blank"
-                rel="noopener noreferrer"
+            {/* Farm SCADA Console Link Banner (Admin Only) */}
+            {user && isAdmin && (
+              <div 
+                data-testid="app-section-farm-scada-banner"
                 style={{
-                  padding: '6px 14px',
-                  backgroundColor: '#0F172A',
-                  color: '#FFFFFF',
-                  borderRadius: '6px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  textDecoration: 'none',
-                  whiteSpace: 'nowrap'
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '12px 16px',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '10px',
+                  border: '1px solid #76b82a',
+                  marginBottom: '24px',
+                  boxShadow: '0 4px 12px rgba(118, 184, 42, 0.08)'
                 }}
               >
-                Launch 3D Console ↗
-              </a>
-            </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <Activity size={20} color="#76b82a" />
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#111827' }}>
+                      Farm SCADA
+                    </div>
+                    <div style={{ fontSize: '11.5px', color: '#6B7280' }}>
+                      Interactive 1x1 isometric tile grid & multi-controller farm management.
+                    </div>
+                  </div>
+                </div>
+                <a
+                  href="https://meowcryspie.github.io/autogrow-farm/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '6px 14px',
+                    backgroundColor: '#0F172A',
+                    color: '#FFFFFF',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  Launch Farm SCADA ↗
+                </a>
+              </div>
+            )}
 
             {/* App Store Download Badges */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '32px' }}>

@@ -616,29 +616,33 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Search size={18} />
             </button>
 
-            {/* FarmOS 3D Digital Twin Console Link */}
-            <a
-              href="https://meowcryspie.github.io/autogrow-farm/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 14px',
-                borderRadius: '8px',
-                backgroundColor: '#0F172A',
-                color: '#FFFFFF',
-                fontSize: '13px',
-                fontWeight: 700,
-                textDecoration: 'none',
-                boxShadow: '0 2px 8px rgba(15, 23, 42, 0.2)',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <Activity size={14} color="#10B981" />
-              <span>FarmOS 3D Console</span>
-            </a>
+            {/* Farm SCADA Console Link (Admin Only) */}
+            {user && isAdmin && (
+              <a
+                href="https://meowcryspie.github.io/autogrow-farm/"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="navbar-farm-scada-link"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 14px',
+                  borderRadius: '8px',
+                  backgroundColor: '#0F172A',
+                  color: '#FFFFFF',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  whiteSpace: 'nowrap',
+                  boxShadow: '0 2px 8px rgba(15, 23, 42, 0.2)',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <Activity size={14} color="#10B981" />
+                <span>Farm SCADA</span>
+              </a>
+            )}
 
             {/* Single Green Where to Buy Button (Kept green as requested) */}
             <button
@@ -974,6 +978,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {user && isAdmin && (
             <>
+              <a
+                href="https://meowcryspie.github.io/autogrow-farm/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ fontWeight: 700, fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#0F172A', color: '#FFFFFF', padding: '10px 12px', borderRadius: '8px', textDecoration: 'none' }}
+              >
+                <Activity size={16} color="#10B981" />
+                Farm SCADA
+              </a>
               <div 
                 onClick={() => { onNavigateToPage('orders'); setMobileMenuOpen(false); }}
                 style={{ fontWeight: 700, fontSize: '16px', color: '#15803D', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#F0FDF4', padding: '10px 12px', borderRadius: '8px' }}
